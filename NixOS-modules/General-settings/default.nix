@@ -15,6 +15,7 @@
     ./Software-privativo/Software-privativo.nix
     ./Sonido/Sonido.nix
     ./Teclado/Teclado.nix
+    ./TLP/TLP.nix
     ./USB/USB.nix
     #./Virtual-Machine/Virtual-Machine.nix
     ./Zona-horaria/Zona-horaria.nix

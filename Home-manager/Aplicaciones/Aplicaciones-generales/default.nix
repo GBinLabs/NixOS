@@ -4,7 +4,7 @@
 
   imports = [
 	./Aplicaciones-generales.nix
-	./Discord/Discord.nix
+	#./Discord/Discord.nix
 	./Gestor-archivos/default.nix
 	./Git/default.nix
 	./Joplin/Joplin.nix

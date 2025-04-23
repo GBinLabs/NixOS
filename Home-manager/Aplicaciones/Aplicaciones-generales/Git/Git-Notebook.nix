@@ -11,7 +11,7 @@
     userEmail = "197016998+GBinLabs@users.noreply.github.com";
     signing = {
       signByDefault = true;
-      key = "~/.ssh/id_ed25519_Bin_Notebook"; # Sin el .pub
+      key = "~/.ssh/id_ed25519_Notebook"; # Sin el .pub
     };
     extraConfig = {
       init.defaultBranch = "main";
@@ -26,7 +26,7 @@
       "github.com" = {
         hostname = "github.com";
         user = "git";
-        identityFile = "~/.ssh/id_ed25519_Bin_Notebook";
+        identityFile = "~/.ssh/id_ed25519_Notebook";
         identitiesOnly = true;
       };
     };
