@@ -26,10 +26,6 @@
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nix-minecraft = {
-      url = "github:Infinidoge/nix-minecraft";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -39,7 +35,6 @@
     impermanence,
     sops-nix,
     nvf,
-    nix-minecraft,
     ...
   } @ inputs: {
     nixosConfigurations = {
@@ -50,11 +45,9 @@
           disko.nixosModules.disko
           impermanence.nixosModules.impermanence
           sops-nix.nixosModules.sops
-          nix-minecraft.nixosModules.minecraft-servers
           ./Hosts/Servidor/configuration.nix
           {
             nixpkgs.overlays = [
-              inputs.nix-minecraft.overlay
             ];
           }
           home-manager.nixosModules.home-manager
@@ -66,7 +59,7 @@
               backupFileExtension = "backup";
               sharedModules = [
                 nvf.homeManagerModules.default
-                inputs.nixcord.homeManagerModules.nixcord
+                inputs.nixcord.homeModules.nixcord
               ];
             };
           }
@@ -93,7 +86,7 @@
               backupFileExtension = "backup";
               sharedModules = [
                 nvf.homeManagerModules.default
-                inputs.nixcord.homeManagerModules.nixcord
+                inputs.nixcord.homeModules.nixcord
               ];
             };
           }
@@ -121,7 +114,7 @@
               backupFileExtension = "backup";
               sharedModules = [
                 nvf.homeManagerModules.default
-                inputs.nixcord.homeManagerModules.nixcord
+                inputs.nixcord.homeModules.nixcord
               ];
             };
           }

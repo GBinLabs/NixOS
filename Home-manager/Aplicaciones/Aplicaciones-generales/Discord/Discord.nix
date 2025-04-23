@@ -1,18 +1,16 @@
 {pkgs, ...}: {
   programs.nixcord = {
     enable = true;
-    discord = {
+    vesktop = {
       enable = true;
-      package = pkgs.discord;
-      vencord = {
-        enable = false;
+      package = pkgs.vesktop;
+      autoscroll = {
+    	  enable = false;
       };
-      openASAR.enable = true;
     };
 
     config = {
       transparent = true;
-      useQuickCss = true;
       plugins = {
         clearURLs.enable = true;
         voiceChatDoubleClick.enable = true;
