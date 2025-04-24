@@ -1,3 +1,4 @@
+# home.nix
 {
   pkgs,
   lib,
@@ -5,8 +6,8 @@
 }: let
   # Core configuration parameters
   enableHyprlandDebug = false; # Set to true for debugging output
-  isAmdGpu = true; # Set to false for NVIDIA or Intel GPUs
-  enableHiDPI = false; # Set to true for high-resolution displays
+  isAmdGpu = true;          # Set to false for NVIDIA or Intel GPUs
+  enableHiDPI = false;       # Set to true for high-resolution displays
 
   # Resource paths
   vulkanPackage = pkgs.vulkan-loader;
@@ -18,132 +19,110 @@
     then valueIfTrue
     else valueIfFalse;
 in {
+  # --- PAQUETES RECOMENDADOS ---
+  # Asegúrate de incluir gamemode y las herramientas necesarias para AMD
+  home.packages =
+    [
+     pkgs.mesa
+      pkgs.libva-utils
+      pkgs.vulkan-tools
+      #pkgs.amdvlk # Si quieres tener AMDLVK como opción, aunque RADV suele ser mejor
+      pkgs.vkbasalt # Necesario si quieres usarlo con la opción de lanzamiento
+      #pkgs.mangohud # Necesario para usar mangohud en opciones de lanzamiento
+      #pkgs.gamescope # Necesario si quieres usarlo
+      #pkgs.protontricks
+      #pkgs.winetricks
+    ];
+
+  # --- VARIABLES DE ENTORNO OPTIMIZADAS ---
   home.sessionVariables = {
-    # System environment configuration
+    # --- Configuración Base Wayland/Hyprland ---
     NIXOS_OZONE_WL = "1";
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
-    DISPLAY = "";  # Desactiva la variable DISPLAY para prevenir el uso de X11
+    DISPLAY = ""; # Desactiva X11 explícitamente
 
-    # Hyprland debugging (always defined)
+    # --- Debugging (Opcional) ---
     HYPRLAND_DEBUG = condVal enableHyprlandDebug "1" "0";
     WLR_DEBUG = condVal enableHyprlandDebug "render" "";
+    # HYPRLAND_LOG_WLR = condVal enableHyprlandDebug "1" "0"; # Opciones adicionales de debug
+    # HYPRLAND_NO_CURSORWARP = condVal enableHyprlandDebug "1" "0";
 
-    # Vulkan rendering configuration
+    # --- Configuración Renderizador Wayland (WLR) ---
     WLR_BACKEND = "vulkan";
     WLR_RENDERER = "vulkan";
-    WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_NO_HARDWARE_CURSORS = "1"; # Puede mejorar compatibilidad
+    # Las siguientes son para compatibilidad, mantenlas si resuelven problemas:
     WLR_DRM_NO_ATOMIC = "1";
-    WLR_DRM_NO_MODIFIERS = "1";  # Mejora la compatibilidad con algunos juegos
+    WLR_DRM_NO_MODIFIERS = "1";
 
-    # AMD-specific Vulkan configuration
-    AMD_VULKAN_ICD = condVal isAmdGpu "RADV" "";
+    # --- Configuración Vulkan Específica AMD (RADV) ---
+    AMD_VULKAN_ICD = condVal isAmdGpu "RADV" ""; # Forza RADV
     VK_ICD_FILENAMES = condVal isAmdGpu vulkanIcdPath "";
     WINE_VK_ICD_FILENAMES = condVal isAmdGpu vulkanIcdPath "";
 
-    # OpenGL/Mesa configuration
-    MESA_LOADER_DRIVER_OVERRIDE = condVal isAmdGpu "radeonsi" "";
-    LIBVA_DRIVER_NAME = condVal isAmdGpu "radeonsi" "";
-    VDPAU_DRIVER = condVal isAmdGpu "radeonsi" "";
-    MESA_GL_VERSION_OVERRIDE = "4.6";
-    __GL_THREADED_OPTIMIZATIONS = "1";
+    # --- Configuración OpenGL/Mesa ---
+    MESA_LOADER_DRIVER_OVERRIDE = condVal isAmdGpu "radeonsi" ""; # Driver OpenGL para AMD
+    LIBVA_DRIVER_NAME = condVal isAmdGpu "radeonsi" ""; # Aceleración de video VA-API
+    VDPAU_DRIVER = condVal isAmdGpu "radeonsi" ""; # Aceleración de video VDPAU
+    #__GL_THREADED_OPTIMIZATIONS = "1"; # Activado por defecto en Mesa moderno, pero no hace daño dejarlo
+    MESA_GL_VERSION_OVERRIDE = "4.6"; # Considera quitarlo si no tienes problemas con juegos antiguos
 
-    # Display synchronization settings
-    __GL_GSYNC_ALLOWED = "0";
-    __GL_VRR_ALLOWED = "0";
-    MESA_VK_WSI_PRESENT_MODE = "immediate";  # Menor latencia pero puede causar tearing
+    # --- Sincronización de Pantalla ---
+    # __GL_GSYNC_ALLOWED = "0"; # Generalmente no necesario desactivar GSync explícitamente
+    # __GL_VRR_ALLOWED = "0";   # Wayland/Hyprland gestionan VRR, esto es más para X11/Nvidia
+    # Opciones: "immediate" (menor latencia, tearing), "fifo" (vsync, más latencia), "mailbox" (adaptativo, buen balance)
+    MESA_VK_WSI_PRESENT_MODE = "mailbox"; # Recomendado como punto de partida balanceado
 
-    # Java application support (optimizado para Minecraft)
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-    _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.opengl=true -Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-    MINECRAFT_WAYLAND = "1";
+    # --- Optimizaciones RADV ---
+    # "gpl": Graphics Pipeline Library, mejora tiempos de carga de shaders. "aco": Compilador alternativo.
+    RADV_PERFTEST = "gpl,aco"; # Flags de rendimiento más estables y beneficiosos
+    # RADV_DEBUG = ""; # Quitado, usar solo si un juego específico tiene glitches conocidos que se arreglan con flags
+    RADV_TEX_ANISO = "16"; # Forzar filtro anisotrópico 16x para mejor calidad visual
 
-    # GTK configuration - solo Wayland
-    GDK_BACKEND = "wayland";
-    GTK_THEME = "Colloid-Green-Dark-Gruvbox";
+    # --- Optimizaciones Específicas Steam/Proton/Wine ---
+    STEAM_RUNTIME_PREFER_HOST_LIBRARIES = "1"; # Usa librerías más nuevas de NixOS (generalmente bueno)
+    STEAM_RUNTIME_HEAVY = "1"; # Puede ayudar con compatibilidad en algunos juegos
+    DXVK_ASYNC = "1"; # Reduce stuttering compilando shaders en segundo plano (puede causar pop-in visual leve)
+    PROTON_FORCE_LARGE_ADDRESS_AWARE = "1"; # Para juegos 32-bit que necesitan más de 2GB RAM
+    #DXVK_HUD = "fps"; # Muestra FPS básicos con DXVK (MangoHud es más completo)
 
-    # Qt configuration - solo Wayland
-    QT_AUTO_SCREEN_SCALE_FACTOR = "1";
-    QT_QPA_PLATFORM = "wayland";
+    # --- Configuración de Plataformas UI (Forzar Wayland) ---
+    GDK_BACKEND = "wayland,x11"; # Permite fallback a X11 si Wayland falla para GTK
+    QT_QPA_PLATFORM = "wayland;xcb"; # Permite fallback a X11 para Qt
+    QT_AUTO_SCREEN_SCALE_FACTOR = "1"; # Ajusta según necesites para HiDPI si enableHiDPI=false
     QT_QPA_PLATFORMTHEME = "qt5ct";
     QT_STYLE_OVERRIDE = "kvantum";
-    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-    DISABLE_QT5_COMPAT = "0";
-
-    # Additional UI frameworks - solo Wayland
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1"; # Para Hyprland
+    SDL_VIDEODRIVER = "wayland,x11"; # Permite fallback a X11 para SDL2
     CLUTTER_BACKEND = "wayland";
-    SDL_VIDEODRIVER = "wayland";
 
-    # Application-specific settings
-    MOZ_ENABLE_WAYLAND = "1";
-    MOZ_WEBRENDER = "1";
-    MOZ_USE_XINPUT2 = "1";
+    # --- Configuración de Aplicaciones Específicas ---
+    MOZ_ENABLE_WAYLAND = "1"; # Firefox en Wayland
+    # MOZ_WEBRENDER = "1"; # Activado por defecto
+    # MOZ_USE_XINPUT2 = "1"; # Relevante para X11
+    _JAVA_AWT_WM_NONREPARENTING = "1"; # Para apps Java Swing en WMs non-reparenting como Hyprland
+    # _JAVA_OPTIONS = "..."; # Manten tus opciones si usas apps Java que las necesiten
     ANKI_WAYLAND = "1";
-    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland"; # Para apps Electron
 
-    # Mejoras para juegos en Wayland nativo
-    GAMESCOPE_WAYLAND = "1";
-    WINE_FULLSCREEN_FSR = "1"; # Ayuda con el escalado en pantalla completa
+    # --- Configuración Audio (Pipewire) ---
+    # Estas variables suelen ser gestionadas por Pipewire/Wireplumber automáticamente.
+    # Solo inclúyelas si tienes problemas específicos de detección de audio.
+    # PULSE_SERVER = "unix:/run/user/1000/pulse/native";
+    SDL_AUDIODRIVER = "pipewire,pulse"; # Prioriza pipewire, permite fallback
+    # ALSA_CONFIG_PATH = "..."; # Normalmente no necesario
 
-    # Mejoras para RADV
-    STEAM_RUNTIME_PREFER_HOST_LIBRARIES = "1";
-    RADV_PERFTEST = "gpl,aco,extended_prim_discard,bo_reuse"; # Optimizaciones para el compilador ACO
-    RADV_DEBUG = "nohiz,nodcc"; # Puede mejorar el rendimiento en ciertos juegos
-    RADV_TEX_ANISO = "16"; # Filtrado anisotrópico para mejor calidad visual
-
-    # Optimizaciones específicas para Steam y Proton
-    STEAM_RUNTIME_HEAVY = "1";
-    STEAM_USE_MANGOAPP = "1";
-    PROTON_ENABLE_NVAPI = "1";
-    PROTON_HIDE_NVIDIA_GPU = "0";
-    DRI_PRIME = "1";
-    
-    # Forzar Wayland nativo en Steam y juegos
-    ENABLE_VKBASALT = "1";
-    DXVK_ASYNC = "1";
-    
-    # Configuración de Proton
-    PROTON_USE_WINED3D = "0";  # Usar DXVK en lugar de wined3d para mejor rendimiento
-    PROTON_FORCE_LARGE_ADDRESS_AWARE = "1";  # Para juegos que necesitan acceder a más de 2GB de RAM
-    DXVK_HUD = "fps";  # Mostrar FPS (opcional)
-    
-    # Forzar aplicaciones solo Wayland
-    DISABLE_X11 = "1";
-    WAYLAND_ONLY = "1";
-    
-    # Configuración de audio con Pipewire
-    PULSE_SERVER = "unix:/run/user/1000/pulse/native";
-    SDL_AUDIODRIVER = "pipewire";
-    ALSA_CONFIG_PATH = "/usr/share/alsa/alsa.conf.d/50-pipewire.conf:/usr/share/alsa/alsa.conf.d/99-pipewire-default.conf";
-
-    # XDG Base Directory specification
+    # --- XDG Base Directory ---
     XDG_CONFIG_HOME = "$HOME/.config";
     XDG_CACHE_HOME = "$HOME/.cache";
     XDG_DATA_HOME = "$HOME/.local/share";
     XDG_STATE_HOME = "$HOME/.local/state";
 
-    # Development environment
-    DIRENV_LOG_FORMAT = "";
-
-    # HiDPI scaling (always defined)
+    # --- HiDPI Scaling ---
     GDK_SCALE = condVal enableHiDPI "2" "1";
     GDK_DPI_SCALE = condVal enableHiDPI "0.5" "1";
     QT_SCALE_FACTOR = condVal enableHiDPI "2" "1";
-
-    # Additional debugging options (always defined)
-    HYPRLAND_LOG_WLR = condVal enableHyprlandDebug "1" "0";
-    HYPRLAND_NO_CURSORWARP = condVal enableHyprlandDebug "1" "0";
   };
-
-  # Conditional package installation for AMD GPUs
-  home.packages = lib.mkIf isAmdGpu [
-    pkgs.mesa
-    pkgs.libva-utils
-    pkgs.vulkan-tools
-    pkgs.amdvlk
-    pkgs.vkbasalt
-    #pkgs.protontricks
-    #pkgs.winetricks
-  ];
 }
