@@ -14,9 +14,6 @@
 		goverlay # GNU GPL v3.0 or Later
 		# Minecraft.
 		prismlauncher
-		# Gamescope
-		gamescope
-		gamescope-wsi
   	];
 
   };
