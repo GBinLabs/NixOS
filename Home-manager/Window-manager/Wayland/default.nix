@@ -1,10 +1,6 @@
-{ ... }:
-
-{
-
+{...}: {
   imports = [
-	./Aplicaciones/default.nix
-	./Hyprland/default.nix
+    ./Aplicaciones/default.nix
+    ./Hyprland/default.nix
   ];
-
 }

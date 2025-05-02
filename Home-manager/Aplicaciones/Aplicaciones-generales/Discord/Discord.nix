@@ -1,21 +1,26 @@
-{pkgs, ...}: {
+_: {
   programs.nixcord = {
     enable = true;
-    vesktop = {
-      enable = true;
-      package = pkgs.vesktop;
-      autoscroll = {
-    	  enable = false;
+    discord = {
+      vencord = {
+        enable = true;
+        unstable = true;
       };
     };
 
-    #config = {
-     # plugins = {
-      #  clearURLs.enable = true;
-       # voiceChatDoubleClick.enable = true;
-        #streamerModeOnStream.enable = true;
-        #silentTyping.enable = true;
-      #};
-    #};
+    config = {
+      themeLinks = ["https://discordstyles.github.io/DarkMatter/DarkMatter.theme.css"];
+      frameless = true;
+      transparent = true;
+      plugins = {
+        clearURLs.enable = true;
+        fixImagesQuality.enable = true;
+        noF1.enable = true;
+        noTypingAnimation.enable = true;
+        voiceChatDoubleClick.enable = true;
+        streamerModeOnStream.enable = true;
+        silentTyping.enable = true;
+      };
+    };
   };
 }

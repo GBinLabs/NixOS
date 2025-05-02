@@ -1,9 +1,5 @@
-{ ... }:
-
-{
-
+{...}: {
   imports = [
-	./Wayland/default.nix
+    ./Wayland/default.nix
   ];
-
 }

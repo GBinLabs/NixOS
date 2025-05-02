@@ -1,10 +1,6 @@
-{ config, pkgs, ... }:
-
-{
-
+{...}: {
   imports = [
-	./Aplicaciones/default.nix
-	./Window-manager/default.nix
+    ./Aplicaciones/default.nix
+    ./Window-manager/default.nix
   ];
-
 }
