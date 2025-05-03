@@ -81,6 +81,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.german = import ./Hosts/Notebook/home.nix;
+              backupFileExtension = "backup";
               sharedModules = [
                 nvf.homeManagerModules.default
                 inputs.nixcord.homeModules.nixcord
@@ -108,6 +109,7 @@
               useUserPackages = true;
               users.german = import ./Hosts/PC/home.nix;
               #users.tecnico = import ./Hosts/Bin-PC/home-tecnico.nix;
+              backupFileExtension = "backup";
               sharedModules = [
                 nvf.homeManagerModules.default
                 inputs.nixcord.homeModules.nixcord
