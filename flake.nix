@@ -22,9 +22,6 @@
       url = "github:NotAShelf/nvf";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nixcord = {
-      url = "github:kaylorben/nixcord";
-    };
   };
 
   outputs = {
@@ -57,7 +54,6 @@
               users.german = import ./Hosts/Servidor/home.nix;
               sharedModules = [
                 nvf.homeManagerModules.default
-                inputs.nixcord.homeModules.nixcord
               ];
             };
           }
@@ -84,7 +80,6 @@
               backupFileExtension = "backup";
               sharedModules = [
                 nvf.homeManagerModules.default
-                inputs.nixcord.homeModules.nixcord
               ];
             };
           }
@@ -112,7 +107,6 @@
               backupFileExtension = "backup";
               sharedModules = [
                 nvf.homeManagerModules.default
-                inputs.nixcord.homeModules.nixcord
               ];
             };
           }

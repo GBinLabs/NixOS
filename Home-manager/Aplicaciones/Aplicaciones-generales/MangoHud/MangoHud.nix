@@ -40,8 +40,8 @@ _: {
       show_fps_limit = true;
       fps_limit = 240;
       gamemode = true;
-      vsync = 0;
-      gl_vsync = 0;
+      vsync = true;
+      gl_vsync = false;
       blacklist = "pamac-manager lact ghb bitwig-studio ptyxis yumex";
     };
     enableSessionWide = false;

@@ -26,5 +26,7 @@
     grim
     slurp
     wl-clipboard
+    # Discord.
+    legcord
   ];
 }
