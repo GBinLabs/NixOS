@@ -90,7 +90,7 @@
     isNormalUser = true;
     home = "/home/german";
     description = "Germán N. González";
-    extraGroups = ["networkmanager" "wheel" "audio" "libvirtd" "kvm"];
+    extraGroups = ["networkmanager" "wheel" "audio" "gamemode"];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
 

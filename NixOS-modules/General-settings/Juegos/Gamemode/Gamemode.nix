@@ -10,7 +10,12 @@
   config = lib.mkIf config.Gamemode.enable {
     programs.gamemode = {
       enable = true;
-      settings = {};
+      settings = {
+      	general = {
+        	softrealtime = "auto";
+        	renice = 10;
+      	};
+      };
       enableRenice = true;
     };
   };

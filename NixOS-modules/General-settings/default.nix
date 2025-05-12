@@ -5,6 +5,7 @@
     ./Bootloader/Bootloader.nix
     ./DNS/DNS.nix
     ./Flakes/Flakes.nix
+    ./Fwupd/Fwupd.nix
     ./Impermanence/default.nix
     ./Java/Java.nix
     ./Juegos/default.nix
