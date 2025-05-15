@@ -7,6 +7,7 @@
       obs-pipewire-audio-capture
       obs-vkcapture
       obs-mute-filter
+      obs-teleport
     ];
   };
 
