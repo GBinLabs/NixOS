@@ -5,9 +5,10 @@
       vim = {
         viAlias = true;
         vimAlias = true;
-
+	lsp = {
+	  enable = true;
+	};
         languages = {
-          enableLSP = true; # habilita cliente LSP de Neovim
           enableFormat = true; # integra formateo (via LSP/null-ls)
           enableTreesitter = true; # resaltado de sintaxis con Tree-sitter
           enableExtraDiagnostics = true; # habilita linters/diagnósticos extra
