@@ -27,6 +27,6 @@
     slurp
     wl-clipboard
     # Discord.
-    legcord
+    discord
   ];
 }
