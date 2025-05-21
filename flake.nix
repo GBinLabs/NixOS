@@ -18,10 +18,6 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    nvf = {
-      url = "github:NotAShelf/nvf";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = {
@@ -30,7 +26,6 @@
     home-manager,
     impermanence,
     sops-nix,
-    nvf,
     ...
   } @ inputs: {
     nixosConfigurations = {
@@ -53,7 +48,6 @@
               useUserPackages = true;
               users.german = import ./Hosts/Servidor/home.nix;
               sharedModules = [
-                nvf.homeManagerModules.default
               ];
             };
           }
@@ -79,7 +73,6 @@
               users.german = import ./Hosts/Notebook/home.nix;
               backupFileExtension = "backup";
               sharedModules = [
-                nvf.homeManagerModules.default
               ];
             };
           }
@@ -106,7 +99,6 @@
               #users.tecnico = import ./Hosts/Bin-PC/home-tecnico.nix;
               backupFileExtension = "backup";
               sharedModules = [
-                nvf.homeManagerModules.default
               ];
             };
           }
