@@ -1,0 +1,181 @@
+15:31:11.684: Platform: Wayland
+15:31:11.684: CPU Name: Intel(R) Core(TM) i7-4510U CPU @ 2.00GHz
+15:31:11.684: CPU Speed: 3090.870MHz
+15:31:11.684: Physical Cores: 2, Logical Cores: 4
+15:31:11.684: Physical Memory: 7824MB Total, 3210MB Free
+15:31:11.684: Kernel Version: Linux 6.14.7-zen1
+15:31:11.684: Distribution: NixOS "25.11"
+15:31:11.684: Desktop Environment: Hyprland (Hyprland)
+15:31:11.684: Session Type: wayland
+15:31:11.686: Qt Version: 6.9.0 (runtime), 6.9.0 (compiled)
+15:31:11.686: Portable mode: false
+15:31:11.730: OBS 31.0.3 (linux)
+15:31:11.730: ---------------------------------
+15:31:11.731: ---------------------------------
+15:31:11.731: audio settings reset:
+15:31:11.731: 	samples per sec: 48000
+15:31:11.731: 	speakers:        2
+15:31:11.731: 	max buffering:   960 milliseconds
+15:31:11.731: 	buffering type:  dynamically increasing
+15:31:11.733: ---------------------------------
+15:31:11.733: Initializing OpenGL...
+15:31:11.733: Using EGL/Wayland
+15:31:11.782: Initialized EGL 1.5
+15:31:11.804: Loading up OpenGL on adapter Intel Mesa Intel(R) HD Graphics 4400 (HSW GT2)
+15:31:11.804: OpenGL loaded successfully, version 4.6 (Core Profile) Mesa 25.0.6, shading language 4.60
+15:31:11.847: ---------------------------------
+15:31:11.847: video settings reset:
+15:31:11.847: 	base resolution:   1920x1080
+15:31:11.847: 	output resolution: 1920x1080
+15:31:11.847: 	downscale filter:  Bicubic
+15:31:11.847: 	fps:               60/1
+15:31:11.847: 	format:            NV12
+15:31:11.847: 	YUV mode:          Rec. 709/Partial
+15:31:11.848: NV12 texture support enabled
+15:31:11.848: P010 texture support not available
+15:31:11.856: Audio monitoring device:
+15:31:11.856: 	name: Por defecto
+15:31:11.856: 	id: default
+15:31:11.856: ---------------------------------
+15:31:11.865: Failed to load 'en-US' text for module: 'decklink-captions.so'
+15:31:11.873: Failed to load 'en-US' text for module: 'decklink-output-ui.so'
+15:31:11.881: A DeckLink iterator could not be created.  The DeckLink drivers may not be installed
+15:31:11.881: Failed to initialize module 'decklink.so'
+15:31:12.172: [pipewire] Available capture sources:
+15:31:12.172: [pipewire]     - Monitor source
+15:31:12.172: [pipewire]     - Window source
+15:31:12.198: v4l2loopback not installed, virtual camera not registered
+15:31:12.210: [obs-browser]: Version 2.24.6
+15:31:12.210: [obs-browser]: CEF Version 127.0.6533.120 (runtime), 127.3.5+g114ea2a+chromium-127.0.6533.120 (compiled)
+15:31:12.231: VAAPI: API version 1.22
+15:31:12.232: FFmpeg VAAPI H264 encoding supported
+15:31:12.606: FFmpeg VAAPI AV1 encoding not supported
+15:31:12.623: FFmpeg VAAPI HEVC encoding not supported
+15:31:12.660: os_dlopen(libnvidia-encode.so.1->libnvidia-encode.so.1): libnvidia-encode.so.1: cannot open shared object file: No such file or directory
+15:31:12.660: 
+15:31:12.660: NVENC not supported
+15:31:12.660: Failed to initialize module 'obs-nvenc.so'
+15:31:12.681: Legacy intel-vaapi-driver detected, incompatible with QSV
+15:31:12.696: Legacy intel-vaapi-driver detected, incompatible with QSV
+15:31:12.769: [obs-websocket] [obs_module_load] you can haz websockets (Version: 5.5.6 | RPC Version: 1)
+15:31:12.770: [obs-websocket] [obs_module_load] Qt version (compile-time): 6.9.0 | Qt version (run-time): 6.9.0
+15:31:12.770: [obs-websocket] [obs_module_load] Linked ASIO Version: 102400
+15:31:12.770: DEPRECATION: obs_frontend_get_global_config is deprecated. Read from global or user configuration explicitly instead.
+15:31:12.776: [obs-websocket] [obs_module_load] Module loaded.
+15:31:12.819: [vlc-video]: VLC 3.0.21 Vetinari found, VLC video source enabled
+15:31:12.837: Failed to load 'es-ES' text for module: 'linux-pipewire-audio.so'
+15:31:12.847: [linux-vkcapture] plugin loaded successfully (version 1.5.1)
+15:31:12.923: Failed to load 'es-ES' text for module: 'obs-backgroundremoval.so'
+15:31:12.923: [obs-backgroundremoval] Plugin loaded successfully (version 1.1.13)
+15:31:12.923: [obs-backgroundremoval] Failed to open config file /home/german/.config/obs-studio/plugin_config/obs-backgroundremoval/config.ini
+15:31:12.923: [obs-backgroundremoval] Failed to open config file /home/german/.config/obs-studio/plugin_config/obs-backgroundremoval/config.ini
+15:31:13.809: [obs-backgroundremoval] Latest release is 
+15:31:13.822: Failed to load 'es-ES' text for module: 'obs-mute-filter.so'
+15:31:13.822: [obs-mute-filter] plugin loaded (version 0.3.0)
+15:31:13.837: [obs-teleport] version: 0.0.0
+15:31:13.837: ---------------------------------
+15:31:13.837:   Loaded Modules:
+15:31:13.837:     obs-teleport.so
+15:31:13.837:     obs-mute-filter.so
+15:31:13.837:     obs-backgroundremoval.so
+15:31:13.837:     linux-vkcapture.so
+15:31:13.837:     linux-pipewire-audio.so
+15:31:13.837:     libwlrobs.so
+15:31:13.837:     vlc-video.so
+15:31:13.837:     text-freetype2.so
+15:31:13.837:     rtmp-services.so
+15:31:13.837:     obs-x264.so
+15:31:13.837:     obs-websocket.so
+15:31:13.837:     obs-webrtc.so
+15:31:13.837:     obs-vst.so
+15:31:13.837:     obs-transitions.so
+15:31:13.837:     obs-qsv11.so
+15:31:13.837:     obs-outputs.so
+15:31:13.837:     obs-libfdk.so
+15:31:13.837:     obs-filters.so
+15:31:13.837:     obs-ffmpeg.so
+15:31:13.837:     obs-browser.so
+15:31:13.837:     linux-v4l2.so
+15:31:13.837:     linux-pulseaudio.so
+15:31:13.837:     linux-pipewire.so
+15:31:13.837:     linux-jack.so
+15:31:13.837:     linux-capture.so
+15:31:13.837:     linux-alsa.so
+15:31:13.837:     image-source.so
+15:31:13.837:     frontend-tools.so
+15:31:13.837:     decklink-output-ui.so
+15:31:13.837:     decklink-captions.so
+15:31:13.837: ---------------------------------
+15:31:13.837: ---------------------------------
+15:31:13.837: Available Encoders:
+15:31:13.837:   Video Encoders:
+15:31:13.837: 	- ffmpeg_svt_av1 (SVT-AV1)
+15:31:13.837: 	- ffmpeg_aom_av1 (AOM AV1)
+15:31:13.837: 	- ffmpeg_vaapi_tex (FFmpeg VAAPI H.264)
+15:31:13.837: 	- obs_x264 (x264)
+15:31:13.837:   Audio Encoders:
+15:31:13.837: 	- ffmpeg_aac (FFmpeg AAC)
+15:31:13.837: 	- ffmpeg_opus (FFmpeg Opus)
+15:31:13.837: 	- ffmpeg_pcm_s16le (FFmpeg PCM (16-bit))
+15:31:13.837: 	- ffmpeg_pcm_s24le (FFmpeg PCM (24-bit))
+15:31:13.837: 	- ffmpeg_pcm_f32le (FFmpeg PCM (32-bit flotante))
+15:31:13.837: 	- ffmpeg_alac (FFmpeg ALAC (24-bit))
+15:31:13.837: 	- ffmpeg_flac (FFmpeg FLAC (16-bit))
+15:31:13.837: 	- libfdk_aac (libfdk AAC)
+15:31:13.837: ==== Startup complete ===============================================
+15:31:13.889: All scene data cleared
+15:31:13.889: ------------------------------------------------
+15:31:13.894: pulse-input: Server name: 'PulseAudio (on PipeWire 1.4.2) 15.0.0'
+15:31:13.894: pulse-input: Audio format: s32le, 48000 Hz, 2 channels
+15:31:13.894: pulse-input: Started recording from 'alsa_output.pci-0000_00_1b.0.analog-stereo.monitor' (default)
+15:31:13.894: [Loaded global audio device]: 'Audio del escritorio'
+15:31:13.895: pulse-input: Server name: 'PulseAudio (on PipeWire 1.4.2) 15.0.0'
+15:31:13.895: pulse-input: Audio format: s32le, 48000 Hz, 2 channels
+15:31:13.895: pulse-input: Started recording from 'alsa_input.pci-0000_00_1b.0.analog-stereo' (default)
+15:31:13.895: [Loaded global audio device]: 'Mic/Aux'
+15:31:13.898: Switched to scene 'Escena'
+15:31:13.898: ------------------------------------------------
+15:31:13.898: Loaded scenes:
+15:31:13.898: - scene 'Escena':
+15:31:13.898:     - source: 'Teleport' (teleport-source)
+15:31:13.898: ------------------------------------------------
+15:31:14.462: adding 21 milliseconds of audio buffering, total audio buffering is now 21 milliseconds (source: Audio del escritorio)
+15:31:14.462: 
+15:31:14.599: [obs-teleport] connected to: 192.168.1.102:41855
+15:31:47.222: ---------------------------------
+15:31:47.222: [FFmpeg VAAPI encoder: 'advanced_video_recording'] settings:
+15:31:47.222: 	device:       /dev/dri/by-path/pci-0000:00:02.0-render
+15:31:47.222: 	rate_control: CQP
+15:31:47.222: 	profile:      100
+15:31:47.222: 	level:        52
+15:31:47.222: 	qp:           16
+15:31:47.222: 	bitrate:      0
+15:31:47.222: 	maxrate:      0
+15:31:47.222: 	keyint:       120
+15:31:47.222: 	width:        1920
+15:31:47.222: 	height:       1080
+15:31:47.222: 	b-frames:     0
+15:31:47.222: 	ffmpeg opts:  
+15:31:47.222: 
+15:31:47.225: libfdk_aac encoder created
+15:31:47.225: libfdk_aac bitrate: 160, channels: 2
+15:31:47.225: libfdk_aac encoder created
+15:31:47.225: libfdk_aac bitrate: 160, channels: 2
+15:31:47.226: libfdk_aac encoder created
+15:31:47.226: libfdk_aac bitrate: 160, channels: 2
+15:31:47.620: ==== Recording Start ===============================================
+15:31:47.620: [ffmpeg muxer: 'adv_file_output'] Writing file '/home/german/2025-05-23 15-31-47.mkv'...
+15:37:36.594: [ffmpeg muxer: 'adv_file_output'] Output of file '/home/german/2025-05-23 15-31-47.mkv' stopped
+15:37:36.594: Output 'adv_file_output': stopping
+15:37:36.594: Output 'adv_file_output': Total frames output: 20953
+15:37:36.594: Output 'adv_file_output': Total drawn frames: 20939
+15:37:36.594: ==== Recording Stop ================================================
+15:37:36.619: libfdk_aac encoder destroyed
+15:37:36.619: libfdk_aac encoder destroyed
+15:37:36.619: libfdk_aac encoder destroyed
+15:41:20.841: adding 64 milliseconds of audio buffering, total audio buffering is now 85 milliseconds (source: Audio del escritorio)
+15:41:20.841: 
+15:43:50.692: [obs-teleport] disconnected from: 192.168.1.102:41855
+15:43:50.794: [obs-teleport] connected to: 192.168.1.102:34057
+15:43:51.250: [obs-teleport] disconnected from: 192.168.1.102:34057
+15:45:11.117: Source 'Escena' renamed to 'Grabacion'

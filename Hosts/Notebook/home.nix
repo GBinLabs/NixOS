@@ -14,6 +14,11 @@
   Monitor-Notebook.enable = true;
   Monitor-PC.enable = false;
   # Final Monitor.
+  
+  # OBS.
+  OBS-PC.enable = false;
+  OBS-Notebook.enable = true;
+  # Final OBS.
 
   home = {
     username = "german";
