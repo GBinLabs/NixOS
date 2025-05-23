@@ -21,7 +21,7 @@
         modesetting.enable = true;
         offload.enable = true;
         prime = {
-          intelBusId = "PCI:0:2:0"
+          intelBusId = "PCI:0:2:0";
           nvidiaBusId = "PCI:4:0:0";
         };
       };
