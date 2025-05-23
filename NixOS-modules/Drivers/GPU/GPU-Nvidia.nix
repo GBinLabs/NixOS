@@ -20,6 +20,7 @@
         package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
         nvidiaSettings = true;
         modesetting.enable = true;
+        nvidia.videoAcceleration = true;
         prime = {
           intelBusId = "PCI:0:2:0";
           nvidiaBusId = "PCI:4:0:0";

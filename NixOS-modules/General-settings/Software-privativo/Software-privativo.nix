@@ -10,4 +10,5 @@
       "discord"
       "nvidia-x11"
     ];
+  nixpkgs.config.nvidia.acceptLicense = true;
 }
