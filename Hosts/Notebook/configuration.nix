@@ -31,7 +31,6 @@
   # GPU.
   GPU-AMD = {
     enable = false;
-    gaming.enable = false;
   };
   GPU-Intel.enable = false;
   GPU-Nvidia.enable = true;
