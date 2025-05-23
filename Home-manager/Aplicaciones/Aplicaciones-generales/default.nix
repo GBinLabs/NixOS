@@ -8,7 +8,7 @@
     ./Languages/Python/Python.nix
     ./MangoHud/MangoHud.nix
     ./Navegadores/default.nix
-    ./OBS/OBS.nix
+    ./OBS/default.nix
     ./Terminales/default.nix
   ];
 }
