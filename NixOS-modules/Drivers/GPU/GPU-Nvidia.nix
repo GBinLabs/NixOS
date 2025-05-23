@@ -13,7 +13,8 @@
       graphics = {
         enable = true;
         enable32Bit = true;
-        extraPackages = with pkgs; [intel-media-driver intel-ocl intel-vaapi-driver];
+        extraPackages = with pkgs; [intel-media-driver intel-ocl intel-vaapi-driver vaapiVdpau];
+        extraPackages32 = with pkgs.pkgsi686Linux; [ intel-media-driver intel-vaapi-driver libva libvdpau]
       };
       nvidia = {
         package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
@@ -26,6 +27,7 @@
         };
       };
     };
+    services.xserver.videoDrivers = [ "nvidia" ];
   };
 
   #programs.atop.atopgpu.enable = true;
