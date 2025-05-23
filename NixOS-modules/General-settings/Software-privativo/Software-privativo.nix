@@ -8,6 +8,6 @@
       "intel-ocl"
       "broadcom-sta"
       "discord"
-      "obsidian"
+      "nvidia-x11"
     ];
 }
