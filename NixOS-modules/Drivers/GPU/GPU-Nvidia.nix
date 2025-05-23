@@ -17,7 +17,7 @@
         extraPackages32 = with pkgs.pkgsi686Linux; [ intel-media-driver intel-vaapi-driver libva libvdpau];
       };
       nvidia = {
-        package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+        package = config.boot.kernelPackages.nvidiaPackages.legacy_390;
         nvidiaSettings = true;
         modesetting.enable = true;
         videoAcceleration = true;
