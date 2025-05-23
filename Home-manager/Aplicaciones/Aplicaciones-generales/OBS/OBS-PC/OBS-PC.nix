@@ -6,7 +6,7 @@
   };
   config = lib.mkIf config.OBS-PC.enable {
   	xdg.configFile."obs-studio" = {
-  		source = ./config/obs-studio;
+  		source = ./.config/obs-studio;
   		recursive = true;
   	};
   };
