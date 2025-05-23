@@ -81,43 +81,6 @@
 	extraGroups = [ "networkmanager" "wheel" ];
 	hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
-  
-  environment.systemPackages = with pkgs; [
-	gitFull
-  ];
-
-  
-  ##################################### MINECRAFT ###############################################
-  # Asumiendo que ya tienes nix-minecraft disponible como módulo/import
-  services.minecraft-servers = {
-    enable = true;
-    eula = true; # Aceptamos EULA
-
-    servers = {
-      UnaAventura = {
-        enable = true;
-
-        # Seleccionamos el paquete PaperMC
-        package = pkgs.paperServers.paper-1_21_4; # (ver nota abajo)
-
-        serverProperties = {
-          gamemode = 0; # 0 = Survival, 1 = Creative, 2 = Adventure, 3 = Spectator
-          difficulty = "hard";
-          simulation-distance = 10;
-          level-seed = "4";
-          hardcore = true; # Modo hardcore se activa aparte
-          enable-rcon = false;
-          motd = "¡Bienvenido a UnaAventura!";
-        };
-
-        #jvmOpts = "-Xms4000M -Xmx7000M -XX:UseG1GC";
-        
-
-        # Whitelist debe ser una lista o un objeto definido, o se puede omitir si no quieres whitelist
-        #whitelist = {}; # Si no tienes jugadores todavía
-      };
-    };
-  };
 
   # ¡DEJAR ASI!#
   system.stateVersion = "24.11";
