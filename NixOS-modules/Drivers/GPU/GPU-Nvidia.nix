@@ -16,7 +16,7 @@
         extraPackages = with pkgs; [intel-media-driver intel-ocl intel-vaapi-driver];
       };
       nvidia = {
-        package = "config.boot.kernelPackages.nvidiaPackages.legacy_470";
+        package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
         nvidiaSettings = true;
         modesetting.enable = true;
         prime = {
