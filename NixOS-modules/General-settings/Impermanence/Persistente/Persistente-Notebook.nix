@@ -20,15 +20,17 @@
 
       users.german = {
         directories = [
-          "Downloads"
-          "Music"
-          "Pictures"
-          "Documents"
+          "Descargas"
+          "Documentos"
+          "Música"
+          "Imágenes"
           "Videos"
           ".GitHub"
           ".ssh"
           ".config/sops"
           ".config/git"
+          ".local/share/applications"
+          ".local/share/icons"
         ];
       };
     };

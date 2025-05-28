@@ -9,11 +9,6 @@
   Git-Notebook.enable = true;
   Git-PC.enable = false;
   # Final Git.
-
-  # Monitor.
-  Monitor-Notebook.enable = true;
-  Monitor-PC.enable = false;
-  # Final Monitor.
   
   # OBS.
   OBS-PC.enable = false;

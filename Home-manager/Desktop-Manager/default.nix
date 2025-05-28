@@ -3,7 +3,7 @@
 {
 
   imports = [
-	./Nautilus/Nautilus.nix
+	./Gnome/Gnome.nix
   ];
 
 }
