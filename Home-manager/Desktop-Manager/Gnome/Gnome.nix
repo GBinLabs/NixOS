@@ -79,49 +79,52 @@
 	
 	
 	# Configuración de carpetas de aplicaciones
-"org/gnome/desktop/app-folders" = {
-    folder-children = [ "Office" "Utilities" ];  # Eliminado Steam no definido
-};
-
-"org/gnome/desktop/app-folders/folders/Utilities" = {
+  "org/gnome/desktop/app-folders" = {
+    folder-children = [ "Office" "Utilities" ];
+  };
+  
+  "org/gnome/desktop/app-folders/folders/Utilities" = {
     apps = [ 
-        "org.gnome.baobab.desktop"  # Nombre corregido
-        "org.gnome.DiskUtility.desktop"
-        "org.gnome.ControlCenter.desktop"
-        "org.gnome.Evince.desktop"
-        "org.gnome.eog.desktop"
-        "org.gnome.Extensions.desktop"
-        "org.gnome.FileRoller.desktop"
-        "org.gnome.Piper.desktop"
-        "org.gnome.SystemMonitor.desktop"
-        "org.gnome.TextEditor.desktop"
+      "org.gnome.baobab.desktop"
+      "org.gnome.DiskUtility.desktop"
+      "gnome-control-center.desktop"  # Nombre corregido
+      "org.gnome.Evince.desktop"
+      "org.gnome.eog.desktop"
+      "org.gnome.Extensions.desktop"
+      "org.gnome.FileRoller.desktop"
+      "org.gnome.Piper.desktop"
+      "org.gnome.SystemMonitor.desktop"
+      "org.gnome.TextEditor.desktop"
     ];
     name = "Utilidades";
     translate = false;
-};
-
-"org/gnome/desktop/app-folders/folders/Office" = {
+  };
+  
+  "org/gnome/desktop/app-folders/folders/Office" = {
     apps = [
-        "libreoffice-base.desktop"
-        "libreoffice-calc.desktop"
-        "libreoffice-draw.desktop"
-        "libreoffice-impress.desktop"
-        "libreoffice-math.desktop"
-        "libreoffice-writer.desktop"
+      "base.desktop"      # Nombres corregidos para NixOS
+      "calc.desktop"
+      "draw.desktop"
+      "impress.desktop"
+      "math.desktop"
+      "writer.desktop"
     ];
     name = "Oficina";
     translate = false;
-};
-
-# Aplicaciones favoritas del dock
-"org/gnome/shell" = {
+  };
+  
+  # Aplicaciones favoritas del dock
+  "org/gnome/shell" = {
     favorite-apps = [
-        "firefox.desktop"
-        "org.gnome.Terminal.desktop"
-        "nixos-manual.desktop"  # Nombre más probable para la ayuda
-        "org.gnome.Nautilus.desktop"  # Movido antes de nixos-help
+      "firefox.desktop"
+      "org.gnome.Terminal.desktop"
+      "nixos-manual.desktop"
+      "org.gnome.Nautilus.desktop"
     ];
-};
+    
+    # Resetear layout para ordenación alfabética automática
+    app-picker-layout = [];
+  };
   };
 
 }
