@@ -10,9 +10,6 @@
 
   config = lib.mkIf config.Aplicaciones-juegos.enable {
     home.packages = with pkgs; [
-      # Estadisticas.
-      mangohud # MIT
-      goverlay # GNU GPL v3.0 or Later
       # Minecraft.
       prismlauncher
     ];

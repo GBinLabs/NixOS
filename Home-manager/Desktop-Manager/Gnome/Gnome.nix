@@ -1,4 +1,4 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 
 {
 
@@ -87,12 +87,12 @@
     apps = [ 
       "org.gnome.baobab.desktop"
       "org.gnome.DiskUtility.desktop"
-      "gnome-control-center.desktop"  # Nombre corregido
+      "org.gnome.Settings.desktop"
       "org.gnome.Evince.desktop"
       "org.gnome.eog.desktop"
       "org.gnome.Extensions.desktop"
       "org.gnome.FileRoller.desktop"
-      "org.gnome.Piper.desktop"
+      "org.freedesktop.Piper.desktop"
       "org.gnome.SystemMonitor.desktop"
       "org.gnome.TextEditor.desktop"
     ];
@@ -122,9 +122,20 @@
       "org.gnome.Nautilus.desktop"
     ];
     
-    # Resetear layout para ordenación alfabética automática
-    app-picker-layout = [];
+    # Configuración de múltiples páginas para organizador de aplicaciones
+      app-picker-layout = [];
   };
+  };
+  
+  # Extensiones de GNOME Shell para ordenación alfabética
+  programs.gnome-shell = {
+    enable = true;
+    extensions = [
+      {
+        package = pkgs.gnomeExtensions.alphabetical-app-grid;
+        id = "alphabetical-app-grid@stuarthayhurst";
+      }
+    ];
   };
 
 }

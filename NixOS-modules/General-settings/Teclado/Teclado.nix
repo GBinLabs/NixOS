@@ -1,4 +1,19 @@
 _: {
+
+  # Configuración de teclado español latinoamericano
+  services.xserver = {
+    xkb = {
+      layout = "latam";
+      variant = "";
+      options = "grp:alt_shift_toggle"; # Opcional: para alternar layouts si usa múltiples
+    };
+  };
+
+  # Configuración de consola para mantener consistencia
+  console = {
+    useXkbConfig = true; # Usa la misma configuración de teclado para la consola
+  };
+
   i18n = {
     defaultLocale = "es_AR.UTF-8";
     extraLocaleSettings = {
@@ -14,5 +29,5 @@ _: {
     };
   };
 
-  console.keyMap = "la-latin1";
+  #console.keyMap = "la-latin1";
 }
