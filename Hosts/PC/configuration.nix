@@ -2,7 +2,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -59,7 +60,7 @@
   # Configuración para copiar skel a /home durante el arranque
   systemd.services.setup-home = {
     description = "Configurar el directorio /home después del arranque";
-    wantedBy = ["multi-user.target"];
+    wantedBy = [ "multi-user.target" ];
     serviceConfig = {
       Type = "oneshot";
       RemainAfterExit = true;
@@ -79,8 +80,8 @@
         done
       '';
     };
-    after = ["local-fs.target"];
-    before = ["display-manager.service"];
+    after = [ "local-fs.target" ];
+    before = [ "display-manager.service" ];
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -89,14 +90,21 @@
     isNormalUser = true;
     home = "/home/german";
     description = "Germán N. González";
-    extraGroups = ["networkmanager" "wheel" "audio" "gamemode"];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "audio"
+      "gamemode"
+      "libvirtd"
+      "kvm"
+    ];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
 
   users.users.tecnico = {
     isNormalUser = true;
     description = "Técnico";
-    extraGroups = [];
+    extraGroups = [ ];
     initialPassword = "1234";
   };
 

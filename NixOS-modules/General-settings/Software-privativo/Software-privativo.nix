@@ -7,7 +7,6 @@
       "steam-run"
       "intel-ocl"
       "broadcom-sta"
-      "discord"
       "nvidia-x11"
       "nvidia-settings"
     ];

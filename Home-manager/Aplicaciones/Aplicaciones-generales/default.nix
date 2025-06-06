@@ -1,7 +1,9 @@
 {...}: {
   imports = [
     ./Aplicaciones-generales.nix
-    #./Editores/default.nix
+    ./Discord/Discord.nix
+    ./Editores/default.nix
+    ./Fastfetch/Fastfetch.nix
     ./Gestor-archivos/default.nix
     ./Git/default.nix
     ./Joplin/Joplin.nix

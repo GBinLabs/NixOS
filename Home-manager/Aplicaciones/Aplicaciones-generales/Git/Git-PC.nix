@@ -1,8 +1,7 @@
+{ config, lib, ... }:
+
 {
-  config,
-  lib,
-  ...
-}: {
+
   options = {
     Git-PC.enable = lib.mkEnableOption "Habilitar Git-PC";
   };
@@ -36,4 +35,5 @@
 
     services.ssh-agent.enable = true;
   };
+
 }

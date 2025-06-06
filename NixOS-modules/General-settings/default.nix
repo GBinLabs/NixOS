@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   imports = [
     ./Autoupgrade/default.nix
     ./Bluetooth/Bluetooth.nix
@@ -16,8 +17,7 @@
     ./Software-privativo/Software-privativo.nix
     ./Sonido/Sonido.nix
     ./Teclado/Teclado.nix
-    ./USB/USB.nix
-    #./Virtual-Machine/Virtual-Machine.nix
+    ./Virtual-Machine/Virtual-Machine.nix
     ./Zona-horaria/Zona-horaria.nix
   ];
 }

@@ -3,13 +3,13 @@
 {
 
   services = {
-  	xserver = {
-		enable = true;
-		desktopManager = {
+  	desktopManager = {
 			gnome = {
 				enable = true;
 			};
 		};
+  	xserver = {
+		enable = true;
 		excludePackages = with pkgs; [
 			xterm
 		];

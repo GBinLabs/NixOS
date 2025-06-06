@@ -1,15 +1,16 @@
-{...}: {
+{ ... }:
+{
   imports = [
     ../../Home-manager/default.nix
   ];
 
   Aplicaciones-juegos.enable = true;
-  
+
   # Git.
   Git-Notebook.enable = false;
   Git-PC.enable = true;
   # Final Git.
-  
+
   # OBS.
   OBS-PC.enable = true;
   OBS-Notebook.enable = false;
@@ -18,6 +19,7 @@
   home = {
     username = "german";
     homeDirectory = "/home/german";
+    file.".face".source = ../Wallpapers/Smiley.png;
     # ¡DEJAR ASI!
     stateVersion = "24.11";
   };

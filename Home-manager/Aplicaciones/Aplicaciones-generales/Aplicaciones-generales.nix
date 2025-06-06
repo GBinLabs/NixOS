@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
     # Estadisticas de almacenamiento.
     baobab
@@ -18,7 +19,5 @@
     pciutils
     # Mouse.
     piper
-    # Discord.
-    discord
   ];
 }
