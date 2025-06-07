@@ -129,6 +129,19 @@
       # Configuración de múltiples páginas para organizador de aplicaciones
       app-picker-layout = [ ];
     };
+
+    "org/gnome/desktop/privacy" = {
+      # Deshabilitar archivos recientes
+      remember-recent-files = false;
+      recent-files-max-age = 0;
+
+      # Auto-vaciado de papelera y archivos temporales
+      remove-old-trash-files = true;
+      remove-old-temp-files = true;
+      # IMPORTANTE: Ambos (papelera y temp files) usan la misma configuración de edad
+      old-files-age = 1; # 1 día para ambos
+    };
+
   };
 
   # Extensiones de GNOME Shell para ordenación alfabética
@@ -139,6 +152,7 @@
         package = pkgs.gnomeExtensions.alphabetical-app-grid;
         id = "alphabetical-app-grid@stuarthayhurst";
       }
+      { package = pkgs.gnomeExtensions.appindicator; }
     ];
   };
 
