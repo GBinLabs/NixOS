@@ -3,7 +3,8 @@
 {
 
   imports = [
-  	./GDM/GDM.nix
+  	#./GDM/GDM.nix
+  	./SDDM/SDDM.nix
   ];
 
 }
