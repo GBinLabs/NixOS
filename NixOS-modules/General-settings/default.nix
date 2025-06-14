@@ -1,6 +1,5 @@
 {...}: {
   imports = [
-    ./Autoupgrade/default.nix
     ./Bluetooth/Bluetooth.nix
     ./Bootloader/Bootloader.nix
     ./DNS/DNS.nix
@@ -17,7 +16,6 @@
     ./Sonido/Sonido.nix
     ./Teclado/Teclado.nix
     ./USB/USB.nix
-    #./Virtual-Machine/Virtual-Machine.nix
     ./Zona-horaria/Zona-horaria.nix
   ];
 }

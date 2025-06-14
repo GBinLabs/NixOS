@@ -10,12 +10,6 @@
     ./disko.nix
   ];
 
-  # Autoupgrade
-  Autoupgrade-Notebook.enable = false;
-  Autoupgrade-PC.enable = true;
-  Autoupgrade-Servidor.enable = false;
-  # Final Autoupgrade.
-
   # Bluetooth.
   Bluetooth.enable = false;
   # Final Bluetooth.

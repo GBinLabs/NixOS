@@ -7,56 +7,57 @@
     XDG_SESSION_DESKTOP = "Hyprland";
     WAYLAND_DISPLAY = "wayland-1";
     
-    # ===== DRIVER AMD RADV OPTIMIZADO =====
-    # Forzar uso de RADV en modo máximo rendimiento
+    # ===== DRIVER AMD RADV OPTIMIZADO PARA GAMESCOPE =====
+    # Configuración estable y compatible
     AMD_VULKAN_ICD = "RADV";
-    RADV_PERFTEST = "aco,llvm,nir_lower_gs,sam,rt,gpl,nggc";
-    RADV_DEBUG = "nohiz,novrsflatshading";
-    # Configuración agresiva de performance
-    MESA_VK_DEVICE_SELECT = "10de:*,1002:*"; # Priorizar GPUs discretas
+    RADV_PERFTEST = "aco,llvm,sam"; # Eliminadas opciones experimentales problemáticas
+    # RADV_DEBUG eliminado - causaba conflictos con Gamescope
+    
+    # Configuración optimizada para RX 5500 XT (4GB VRAM)
+    RADV_FORCE_FAMILY = "gfx1012"; # RX 5500 XT específico (Navi 14)
+    MESA_VK_DEVICE_SELECT = "1002:*"; # Priorizar AMD GPU
     VK_ICD_FILENAMES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
     
-    # ===== OPTIMIZACIONES VULKAN =====
-    WLR_RENDERER = "vulkan";
-    WLR_BACKEND = "vulkan";
+    # ===== CONFIGURACIÓN VULKAN COMPATIBLE CON GAMESCOPE =====
+    # WLR_RENDERER removido - Gamescope maneja su propio renderer
+    # WLR_BACKEND removido - Conflicto con Gamescope
     VK_LAYER_PATH = "/run/opengl-driver/share/vulkan/explicit_layer.d";
-    ENABLE_VKBASALT = 1;
+    ENABLE_VKBASALT = 0; # Deshabilitado para evitar conflictos
     
-    # ===== CONFIGURACIÓN GAMING ESPECÍFICA =====
-    # Desactivar compositing para mejor rendimiento
+    # ===== CONFIGURACIÓN GAMING ESTABLE =====
+    # Configuración conservadora para estabilidad
     __GL_SYNC_TO_VBLANK = 0;
-    __GL_GSYNC_ALLOWED = 0;
-    __GL_VRR_ALLOWED = 0;
     vblank_mode = 0;
     
-    # Prioridad de scheduling para gaming
+    # Prioridad de scheduling moderada
     WINE_RT_POLICY = "FIFO";
-    WINE_RT_PRIORITY = 15;
+    WINE_RT_PRIORITY = 10; # Reducido de 15 para mayor estabilidad
     
-    # ===== CONFIGURACIÓN ESPECÍFICA RX 5500 XT (4GB VRAM) =====
-    # Optimizaciones para GPU con memoria limitada
-    RADV_FORCE_FAMILY = "gfx1012"; # RX 5500 XT específico (Navi 14)
-    
-    # Gestión agresiva de memoria VRAM
+    # ===== GESTIÓN DE MEMORIA VRAM CONSERVADORA =====
+    # Configuración estable para 4GB VRAM
     MESA_VK_DEVICE_SELECT_FORCE_DEFAULT_DEVICE = "1";
-    RADV_TEX_ANISO = "-1"; # Desactivar anisotropía forzada para ahorrar VRAM
+    RADV_TEX_ANISO = "-1"; # Desactivar anisotropía forzada
     
-    # Configuración conservadora para 4GB VRAM
+    # Configuración de estabilidad
     VK_MEMORY_DECOMPRESSION_METHOD = "copy";
-    RADV_INVARIANT_GEOM = "1"; # Estabilidad en geometría compleja
+    RADV_INVARIANT_GEOM = "1";
     MESA_GLTHREAD = "true";
     mesa_glthread = "true";
     
+    # ===== CONFIGURACIÓN MEJORADA PARA RDNA1 =====
+    # Optimizaciones específicas para RX 5500 XT
+    RADV_DISABLE_HTILE = "0"; # Habilitado para mejor rendimiento
+    RADV_DISABLE_DCC = "0"; # Habilitado para rendimiento
+    
     # ===== JAVA OPTIMIZADO PARA MINECRAFT =====
-    # Configuración específica para Minecraft y aplicaciones Java
     _JAVA_AWT_WM_NONREPARENTING = 1;
-    _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.opengl=true -Dsun.java2d.d3d=false";
+    _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true -Dsun.java2d.opengl=true";
     JAVA_FONTS = "/run/current-system/sw/share/X11/fonts";
     
-    # Optimizaciones específicas para Minecraft
-    MINECRAFT_JAVA_ARGS = "-XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=32M -XX:+UseStringDeduplication -XX:+UseFastUnorderedTimeStamps -XX:+UseCriticalJavaThreadPriority";
+    # Optimizaciones conservadoras para Minecraft
+    MINECRAFT_JAVA_ARGS = "-XX:+UseG1GC -XX:G1NewSizePercent=20 -XX:G1ReservePercent=20 -XX:MaxGCPauseMillis=50 -XX:G1HeapRegionSize=16M";
     
-    # ===== SDL Y GAMING FRAMEWORKS =====
+    # ===== SDL COMPATIBLE CON GAMESCOPE =====
     SDL_VIDEODRIVER = "wayland,x11";
     SDL_DYNAMIC_API = "/run/current-system/sw/lib/libSDL2.so";
     
@@ -73,7 +74,6 @@
     QT_WAYLAND_DISABLE_WINDOWDECORATION = 1;
     QT_QPA_PLATFORMTHEME = "qt5ct";
     QT_STYLE_OVERRIDE = "kvantum";
-    DISABLE_QT5_COMPAT = 0;
     QT_WAYLAND_FORCE_DPI = "96";
     
     # ===== GTK OPTIMIZADO =====
@@ -90,37 +90,38 @@
     WINEPREFIX = "$HOME/.wine";
     WINE_LARGE_ADDRESS_AWARE = 1;
     
-    # ===== CONFIGURACIONES WLR ESPECÍFICAS =====
-    WLR_DRM_NO_ATOMIC = 1;
-    WLR_NO_HARDWARE_CURSORS = 1;
+    # ===== CONFIGURACIONES WLR BÁSICAS =====
+    # Configuración mínima para evitar conflictos con Gamescope
+    WLR_DRM_NO_ATOMIC = 0; # Cambiado a 0 para mejor compatibilidad
+    WLR_NO_HARDWARE_CURSORS = 0; # Cambiado a 0 para mejor rendimiento
     WLR_USE_LIBINPUT = 1;
     
     # ===== HERRAMIENTAS DEL SISTEMA =====
     GRIMBLAST_HIDE_CURSOR = 0;
     DIRENV_LOG_FORMAT = "";
     
-    # ===== OPTIMIZACIONES DE PERFORMANCE ADICIONALES =====
-    # Scheduler del kernel optimizado para gaming
-    SCHED_BATCH = 1;
-    
-    # Configuración de prioridades de proceso
-    GAMING_PRIORITY = "high";
-    
-    # Optimizaciones de I/O
-    IOSCHEDULER = "mq-deadline";
-    
     # ===== STEAM Y GAMING PLATFORMS =====
     STEAM_FORCE_DESKTOPUI_SCALING = 1;
     PRESSURE_VESSEL_FILESYSTEMS_RW = "$XDG_DATA_HOME/Steam";
     
-    # ===== CONFIGURACIÓN EXPERIMENTAL AJUSTADA PARA RX 5500 XT =====
-    # Variables conservadoras para GPU con 4GB VRAM
-    RADV_FORCE_VRS = "1x1"; # VRS conservador para preservar VRAM
-    ACO_DEBUG = "validateir"; # Validación mínima para mejor rendimiento
-    MESA_DISK_CACHE_SINGLE_FILE = "true";
+    # ===== GAMESCOPE ESPECÍFICAS =====
+    # Variables específicas para mejorar compatibilidad con Gamescope
+    GAMESCOPE_WAYLAND_DISPLAY = "gamescope-0";
     
-    # Configuración específica para RDNA1 (RX 5500 XT)
-    RADV_DISABLE_HTILE = "1"; # Desactivar HTILE en RDNA1 para estabilidad
-    RADV_DISABLE_DCC = "0"; # Mantener DCC habilitado para mejor rendimiento
+    # ===== CONFIGURACIÓN VULKAN ESPECÍFICA PARA GAMING =====
+    # Configuración balanceada para rendimiento y estabilidad
+    VK_DRIVER_FILES = "/run/opengl-driver/share/vulkan/icd.d/radeon_icd.x86_64.json";
+    
+    # ===== CONFIGURACIÓN DE CACHE Y RENDIMIENTO =====
+    MESA_DISK_CACHE_SINGLE_FILE = "true";
+    MESA_DISK_CACHE_SIZE = "1024M"; # Tamaño apropiado para 4GB VRAM
+    
+    # ===== CONFIGURACIÓN EXPERIMENTAL CONSERVADORA =====
+    # Solo opciones probadas y estables
+    ACO_DEBUG = "validateir";
+    
+    # ===== CONFIGURACIÓN DE COMPATIBILIDAD =====
+    # Mejoras para aplicaciones que no son nativas de Wayland
+    DISABLE_QT5_COMPAT = 0;
   };
 }
