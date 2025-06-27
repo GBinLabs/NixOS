@@ -2,8 +2,8 @@
 
 {
 
-  imports = {
-	KDE/KDE.nix
-  };
+  imports = [ 
+	./Gnome/Gnome.nix
+  ];
 
 }
