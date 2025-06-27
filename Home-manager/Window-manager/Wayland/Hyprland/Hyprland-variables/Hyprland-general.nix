@@ -28,6 +28,9 @@ _: {
           border_overlap = false;
         };
       };
+      debug = {
+      	full_cm_proto = true;
+      };
     };
   };
 }
