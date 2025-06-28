@@ -17,10 +17,11 @@
         };
         extraCompatPackages = [pkgs.proton-ge-bin];
       };
-      gamescope = {
-      	enable = true;
-      	capSysNice = true;
-      };
+    };
+    services.ananicy = {
+      enable = true;
+      package = pkgs.ananicy-cpp;
+      rulesProvider = pkgs.ananicy-rules-cachyos;
     };
   };
 }
