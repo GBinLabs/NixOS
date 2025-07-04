@@ -36,7 +36,7 @@
           disko.nixosModules.disko
           impermanence.nixosModules.impermanence
           sops-nix.nixosModules.sops
-          ./Hosts/Servidor/configuration.nix
+          ./Hosts/Netbook/configuration.nix
           {
             nixpkgs.overlays = [
             ];

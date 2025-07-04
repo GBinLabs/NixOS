@@ -73,6 +73,26 @@
     };
     
     
+    "org/gnome/settings-daemon/plugins/color" = {
+      night-light-enabled = true;
+      night-light-schedule-automatic = false;
+      night-light-schedule-from = 0.0;     # Desde la medianoche
+      night-light-schedule-to = 0.0;     # Hasta casi medianoche
+      night-light-temperature = 2700;      # Ajusta según tu gusto (1000–6500)
+    };
+    
+     "org/gnome/desktop/peripherals/mouse" = {
+      # ¡Clave corregida! (usar "accel-profile" en lugar de "acceleration-profile")
+      accel-profile = "flat";
+      speed = 0;  # Velocidad neutral (opcional)
+    };
+
+    "org/gnome/desktop/peripherals/touchpad" = {
+      natural-scroll = true;
+      tap-to-click = true;
+      click-method = "areas";  # o "fingers"
+    };
+    
   };
   
   # Si usas otros idiomas, configura la localización global

@@ -4,10 +4,10 @@
   ...
 }: {
   options = {
-    Persistente-Servidor.enable = lib.mkEnableOption "Habilitar Persistencia-Servidor";
+    Persistente-Netbook.enable = lib.mkEnableOption "Habilitar Persistencia-Netbook";
   };
 
-  config = lib.mkIf config.Persistente-Servidor.enable {
+  config = lib.mkIf config.Persistente-Netbook.enable {
     fileSystems."/persist".neededForBoot = true;
 
     environment.persistence."/persist" = {

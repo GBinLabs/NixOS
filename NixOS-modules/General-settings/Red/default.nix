@@ -1,7 +1,7 @@
 {...}: {
   imports = [
+    ./Red-Netbook.nix
     ./Red-Notebook.nix
     ./Red-PC.nix
-    ./Red-Servidor.nix
   ];
 }
