@@ -1,5 +1,5 @@
 {...}: {
   imports = [
-    ./Kitty/Kitty.nix
+	./Gnome/Gnome.nix
   ];
 }

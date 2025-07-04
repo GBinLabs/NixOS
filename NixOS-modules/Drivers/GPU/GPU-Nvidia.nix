@@ -24,7 +24,7 @@
         prime = {
           intelBusId = "PCI:0:2:0";
           nvidiaBusId = "PCI:4:0:0";
-          offload.enable = true;
+          offload.enable = false;
         };
       };
     };

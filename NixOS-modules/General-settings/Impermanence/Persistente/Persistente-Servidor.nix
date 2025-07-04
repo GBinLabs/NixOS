@@ -14,20 +14,20 @@
       enable = true;
       hideMounts = true;
       directories = [
-        "/var/lib/minecraft"
         "/var/lib/nixos"
         "/etc/NetworkManager/system-connections"
       ];
 
       users.german = {
         directories = [
-          "Downloads"
-          "Music"
-          "Pictures"
-          "Documents"
-          "Videos"
+          "Descargas"
+          "Documentos"
+          "Imágenes"
+          "Música"
+          "Vídeos"
           ".GitHub"
           ".config/sops"
+          ".config/git"
         ];
       };
     };

@@ -10,27 +10,21 @@
     ./disko.nix
   ];
 
-  # Bluetooth.
-  Bluetooth.enable = false;
-  # Final Bluetooth.
-
   # Drivers
   # CPU.
   CPU-AMD.enable = true;
   CPU-Intel.enable = false;
 
   # GPU.
-  GPU-AMD = {
-    enable = true;
-  };
+  GPU-AMD.enable = true;
   GPU-Intel.enable = false;
   GPU-Nvidia.enable = false;
   # Final Drivers.
 
   # Impermanence.
+  Persistente-Netbook.enable = false;
   Persistente-Notebook.enable = false;
   Persistente-PC.enable = true;
-  Persistente-Servidor.enable = false;
   # Final Impermanence.
 
   # Juegos.
@@ -77,7 +71,7 @@
     before = ["display-manager.service"];
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Usuarios
   users.mutableUsers = false;
   users.users.german = {
     isNormalUser = true;
@@ -93,6 +87,7 @@
     extraGroups = [];
     initialPassword = "1234";
   };
+  # Final Usuarios.
 
   # DEJAR ASI #
   system.stateVersion = "24.11";

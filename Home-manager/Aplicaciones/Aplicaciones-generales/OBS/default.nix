@@ -3,7 +3,7 @@
 {
 
   imports = [
-	./OBS.nix
+	./OBS/OBS.nix
 	./OBS-PC/OBS-PC.nix
 	./OBS-Notebook/OBS-Notebook.nix
   ];

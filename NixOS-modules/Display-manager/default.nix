@@ -1,5 +1,5 @@
 {...}: {
   imports = [
-    ./SDDM/SDDM.nix
+    ./GDM/GDM.nix
   ];
 }

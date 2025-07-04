@@ -1,22 +1,12 @@
-{ config, lib, pkgs, inputs,... }:
+{ config, pkgs, ... }:
 
 {
 
-  imports = [ # Include the results of the hardware scan.
+  imports = [
   	./hardware-configuration.nix
-  	../../NixOS-modules/default-server.nix
+  	../../NixOS-modules/default.nix
 	./disko.nix
   ];
-
-  # Autoupgrade
-  Autoupgrade-Notebook.enable = false;
-  Autoupgrade-PC.enable = false;
-  Autoupgrade-Servidor.enable = true;
-  # Final Autoupgrade.
-  
-  # Bluetooth.
-  Bluetooth.enable = true;
-  # Final Bluetooth.
   
   # Drivers
   # CPU.
@@ -24,24 +14,26 @@
   CPU-Intel.enable = true;
 
   # GPU.
-  GPU-AMD = {
-  	enable = false;
-  	gaming.enable = false;
-  };
+  GPU-AMD.enable = false;
   GPU-Intel.enable = true;
   GPU-Nvidia.enable = false;
   # Final Drivers.
   
   # Impermanence.
+  Persistente-Netbook.enable = true;
   Persistente-Notebook.enable = false;
   Persistente-PC.enable = false;
-  Persistente-Servidor.enable = true;
   # Final Impermanence.
   
+  # Juegos.
+  Steam.enable = false;
+  Gamemode.enable = false;
+  # Final Juegos.
+  
   # RED.
+  Red-Netbook.enable = true;
   Red-Notebook.enable = false;
   Red-PC.enable = false;
-  Red-Servidor.enable = true;
   # Final RED.
   
   # Asegurarse que systemd monte correctamente los sistemas de archivos
@@ -72,10 +64,11 @@
 '';
   
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.mutableUsers = false;
   users.users.german = {
 	isNormalUser = true;
 	description = "Germán N. González";
-	extraGroups = [ "networkmanager" "wheel" ];
+	extraGroups = [ "networkmanager" "wheel" "audio" ];
 	hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
 

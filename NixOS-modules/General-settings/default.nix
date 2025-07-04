@@ -1,6 +1,5 @@
 {...}: {
   imports = [
-    ./Bluetooth/Bluetooth.nix
     ./Bootloader/Bootloader.nix
     ./DNS/DNS.nix
     ./Flakes/Flakes.nix

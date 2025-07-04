@@ -1,6 +1,7 @@
 {...}: {
   imports = [
-    ./Git-Notebook.nix
-    ./Git-PC.nix
+    ./Git-Netbook/Git-Netbook.nix
+    ./Git-Notebook/Git-Notebook.nix
+    ./Git-PC/Git-PC.nix
   ];
 }

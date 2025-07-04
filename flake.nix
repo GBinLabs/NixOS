@@ -29,7 +29,7 @@
     ...
   } @ inputs: {
     nixosConfigurations = {
-      Servidor = nixpkgs.lib.nixosSystem {
+      Netbook = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};
         modules = [
@@ -46,7 +46,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.german = import ./Hosts/Servidor/home.nix;
+              users.german = import ./Hosts/Netbook/home.nix;
               sharedModules = [
               ];
             };

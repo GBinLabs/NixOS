@@ -9,14 +9,10 @@
   Aplicaciones-juegos.enable = false;
    
   # Git.
-  Git-Notebook.enable = true;
+  Git-Netbook.enable = true;
+  Git-Notebook.enable = false;
   Git-PC.enable = false;
   # Final Git.
-
-  # Monitor.
-  Monitor-Notebook.enable = true;
-  Monitor-PC.enable = false;
-  # Final Monitor.
   
   # OBS.
   OBS-PC.enable = false;
