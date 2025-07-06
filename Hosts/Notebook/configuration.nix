@@ -1,11 +1,4 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: 
-
-{
+{config, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../NixOS-modules/default.nix
@@ -39,7 +32,7 @@
   Red-Notebook.enable = true;
   Red-PC.enable = false;
   # Final RED.
-  
+
   # Usuarios.
   users.mutableUsers = false;
   users.users.german = {
@@ -52,5 +45,4 @@
 
   # ¡DEJAR ASI!
   system.stateVersion = "24.11";
-
 }

@@ -1,4 +1,8 @@
-{lib, pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   # Asegurarse que systemd monte correctamente los sistemas de archivos
   fileSystems = {
     "/home".neededForBoot = true;
@@ -100,7 +104,7 @@
 
     echo "=== Proceso de regeneración de subvolúmenes completado ==="
   '';
-  
+
   # Configuración para copiar skel a /home durante el arranque
   systemd.services.setup-home = {
     description = "Configurar el directorio /home después del arranque";

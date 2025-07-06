@@ -26,6 +26,7 @@
           "Música"
           "Vídeos"
           ".GitHub"
+          ".ssh"
           ".config/sops"
           ".config/git"
         ];

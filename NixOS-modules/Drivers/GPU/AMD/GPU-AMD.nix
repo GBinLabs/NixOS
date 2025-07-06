@@ -9,22 +9,22 @@
   };
 
   config = lib.mkIf config.GPU-AMD.enable {
-  	hardware = {
-      		amdgpu = {
-        		opencl.enable = true;
-        		initrd.enable = true;
-        		amdvlk.enable = false;
-      		};
-      
-      		graphics = {
-        		enable = true;
-        		enable32Bit = true;
-        		package = pkgs.mesa;
-        		package32 = pkgs.pkgsi686Linux.mesa;
-        		extraPackages = with pkgs; [
-          			rocmPackages.clr.icd
-        		];
-      		};
-    	};
+    hardware = {
+      amdgpu = {
+        opencl.enable = true;
+        initrd.enable = true;
+        amdvlk.enable = false;
+      };
+
+      graphics = {
+        enable = true;
+        enable32Bit = true;
+        package = pkgs.mesa;
+        package32 = pkgs.pkgsi686Linux.mesa;
+        extraPackages = with pkgs; [
+          rocmPackages.clr.icd
+        ];
+      };
+    };
   };
 }

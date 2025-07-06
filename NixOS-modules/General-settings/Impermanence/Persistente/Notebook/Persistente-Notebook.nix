@@ -20,11 +20,11 @@
 
       users.german = {
         directories = [
-          "Downloads"
-          "Music"
-          "Pictures"
-          "Documents"
-          "Videos"
+          "Descargas"
+          "Documentos"
+          "Imágenes"
+          "Música"
+          "Vídeos"
           ".GitHub"
           ".ssh"
           ".config/sops"

@@ -9,12 +9,12 @@
           partitions = {
             ESP = {
               size = "2048M";
-              type = "EF00";   # EFI
+              type = "EF00"; # EFI
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
-                mountOptions = [ "umask=0077" ];
+                mountOptions = ["umask=0077"];
               };
             };
 
@@ -99,5 +99,4 @@
       };
     };
   };
-
 }

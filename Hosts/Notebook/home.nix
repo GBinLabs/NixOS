@@ -6,13 +6,13 @@
   # Aplicaciones juegos.
   Aplicaciones-juegos.enable = false;
   # Final Aplicaciones juegos.
-   
+
   # Git.
   Git-Netbook.enable = false;
   Git-Notebook.enable = true;
   Git-PC.enable = false;
   # Final Git.
-  
+
   # OBS.
   OBS-PC.enable = false;
   OBS-Notebook.enable = true;
@@ -26,8 +26,7 @@
     stateVersion = "24.11";
   };
   # Final Usuario.
-  
+
   # ¡DEJAR ASI!
   programs.home-manager.enable = true;
-
 }

@@ -1,7 +1,3 @@
-{ ... }:
-
-{
-
+{...}: {
   networking.firewall.enable = false;
-
 }

@@ -1,10 +1,6 @@
-{ ... }:
-
-{
-
+{...}: {
   imports = [
-  	./Firewall/Firewall.nix
-  	./Sops-Nix/Sops-Nix.nix
+    ./Firewall/Firewall.nix
+    ./Sops-Nix/Sops-Nix.nix
   ];
-  
 }

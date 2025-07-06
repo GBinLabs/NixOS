@@ -1,9 +1,5 @@
-{ ... }:
-
-{
-
-  imports = [ 
-	./Gnome/Gnome.nix
+{...}: {
+  imports = [
+    ./Gnome/Gnome.nix
   ];
-
 }

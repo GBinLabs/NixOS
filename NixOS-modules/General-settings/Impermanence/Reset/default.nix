@@ -1,10 +1,6 @@
-{...}:
-
-{
-
+{...}: {
   imports = [
-	./Reset/Reset.nix
-	./Reset-Netbook/Reset-Netbook.nix
+    ./Reset/Reset.nix
+    ./Reset-Netbook/Reset-Netbook.nix
   ];
-
 }

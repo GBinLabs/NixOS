@@ -1,31 +1,82 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   programs.helix = {
-    enable = true;                   # Activa Helix:contentReference[oaicite:4]{index=4}
-    package = pkgs.helix;            # (por defecto usa pkgs.helix):contentReference[oaicite:5]{index=5}
-    languages = {
-      language-server.nixd = {
-        command = "${pkgs.nixd}/bin/nixd";    # Servidor LSP para Nix
-        formatting = {
-          command = ["${pkgs.alejandra}/bin/alejandra"]; # Formateador
+    enable = true;
+    defaultEditor = true;
+
+    extraPackages = with pkgs; [
+      nixd
+      nixfmt-rfc-style
+      alejandra
+      statix
+      deadnix
+    ];
+
+    settings = {
+      theme = "catppuccin_mocha";
+
+      editor = {
+        line-number = "relative";
+        mouse = false;
+        cursor-shape = {
+          insert = "bar";
+          normal = "block";
+          select = "underline";
         };
-        nixpkgs = {
-          expr = "import (builtins.getFlake \"/etc/nixos\").inputs.nixpkgs { }";
+
+        lsp = {
+          display-messages = true;
+          display-inlay-hints = true;
+          auto-signature-help = true;
+        };
+
+        auto-format = true;
+        auto-save = true;
+      };
+    };
+
+    languages = {
+      language-server = {
+        nixd = {
+          command = "${pkgs.nixd}/bin/nixd";
+          config = {
+            nixd = {
+              options = {
+                enable = true;
+                target = {
+                  installable = "nixpkgs#nixosConfigurations.$(hostname).options";
+                };
+              };
+              eval = {
+                enable = true;
+                target = {
+                  installable = ".";
+                };
+              };
+            };
+          };
         };
       };
-      language = [{
-        name = "nix";
-        file-types = [ "nix" ];
-        auto-format = true;                   # Formatea al guardar:contentReference[oaicite:6]{index=6}
-        formatter = {
-          command = ["${pkgs.alejandra}/bin/alejandra"];
-        };
-      }];
+
+      language = [
+        {
+          name = "nix";
+          auto-format = true;
+          formatter = {
+            #command = "${pkgs.nixpkgs-fmt}/bin/nixpkgs-fmt";
+            command = "${pkgs.alejandra}/bin/alejandra";
+            args = [];
+          };
+          language-servers = ["nixd"];
+          indent = {
+            tab-width = 2;
+            unit = "  ";
+          };
+        }
+      ];
     };
-    settings = {
-      theme = "base16";         # Ejemplo de tema; opcional
-      # Otras opciones de editor (cursor, line-numbers, etc.)
-    };
+  };
+
+  home.sessionVariables = {
+    EDITOR = "hx";
   };
 }
