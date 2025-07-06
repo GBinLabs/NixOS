@@ -1,4 +1,4 @@
-{lib, ...}: {
+{lib, pkgs, ...}: {
   # Asegurarse que systemd monte correctamente los sistemas de archivos
   fileSystems = {
     "/home".neededForBoot = true;

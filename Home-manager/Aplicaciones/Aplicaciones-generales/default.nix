@@ -1,7 +1,7 @@
 {...}: {
   imports = [
     ./Aplicaciones-generales/Aplicaciones-generales.nix
-    #./Editores/default.nix
+    ./Editores/default.nix
     ./Gestor-archivos/default.nix
     ./Git/default.nix
     ./Joplin/Joplin.nix
