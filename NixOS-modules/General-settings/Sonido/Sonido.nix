@@ -20,7 +20,6 @@
     serviceConfig = {
       Type = "oneshot";
       ExecStart = "${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_SOURCE@ 0.3";
-      # Agregamos un pequeño retraso para asegurar que Pipewire esté completamente inicializado
       ExecStartPre = "${pkgs.coreutils}/bin/sleep 2";
     };
   };

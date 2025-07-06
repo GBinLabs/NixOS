@@ -1,7 +1,6 @@
 {
   disko.devices = {
     disk = {
-      # Disco SSD - Contiene /boot y /root
       ssd = {
         device = "/dev/sda";
         type = "disk";
@@ -54,25 +53,21 @@
         };
       };
 
-      # Disco HDD - Contiene /home y /persist
       hdd = {
         device = "/dev/sdb";
         type = "disk";
         content = {
           type = "gpt";
           partitions = {
-            # Primera partición para Windows
             windows = {
               priority = 1;
               size = "200G";
-              type = "0700"; # Tipo para Microsoft básico de datos
-              # Omitimos cualquier content para evitar formato
+              type = "0700";
             };
 
-            # Segunda partición para Linux
             crypt_p2 = {
               priority = 2;
-              size = "0"; # Usa el espacio restante
+              size = "0";
               content = {
                 type = "luks";
                 name = "p2";

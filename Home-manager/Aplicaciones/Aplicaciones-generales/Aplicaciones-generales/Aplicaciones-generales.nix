@@ -18,5 +18,7 @@
     pciutils
     # Mouse.
     piper
+    #Discord.
+    discord
   ];
 }

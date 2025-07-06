@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./CPU-AMD.nix
-    ./CPU-Intel.nix
+    ./AMD/CPU-AMD.nix
+    ./Intel/CPU-Intel.nix
   ];
 }

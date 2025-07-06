@@ -1,9 +1,8 @@
 {
   disko.devices = {
     disk = {
-      # Disco SSD - Contiene /boot y /root
       ssd = {
-        device = "/dev/sda";  # Ajusta según tu sistema
+        device = "/dev/sda";
         type = "disk";
         content = {
           type = "gpt";
@@ -23,9 +22,9 @@
               size = "100%";
               content = {
                 type = "luks";
-                name = "p1";   # /dev/mapper/p1
+                name = "p1";
                 settings = {
-                  allowDiscards = true;  # Para SSD
+                  allowDiscards = true;
                 };
                 content = {
                   type = "btrfs";
@@ -56,9 +55,8 @@
         };
       };
 
-      # Disco HDD - Contiene /home y /persist
       hdd = {
-        device = "/dev/sdb";  # Ajusta según tu sistema
+        device = "/dev/sdb";
         type = "disk";
         content = {
           type = "gpt";
@@ -67,9 +65,9 @@
               size = "100%";
               content = {
                 type = "luks";
-                name = "p2";  # /dev/mapper/p2
+                name = "p2";
                 settings = {
-                  allowDiscards = false;  # HDD, no necesita discard
+                  allowDiscards = false;
                 };
                 content = {
                   type = "btrfs";

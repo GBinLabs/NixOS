@@ -1,6 +1,6 @@
 {...}: {
   imports = [
-    ./Steam/Steam.nix
     ./Gamemode/Gamemode.nix
+    ./Steam/Steam.nix
   ];
 }

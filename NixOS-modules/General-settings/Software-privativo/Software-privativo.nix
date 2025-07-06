@@ -6,7 +6,7 @@
       "steam-unwrapped"
       "steam-run"
       "intel-ocl"
-      "broadcom-sta"
+      #"broadcom-sta"
       "discord"
       "nvidia-x11"
       "nvidia-settings"

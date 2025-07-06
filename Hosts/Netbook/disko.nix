@@ -1,7 +1,6 @@
 {
   disko.devices = {
     disk = {
-      # Disco SSD - Contiene /boot y /root
       ssd = {
         device = "/dev/sda";
         type = "disk";

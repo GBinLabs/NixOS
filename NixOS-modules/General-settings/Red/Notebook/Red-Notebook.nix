@@ -12,9 +12,9 @@
       hostName = "Bin-Notebook";
       networkmanager.enable = true;
     };
-    boot = {
-      kernelModules = ["wl"];
-      extraModulePackages = with config.boot.kernelPackages; [broadcom_sta];
-    };
+    #boot = {
+    #  kernelModules = ["wl"];
+    #  extraModulePackages = with config.boot.kernelPackages; [broadcom_sta];
+    #};
   };
 }

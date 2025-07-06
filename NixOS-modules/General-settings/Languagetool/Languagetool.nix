@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   services.languagetool = {
     enable = true;
-    package = pkgs.languagetool; ## GNU LGPL v2.1 or Later
+    package = pkgs.languagetool;
     settings = {};
     port = 8081;
     jvmOptions = ["-Xmx512m"];

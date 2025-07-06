@@ -22,9 +22,9 @@
         directories = [
           "Descargas"
           "Documentos"
-          "Imagenes"
-          "Musica"
-          "Videos"
+          "Imágenes"
+          "Música"
+          "Vídeos"
           ".GitHub"
           ".ssh"
           ".config/sops"

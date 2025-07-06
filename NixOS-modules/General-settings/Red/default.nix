@@ -1,7 +1,7 @@
 {...}: {
   imports = [
-    ./Red-Netbook.nix
-    ./Red-Notebook.nix
-    ./Red-PC.nix
+    ./Netbook/Red-Netbook.nix
+    ./Notebook/Red-Notebook.nix
+    ./PC/Red-PC.nix
   ];
 }

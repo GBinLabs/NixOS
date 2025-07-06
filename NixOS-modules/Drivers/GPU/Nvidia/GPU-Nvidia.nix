@@ -30,5 +30,4 @@
     };
   };
 
-  #programs.atop.atopgpu.enable = true;
 }
