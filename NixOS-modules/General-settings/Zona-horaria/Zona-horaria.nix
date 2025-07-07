@@ -1,3 +1,5 @@
 _: {
-  time.timeZone = "America/Argentina/Tucuman";
+  time = {
+    timeZone = "America/Argentina/Tucuman";
+  };
 }

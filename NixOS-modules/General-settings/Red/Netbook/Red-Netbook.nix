@@ -10,7 +10,9 @@
   config = lib.mkIf config.Red-Netbook.enable {
     networking = {
       hostName = "Bin-Netbook";
-      networkmanager.enable = true;
+      networkmanager = {
+        enable = true;
+      };
     };
   };
 }

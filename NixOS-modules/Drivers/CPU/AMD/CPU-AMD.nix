@@ -8,6 +8,12 @@
   };
 
   config = lib.mkIf config.CPU-AMD.enable {
-    hardware.cpu.amd.updateMicrocode = true;
+    hardware = {
+      cpu = {
+        amd = {
+          updateMicrocode = true;
+        };
+      };
+    };
   };
 }

@@ -1,4 +1,4 @@
-{...}: {
+_: {
   imports = [
     ./Netbook/Persistente-Netbook.nix
     ./Notebook/Persistente-Notebook.nix

@@ -17,9 +17,18 @@
   # Final Drivers.
 
   # Impermanence.
+
+  # Persistencia.
   Persistente-Netbook.enable = true;
   Persistente-Notebook.enable = false;
   Persistente-PC.enable = false;
+  # Final Persistencia.
+
+  # Reseteo.
+  Reset.enable = false;
+  Reset-Netbook.enable = true;
+  # Final Reseteo.
+
   # Final Impermanence.
 
   # Juegos.

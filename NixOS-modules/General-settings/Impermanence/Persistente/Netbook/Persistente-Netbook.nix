@@ -8,28 +8,38 @@
   };
 
   config = lib.mkIf config.Persistente-Netbook.enable {
-    fileSystems."/persist".neededForBoot = true;
+    fileSystems = {
+      "/persist" = {
+        neededForBoot = true;
+      };
+    };
 
-    environment.persistence."/persist" = {
-      enable = true;
-      hideMounts = true;
-      directories = [
-        "/var/lib/nixos"
-        "/etc/NetworkManager/system-connections"
-      ];
+    environment = {
+      persistence = {
+        "/persist" = {
+          enable = true;
+          hideMounts = true;
+          directories = [
+            "/var/lib/nixos"
+            "/etc/NetworkManager/system-connections"
+          ];
 
-      users.german = {
-        directories = [
-          "Descargas"
-          "Documentos"
-          "Imágenes"
-          "Música"
-          "Vídeos"
-          ".GitHub"
-          ".ssh"
-          ".config/sops"
-          ".config/git"
-        ];
+          users = {
+            german = {
+              directories = [
+                "Descargas"
+                "Documentos"
+                "Imágenes"
+                "Música"
+                "Vídeos"
+                ".GitHub"
+                ".ssh"
+                ".config/sops"
+                ".config/git"
+              ];
+            };
+          };
+        };
       };
     };
   };

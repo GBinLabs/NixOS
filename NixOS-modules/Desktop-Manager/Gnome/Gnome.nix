@@ -18,7 +18,15 @@
     };
   };
 
-  hardware.bluetooth.powerOnBoot = false;
+  hardware = {
+    bluetooth = {
+      powerOnBoot = false;
+    };
+  };
 
-  environment.gnome.excludePackages = [pkgs.gnome-tour];
+  environment = {
+    gnome = {
+      excludePackages = [pkgs.gnome-tour];
+    };
+  };
 }

@@ -14,5 +14,7 @@ _: {
     };
   };
 
-  console.keyMap = "la-latin1";
+  console = {
+    keyMap = "la-latin1";
+  };
 }

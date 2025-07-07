@@ -1,6 +1,8 @@
 {pkgs, ...}: {
-  programs.java = {
-    enable = true;
-    package = pkgs.jdk;
+  programs = {
+    java = {
+      enable = true;
+      package = pkgs.jdk;
+    };
   };
 }

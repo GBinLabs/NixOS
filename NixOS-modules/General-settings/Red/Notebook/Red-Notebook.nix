@@ -10,7 +10,9 @@
   config = lib.mkIf config.Red-Notebook.enable {
     networking = {
       hostName = "Bin-Notebook";
-      networkmanager.enable = true;
+      networkmanager = {
+        enable = true;
+      };
     };
     #boot = {
     #  kernelModules = ["wl"];

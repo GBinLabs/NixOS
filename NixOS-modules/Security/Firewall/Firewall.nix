@@ -1,3 +1,7 @@
-{...}: {
-  networking.firewall.enable = false;
+_: {
+  networking = {
+    firewall = {
+      enable = false;
+    };
+  };
 }

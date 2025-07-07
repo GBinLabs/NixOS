@@ -15,7 +15,9 @@
         enable32Bit = true;
         extraPackages = with pkgs; [intel-media-driver intel-ocl intel-vaapi-driver];
       };
-      intel-gpu-tools.enable = true;
+      intel-gpu-tools = {
+        enable = true;
+      };
     };
   };
 }

@@ -1,4 +1,4 @@
-{...}: {
+_: {
   imports = [
     ./Bootloader/Bootloader.nix
     ./DNS/DNS.nix

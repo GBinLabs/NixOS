@@ -1,10 +1,10 @@
-{...}: {
+_: {
   services = {
     displayManager = {
       gdm = {
         enable = true;
         wayland = true;
-        banner = ''¡Hola! '';
+        banner = ''¡Hola!'';
         autoSuspend = true;
         debug = false;
       };

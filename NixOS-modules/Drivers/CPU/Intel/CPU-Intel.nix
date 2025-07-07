@@ -9,9 +9,17 @@
 
   config = lib.mkIf config.CPU-Intel.enable {
     hardware = {
-      cpu.intel.updateMicrocode = true;
+      cpu = {
+        intel = {
+          updateMicrocode = true;
+        };
+      };
     };
 
-    services.throttled.enable = true;
+    services = {
+      throttled = {
+        enable = true;
+      };
+    };
   };
 }

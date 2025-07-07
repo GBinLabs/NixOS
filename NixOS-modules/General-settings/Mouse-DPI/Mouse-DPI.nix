@@ -1,6 +1,8 @@
 {pkgs, ...}: {
-  services.ratbagd = {
-    enable = true;
-    package = pkgs.libratbag;
+  services = {
+    ratbagd = {
+      enable = true;
+      package = pkgs.libratbag;
+    };
   };
 }
