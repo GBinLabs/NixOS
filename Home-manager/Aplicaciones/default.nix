@@ -1,7 +1,7 @@
-{...}: {
+_: {
   imports = [
+    ./Aplicaciones/default.nix
     ./Aplicaciones-facultad/Aplicaciones-facultad.nix
-    ./Aplicaciones-generales/default.nix
     ./Aplicaciones-juegos/Aplicaciones-juegos.nix
   ];
 }

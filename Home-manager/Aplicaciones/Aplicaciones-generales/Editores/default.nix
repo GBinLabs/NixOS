@@ -1,9 +1,0 @@
-{ ... }:
-
-{
-
-  imports = [
-	./Helix/Helix.nix
-  ];
-
-}

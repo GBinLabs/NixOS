@@ -9,9 +9,11 @@
   };
 
   config = lib.mkIf config.Aplicaciones-juegos.enable {
-    home.packages = with pkgs; [
-      # Minecraft.
-      prismlauncher
-    ];
+    home = {
+      packages = with pkgs; [
+        # Minecraft.
+        prismlauncher
+      ];
+    };
   };
 }

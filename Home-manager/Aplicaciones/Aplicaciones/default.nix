@@ -1,6 +1,6 @@
-{...}: {
+_: {
   imports = [
-    ./Aplicaciones-generales/Aplicaciones-generales.nix
+    ./Aplicaciones/Aplicaciones.nix
     ./Editores/default.nix
     ./Gestor-archivos/default.nix
     ./Git/default.nix
