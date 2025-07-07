@@ -1,6 +1,7 @@
 _: {
   imports = [
     ./Aplicaciones/Aplicaciones.nix
+    ./Discord/Discord.nix
     ./Editores/default.nix
     ./Gestor-archivos/default.nix
     ./Git/default.nix
