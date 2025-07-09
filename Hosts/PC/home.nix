@@ -4,7 +4,7 @@
   ];
 
   # Aplicaciones juegos.
-  Aplicaciones-juegos.enable = false;
+  Aplicaciones-juegos.enable = true;
   # Final Aplicaciones juegos.
 
   # Git.

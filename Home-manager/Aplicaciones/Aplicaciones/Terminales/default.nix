@@ -1,5 +1,5 @@
-{...}: {
+_: {
   imports = [
-	./Gnome/Gnome.nix
+    ./Gnome/Gnome.nix
   ];
 }

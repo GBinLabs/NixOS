@@ -1,9 +1,5 @@
-{pkgs,...}:
-
-{
-
+{pkgs, ...}: {
   home.packages = with pkgs; [
-	gnome-terminal
+    gnome-terminal
   ];
-
 }
