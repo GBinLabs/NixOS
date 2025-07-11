@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./Bluetooth/Bluetooth.nix
     ./Bootloader/Bootloader.nix
     ./DNS/DNS.nix
     ./Flakes/Flakes.nix
@@ -14,7 +15,8 @@ _: {
     ./Software-privativo/Software-privativo.nix
     ./Sonido/Sonido.nix
     ./Teclado/Teclado.nix
-    #./Virtual-Machine
+    ./USB/USB.nix
+    ./Virtual-Machine/Virtual-Machine.nix
     ./Zona-horaria/Zona-horaria.nix
   ];
 }

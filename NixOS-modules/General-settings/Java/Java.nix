@@ -2,7 +2,7 @@
   programs = {
     java = {
       enable = true;
-      package = pkgs.jdk;
+      package = pkgs.jdk24;
     };
   };
 }
