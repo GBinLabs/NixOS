@@ -8,7 +8,7 @@
       # LaTeX editor.
       texstudio
       # GIMP.
-      #gimp
+      gimp
       # Conversor de archivos.
       morphosis
       # Editores de video.
