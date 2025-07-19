@@ -47,6 +47,7 @@
               useGlobalPkgs = true;
               useUserPackages = true;
               users.german = import ./Hosts/Netbook/home.nix;
+              backupFileExtension = "backup";
               sharedModules = [
               ];
             };
