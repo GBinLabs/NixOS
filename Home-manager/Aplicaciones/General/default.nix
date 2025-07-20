@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./EasyEffects/EasyEffects.nix
     ./Editores/default.nix
     ./General/General.nix
     ./Gestor-archivos/default.nix

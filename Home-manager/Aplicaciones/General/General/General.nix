@@ -22,7 +22,5 @@
     wl-clipboard
     # Mouse.
     piper
-    # Discord.
-    discord
   ];
 }

@@ -7,7 +7,6 @@ _: {
     ./Fwupd/Fwupd.nix
     ./Impermanence/default.nix
     ./Java/Java.nix
-    ./Juegos/default.nix
     ./Kernel/Kernel.nix
     ./Languagetool/Languagetool.nix
     ./Mouse-DPI/Mouse-DPI.nix
@@ -16,7 +15,6 @@ _: {
     ./Sonido/Sonido.nix
     ./Teclado/Teclado.nix
     ./USB/USB.nix
-    ./Virtual-Machine/Virtual-Machine.nix
     ./Zona-horaria/Zona-horaria.nix
   ];
 }

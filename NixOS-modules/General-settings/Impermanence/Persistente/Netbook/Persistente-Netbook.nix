@@ -36,6 +36,8 @@
                 ".ssh"
                 ".config/sops"
                 ".config/git"
+                ".config/Joplin"
+                ".config/joplin-desktop"
               ];
             };
           };
