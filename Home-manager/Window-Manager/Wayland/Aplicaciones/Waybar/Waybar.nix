@@ -1,7 +1,7 @@
 {pkgs, ...}: {
   programs.waybar = {
     enable = true;
-    package = pkgs.waybar; ## MIT
+    package = pkgs.waybar;
     systemd = {
       enable = true;
       target = "graphical-session.target";
@@ -366,9 +366,7 @@
 
         modules-left = [
           "hyprland/workspaces#pacman"
-          "custom/separator#blank"
-          "group/motherboard"
-          "custom/cava-internal"
+          "tray"
         ];
         modules-center = [
           "custom/menu"
@@ -376,8 +374,6 @@
           "custom/lock"
         ];
         modules-right = [
-          "tray"
-          "network#speed"
           "wireplumber"
           "group/laptop"
           "custom/power"
@@ -727,14 +723,6 @@
           on-click-right = "pavucontrol";
           format-icons = ["" "" "󰕾" ""];
           tooltip-format = "{icon} {desc} | {volume}%";
-        };
-
-        /*
-        Cava
-        */
-        "custom/cava-internal" = {
-          "exec" = "sleep 1s && cava-internal";
-          tooltip = false;
         };
 
         /*

@@ -4,6 +4,10 @@
     ../../NixOS-modules/default.nix
     ./disko.nix
   ];
+  
+  # Bluetooth.
+  Bluetooth.enable = true;
+  # Final Bluetooth.
 
   # Drivers
   # CPU.
