@@ -9,6 +9,10 @@
   Git-PC.enable = true;
   # Final Git.
   
+  # Juegos
+  Aplicaciones-juegos.enable = true;
+  # Final Juegos.
+  
   # Monitor.
   Monitor-Notebook.enable = false;
   Monitor-PC.enable = true;

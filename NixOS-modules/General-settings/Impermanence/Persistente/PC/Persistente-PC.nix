@@ -38,6 +38,8 @@
                 ".config/git"
                 ".config/Joplin"
                 ".config/joplin-desktop"
+                ".local/share/Steam"
+                ".local/share/PrismLauncher"
               ];
             };
           };

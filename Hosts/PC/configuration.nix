@@ -31,6 +31,10 @@
   # Final Reseteo.
 
   # Final Impermanence.
+  
+  # Juegos.
+  Gamemode.enable = true;
+  Steam.enable = true;
 
   # RED.
   Red-Netbook.enable = false;
