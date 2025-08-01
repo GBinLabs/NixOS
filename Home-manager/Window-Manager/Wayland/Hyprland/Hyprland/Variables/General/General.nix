@@ -28,6 +28,17 @@ _: {
           border_overlap = false;
         };
       };
+      decoration = {
+        blur = {
+          enabled = false;
+        };
+        shadow = {
+          enabled = false;
+        };
+      };
+      misc = {
+      	vfr = true;
+      };
     };
   };
 }

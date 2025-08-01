@@ -18,7 +18,7 @@
           enable = true;
         };
         amdvlk = {
-          enable = false;
+          enable = true;
         };
       };
 

@@ -16,11 +16,11 @@
 		splash_offset = 2.0;
 
 		preload = [
-			"${config.home.homeDirectory}/.config/hypr/Wallpapers/Black-Hole.mp4"
+			"${config.home.homeDirectory}/.config/hypr/Wallpapers/Astronaut.png"
 		];
 
 		wallpaper = [
-			",${config.home.homeDirectory}/.config/hypr/Wallpapers/Black-Hole.mp4"
+			",${config.home.homeDirectory}/.config/hypr/Wallpapers/Astronaut.png"
 		];
 	};
   };

@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./Discord/Discord.nix
     ./EasyEffects/EasyEffects.nix
     ./Editores/default.nix
     ./General/General.nix

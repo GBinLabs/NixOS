@@ -41,6 +41,8 @@
   Red-Notebook.enable = false;
   Red-PC.enable = true;
   # Final RED.
+  
+  environment.variables.AMD_VULKAN_ICD = "RADV";
 
   # Usuarios
   users.mutableUsers = false;
