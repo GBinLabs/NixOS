@@ -1,5 +1,0 @@
-{...}: {
-  imports = [
-    ./SDDM/SDDM.nix
-  ];
-}

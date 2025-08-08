@@ -1,14 +1,19 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }: {
   options = {
-    Gamemode.enable = lib.mkEnableOption "Habilitar Gamemode";
+    Steam.enable = lib.mkEnableOption "Habilitar Steam";
   };
 
-  config = lib.mkIf config.Gamemode.enable {
+  config = lib.mkIf config.Steam.enable {
     programs = {
+      steam = {
+        enable = true;
+        extraCompatPackages = [pkgs.proton-ge-bin];
+      };
       gamemode = {
         enable = true;
         settings = {

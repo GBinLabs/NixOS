@@ -1,10 +1,11 @@
 _: {
   imports = [
-    ./Display-manager/default.nix
+    ./Bluetooth.nix
     ./Drivers/default.nix
-    ./Fonts/default.nix
-    ./General-settings/default.nix
+    ./Hyprland.nix
+    ./Impermanence/default.nix
+    ./Red/default.nix
     ./Security/default.nix
-    ./Window-manager/default.nix
+    ./Steam.nix
   ];
 }
