@@ -54,31 +54,6 @@
           }
         ];
       };
-      Notebook = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          disko.nixosModules.disko
-          impermanence.nixosModules.impermanence
-          sops-nix.nixosModules.sops
-          ./Hosts/Notebook/configuration.nix
-          {
-            nixpkgs.overlays = [
-            ];
-          }
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.german = import ./Hosts/Notebook/home.nix;
-              backupFileExtension = "backup";
-              sharedModules = [
-              ];
-            };
-          }
-        ];
-      };
       PC = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {inherit inputs;};

@@ -12,6 +12,12 @@
     evince
     # Visor de imagenes.
     eog
+    # Conversor de archivos.
+    morphosis
+    # LibreOffice
+    libreoffice
+    # JabRef
+    jabref
     # Visualizador de videos.
     vlc
     # Herramientas.
