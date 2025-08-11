@@ -35,6 +35,8 @@
                         "subvol=root"
                         "compress=zstd"
                         "noatime"
+                        "space_cache=v2"
+                        "ssd"
                       ];
                     };
                     "/nix" = {
@@ -43,6 +45,8 @@
                         "subvol=nix"
                         "compress=zstd"
                         "noatime"
+                        "space_cache=v2"
+                        "ssd"
                       ];
                     };
                     "/persist" = {
@@ -51,6 +55,8 @@
                         "subvol=persist"
                         "compress=zstd"
                         "noatime"
+                        "space_cache=v2"
+                        "ssd"
                       ];
                     };
                   };

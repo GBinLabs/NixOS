@@ -4,10 +4,6 @@
     ../../NixOS-modules/default.nix
     ./disko.nix
   ];
-  
-  # Bluetooth.
-  Bluetooth.enable = true;
-  # Final Bluetooth.
 
   # Drivers
   # CPU.
@@ -16,28 +12,16 @@
 
   # GPU.
   GPU-AMD.enable = false;
-  GPU-Intel.enable = true;
   GPU-Nvidia.enable = false;
   # Final Drivers.
 
   # Impermanence.
-
-  # Persistencia.
-  Persistente-Netbook.enable = true;
-  Persistente-Notebook.enable = false;
-  Persistente-PC.enable = false;
-  # Final Persistencia.
-
-  # Reseteo.
   Reset.enable = false;
   Reset-Netbook.enable = true;
-  # Final Reseteo.
-
   # Final Impermanence.
 
   # RED.
   Red-Netbook.enable = true;
-  Red-Notebook.enable = false;
   Red-PC.enable = false;
   # Final RED.
 

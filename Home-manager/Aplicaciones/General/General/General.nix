@@ -12,6 +12,12 @@
     evince
     # Visor de imagenes.
     eog
+    # Languagetool.
+    ltex-ls-plus
+    # LaTeX.
+    texliveFull
+    # LaTeX editor.
+    texstudio
     # Conversor de archivos.
     morphosis
     # LibreOffice
@@ -22,13 +28,7 @@
     vlc
     # Herramientas.
     pciutils
-    # Captura de pantalla.
-    grim
-    slurp
-    wl-clipboard
     # Mouse.
     piper
-    # Discord.
-    discord
   ];
 }

@@ -5,7 +5,6 @@
 
   # Git.
   Git-Netbook.enable = true;
-  Git-Notebook.enable = false;
   Git-PC.enable = false;
   # Final Git.
 

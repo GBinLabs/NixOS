@@ -1,5 +1,5 @@
 _: {
   imports = [
-    ./Nemo/Nemo.nix
+    ./Nautilus/Nautilus.nix
   ];
 }

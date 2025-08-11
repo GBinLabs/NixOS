@@ -14,33 +14,17 @@
   # GPU.
   GPU-AMD.enable = true;
   GPU-Intel.enable = false;
-  GPU-Nvidia.enable = false;
   # Final Drivers.
 
   # Impermanence.
-
-  # Persistencia.
-  Persistente-Netbook.enable = false;
-  Persistente-Notebook.enable = false;
-  Persistente-PC.enable = true;
-  # Final Persistencia.
-
-  # Reseteo.
   Reset.enable = true;
   Reset-Netbook.enable = false;
-  # Final Reseteo.
-
   # Final Impermanence.
-  
-  # Juegos.
-  Steam.enable = true;
 
   # RED.
   Red-Netbook.enable = false;
   Red-PC.enable = true;
   # Final RED.
-  
-  environment.variables.AMD_VULKAN_ICD = "RADV";
 
   # Usuarios
   users.mutableUsers = false;
@@ -48,7 +32,7 @@
     isNormalUser = true;
     home = "/home/german";
     description = "Germán N. González";
-    extraGroups = ["networkmanager" "wheel" "audio" "gamemode"];
+    extraGroups = ["networkmanager" "wheel" "audio"];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
 
