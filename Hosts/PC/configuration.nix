@@ -33,12 +33,10 @@
   # Final Impermanence.
   
   # Juegos.
-  Gamemode.enable = true;
   Steam.enable = true;
 
   # RED.
   Red-Netbook.enable = false;
-  Red-Notebook.enable = false;
   Red-PC.enable = true;
   # Final RED.
   

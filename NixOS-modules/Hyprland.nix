@@ -1,4 +1,4 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
 
   # Window-Manager Hyprland + SDDM.
   
@@ -19,7 +19,7 @@
     		waylandCompositors = {
       			hyprland = {
         			prettyName = "Hyprland";
-        			comment = "Hyprland compositor manager by UWSM";
+        			#comment = "Hyprland compositor manager by UWSM";
         			binPath = "/run/current-system/sw/bin/Hyprland";
       			};
     		};

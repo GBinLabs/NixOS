@@ -35,6 +35,8 @@
                         "subvol=root"
                         "compress=zstd"
                         "noatime"
+                        "space_cache=v2"
+                        "ssd"
                       ];
                     };
                     "/nix" = {
@@ -43,6 +45,8 @@
                         "subvol=nix"
                         "compress=zstd"
                         "noatime"
+                        "space_cache=v2"
+                        "ssd"
                       ];
                     };
                   };
@@ -59,14 +63,14 @@
         content = {
           type = "gpt";
           partitions = {
-            windows = {
-              priority = 1;
-              size = "200G";
-              type = "0700";
-            };
+            #windows = {
+            #  priority = 1;
+            #  size = "200G";
+            #  type = "0700";
+            #};
 
             crypt_p2 = {
-              priority = 2;
+              priority = 1; # 2 si esta activada la particion Windows
               size = "0";
               content = {
                 type = "luks";
@@ -84,6 +88,8 @@
                         "subvol=home"
                         "compress=zstd"
                         "noatime"
+                        "space_cache=v2"
+                        "autodefrag"
                       ];
                     };
                     "/persist" = {
@@ -92,6 +98,8 @@
                         "subvol=persist"
                         "compress=zstd"
                         "noatime"
+                        "space_cache=v2"
+                        "autodefrag"
                       ];
                     };
                   };
