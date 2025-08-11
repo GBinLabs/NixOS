@@ -26,6 +26,8 @@
     jabref
     # Visualizador de videos.
     vlc
+    # Editor de Video.
+    shotcut
     # Herramientas.
     pciutils
     # Mouse.

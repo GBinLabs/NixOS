@@ -12,7 +12,7 @@
 
   # GPU.
   GPU-AMD.enable = false;
-  GPU-Nvidia.enable = false;
+  GPU-Intel.enable = false;
   # Final Drivers.
 
   # Impermanence.
