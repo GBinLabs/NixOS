@@ -2,7 +2,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ../../NixOS-modules/default.nix
+    ../../Modules/default.nix
     ./disko.nix
   ];
 

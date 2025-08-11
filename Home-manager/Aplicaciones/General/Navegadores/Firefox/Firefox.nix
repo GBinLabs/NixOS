@@ -66,8 +66,8 @@
         "dom.security.https_only_mode" = true;
         "dom.security.https_only_mode_ever_enabled" = true;
         "network.trr.mode" = 3;
-        "network.trr.custom_uri" = "https://dns0.eu";
-        "network.trr.uri" = "https://dns0.eu";
+        "network.trr.custom_uri" = "https://zero.dns0.eu";
+        "network.trr.uri" = "https://zero.dns0.eu";
         "network.trr.confirmationNS" = "skip";
         "network.dns.skipTRR-when-parental-control-enabled" = false;
         "network.http.http3.enabled" = true;
