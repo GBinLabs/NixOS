@@ -8,7 +8,6 @@
   };
 
   config = lib.mkIf config.Reset-Netbook.enable {
-    # Asegurarse que systemd monte correctamente los sistemas de archivos
     fileSystems = {
       "/persist" = {
         neededForBoot = true;

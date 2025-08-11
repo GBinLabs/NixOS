@@ -30,6 +30,8 @@
     shotcut
     # Herramientas.
     pciutils
+    # Btop.
+    btop
     # Mouse.
     piper
   ];

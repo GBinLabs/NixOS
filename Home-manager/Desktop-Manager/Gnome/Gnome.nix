@@ -75,26 +75,26 @@
       translate = true;
       apps = [
         "org.gnome.baobab.desktop"
-        "org.gnome.DiskUtility.desktop"
-        "org.gnome.FileRoller.desktop"
-        "org.gnome.Evince.desktop"
         "org.gnome.Settings.desktop"
-        "org.gnome.Extensions.desktop"
+        "org.gnome.DiskUtility.desktop"
         "org.gnome.TextEditor.desktop"
-        "org.freedesktop.Piper.desktop"
+        "org.gnome.Extensions.desktop"
         "org.gnome.eog.desktop"
+        "org.gnome.FileRoller.desktop"
+        "org.freedesktop.Piper.desktop"
+        "org.gnome.Evince.desktop"
       ];
     };
     "org/gnome/desktop/app-folders/folders/LibreOffice" = {
       name = "LibreOffice";
       translate = true;
       apps = [
-        "writer.desktop"
-        "calc.desktop"
-        "impress.desktop"
-        "draw.desktop"
         "base.desktop"
+        "calc.desktop"
+        "draw.desktop"
+        "impress.desktop"
         "math.desktop"
+        "writer.desktop"
       ];
     };
     "org/gnome/desktop/background" = {

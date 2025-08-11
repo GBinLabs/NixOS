@@ -1,6 +1,6 @@
 _: {
   imports = [
-    ./AMD/GPU-AMD.nix
-    ./Intel/GPU-Intel.nix
+    ./AMD/AMD-GPU.nix
+    ./Intel/Intel-GPU.nix
   ];
 }

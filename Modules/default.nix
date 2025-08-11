@@ -5,8 +5,8 @@ _: {
     ./Gnome.nix
     ./Impermanence/default.nix
     ./Keyboard.nix
+    ./Network/default.nix
     ./Nix.nix
-    ./Red/default.nix
     ./Programs.nix
     ./Security/default.nix
     ./Services.nix
