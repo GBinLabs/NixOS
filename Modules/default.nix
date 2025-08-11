@@ -2,7 +2,7 @@ _: {
   imports = [
     ./Boot.nix
     ./Drivers/default.nix
-    ./Gnome.nix
+    ./Desktop-Manager/default.nix
     ./Impermanence/default.nix
     ./Keyboard.nix
     ./Network/default.nix
