@@ -188,8 +188,12 @@
         };
 
         "languagetool-webextension@languagetool.org" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/file/4470413/languagetool-8.19.4.xpi";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/languagetool/latest.xpi";
           installation_mode = "force_installed";
+        };
+        "private-grammar-checker-harper@elijah-potter.dev" = {
+          "install_url" = "https://addons.mozilla.org/firefox/downloads/latest/private-grammar-checker-harper/latest.xpi";
+          "installation_mode" = "force_installed";
         };
       };
 
