@@ -29,6 +29,7 @@ _: {
               ".config/git"
               ".config/Joplin"
               ".config/joplin-desktop"
+              ".config/texstudio/texstudio.ini"
             ];
           };
         };
