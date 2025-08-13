@@ -10,7 +10,7 @@
     resolved = {
       enable = true;
       extraConfig = ''
-                [Resolve]
+        [Resolve]
         DNS=193.110.81.9#zero.dns0.eu
         DNS=2a0f:fc80::9#zero.dns0.eu
         DNS=185.253.5.9#zero.dns0.eu
@@ -19,19 +19,6 @@
       '';
     };
     # End DNS.
-
-    # Languagetool.
-    languagetool = {
-      enable = true;
-      package = pkgs.languagetool;
-      settings = {};
-      port = 8081;
-      jvmOptions = ["-Xmx512m"];
-      public = false;
-      jrePackage = pkgs.jdk;
-      allowOrigin = null;
-    };
-    # End Languagetool.
 
     # Mouse-DPI.
     ratbagd = {
