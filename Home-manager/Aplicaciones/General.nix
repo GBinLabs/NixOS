@@ -12,6 +12,20 @@
     evince
     # Visor de imagenes.
     eog
+    # Languagetool.
+    ltex-ls-plus
+    # LaTeX.
+    texliveFull
+    # LaTeX editor.
+    texstudio
+    # Upscaling
+    upscayl
+    inkscape-with-extensions
+    svg2tikz
+    photoflare
+    gimp-with-plugins
+    ipe
+    tikzit
     # Conversor de archivos.
     morphosis
     # LibreOffice
