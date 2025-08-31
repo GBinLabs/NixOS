@@ -13,6 +13,7 @@
       allowUnfreePredicate = pkg:
         builtins.elem (lib.getName pkg) [
           "intel-ocl"
+          "discord"
         ];
     };
   };

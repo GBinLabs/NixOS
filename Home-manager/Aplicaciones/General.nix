@@ -42,5 +42,6 @@
     btop
     # Mouse.
     piper
+    discord
   ];
 }
