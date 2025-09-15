@@ -12,6 +12,9 @@
     config = {
       allowUnfreePredicate = pkg:
         builtins.elem (lib.getName pkg) [
+          "steam"
+          "steam-unwrapped"
+          "steam-run"
           "intel-ocl"
           "discord"
         ];

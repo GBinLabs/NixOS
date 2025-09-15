@@ -17,6 +17,8 @@
   # Final Drivers.
 
   # Impermanence.
+  Persistente-PC.enable = true;
+  Persistente-Netbook.enable = false;
   Reset.enable = true;
   Reset-Netbook.enable = false;
   # Final Impermanence.
@@ -25,6 +27,10 @@
   Red-Netbook.enable = false;
   Red-PC.enable = true;
   # Final RED.
+
+  # Steam.
+  Steam.enable = true;
+  # Final Steam.
 
   # Usuarios
   users.mutableUsers = false;

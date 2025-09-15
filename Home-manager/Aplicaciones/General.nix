@@ -20,12 +20,10 @@
     texstudio
     # Upscaling
     upscayl
+    # Inkscape
     inkscape-with-extensions
+    # SVG
     svg2tikz
-    photoflare
-    gimp-with-plugins
-    ipe
-    tikzit
     # Conversor de archivos.
     morphosis
     # LibreOffice
@@ -40,8 +38,13 @@
     pciutils
     # Btop.
     btop
+    # Captura de pantalla.
+    grim
+    slurp
+    wl-clipboard
     # Mouse.
     piper
+    # Discord.
     discord
   ];
 }
