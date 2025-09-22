@@ -59,6 +59,10 @@
       };
     };
     # End Pipewire 1.
+    # USB + Trashcan 1.
+    gvfs.enable = true;
+    udisks2.enable = true;
+    # Final USB + Trashcan 1.
   };
 
   # Pipewire 2.
@@ -68,4 +72,12 @@
     };
   };
   # End Pipewire 2.
+  
+  # USB + Trashcan 2.
+  environment.systemPackages = with pkgs; [
+    usbutils
+    udiskie
+    udisks
+  ];
+  # Final USB + Trashcan 2.
 }

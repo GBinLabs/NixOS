@@ -14,8 +14,9 @@ _: {
         "$mainMod, Escape, exec, hyprlock"
         "$mainMod SHIFT, Escape, exec, power-menu"
 
-        ", Print, exec, grim - | wl-copy"
-        "SHIFT, Print, exec, grim -g \"$(slurp)\" - | wl-copy"
+        ", Print, exec, grim - | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_$(date +'%Y-%m-%d_%H-%M-%S').png\" | wl-copy"
+        "SHIFT, Print, exec, grim -g \"$(slurp)\" - | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_$(date +'%Y-%m-%d_%H-%M-%S').png\" | wl-copy"
+
 
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"

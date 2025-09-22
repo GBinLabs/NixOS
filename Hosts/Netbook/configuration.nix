@@ -16,6 +16,8 @@
   # Final Drivers.
 
   # Impermanence.
+  Persistente-PC.enable = false;
+  Persistente-Netbook.enable = true;
   Reset.enable = false;
   Reset-Netbook.enable = true;
   # Final Impermanence.
@@ -32,6 +34,7 @@
     description = "Germán N. González";
     extraGroups = ["networkmanager" "wheel" "audio"];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
+    initialPassword = "1234";
   };
   # Final Usuarios.
 
