@@ -39,9 +39,9 @@
     # Btop.
     btop
     # Captura de pantalla.
-    grim
-    slurp
+    grimblast
     wl-clipboard
+    imagemagick
     # Mouse.
     piper
     # Discord.

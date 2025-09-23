@@ -1,4 +1,15 @@
-{pkgs, ...}: {
+{pkgs, ...}:
+
+let
+  customized_sddm_astronaut = pkgs.sddm-astronaut.override {
+    embeddedTheme = "black_hole"; # The name of the theme you most loved
+    themeConfig = {
+      #BackgroundPlaceholder = "Wallpaper/Black-Hole.mp4";
+      Background = "${Wallpaper/Black-Hole.mp4}"; # This theme also accepts videos
+    };
+  };
+in
+{
   # Window-Manager Hyprland + SDDM.
 
   ## Hyprland.
@@ -35,9 +46,15 @@
           enable = true;
         };
         theme = "sddm-astronaut-theme";
+        settings = {
+        	Theme = {
+        		Current = "sddm-astronaut-theme";
+        	};
+        };
         package = pkgs.kdePackages.sddm;
         extraPackages = with pkgs; [
-          sddm-astronaut
+          customized_sddm_astronaut
+          kdePackages.qtmultimedia
         ];
       };
       defaultSession = "hyprland-uwsm";
@@ -51,4 +68,8 @@
       nerd-fonts.jetbrains-mono
     ];
   };
+  
+  environment.systemPackages = with pkgs; [
+  	customized_sddm_astronaut
+  ];
 }

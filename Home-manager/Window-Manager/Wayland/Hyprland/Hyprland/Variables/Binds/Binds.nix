@@ -13,10 +13,10 @@ _: {
         "$mainMod, D, exec, rofi -show drun || pkill rofi"
         "$mainMod, Escape, exec, hyprlock"
         "$mainMod SHIFT, Escape, exec, power-menu"
+        
+	"SHIFT, Print, exec, mkdir -p \"$HOME/Imágenes/Capturas de Pantalla\" && grimblast --notify copysave area - | convert - -resize 3840x2160\! -strip png:- | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_area_$(date +'%Y-%m-%d_%H-%M-%S')_4k.png\" | wl-copy"
 
-        ", Print, exec, grim - | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_$(date +'%Y-%m-%d_%H-%M-%S').png\" | wl-copy"
-        "SHIFT, Print, exec, grim -g \"$(slurp)\" - | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_$(date +'%Y-%m-%d_%H-%M-%S').png\" | wl-copy"
-
+	", Print, exec, mkdir -p \"$HOME/Imágenes/Capturas de Pantalla\" && grimblast --notify copysave output - | convert - -resize 3840x2160\! -strip png:- | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_full_$(date +'%Y-%m-%d_%H-%M-%S')_4k.png\" | wl-copy"
 
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"

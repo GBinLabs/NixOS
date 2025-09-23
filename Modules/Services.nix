@@ -7,17 +7,17 @@
     # End Fwupd.
 
     # DNS.
-    resolved = {
-      enable = true;
-      extraConfig = ''
-        [Resolve]
-        DNS=193.110.81.9#zero.dns0.eu
-        DNS=2a0f:fc80::9#zero.dns0.eu
-        DNS=185.253.5.9#zero.dns0.eu
-        DNS=2a0f:fc81::9#zero.dns0.eu
-        DNSOverTLS=yes
-      '';
-    };
+    #resolved = {
+    #  enable = true;
+    #  extraConfig = ''
+    #    [Resolve]
+    #    DNS=193.110.81.9#zero.dns0.eu
+    #    DNS=2a0f:fc80::9#zero.dns0.eu
+    #    DNS=185.253.5.9#zero.dns0.eu
+    #    DNS=2a0f:fc81::9#zero.dns0.eu
+    #    DNSOverTLS=yes
+    #  '';
+    #};
     # End DNS.
 
     # Languagetool.
