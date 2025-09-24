@@ -13,5 +13,6 @@ _: {
     ./Services.nix
     ./Steam.nix
     ./Systemd.nix
+    ./Zram.nix
   ];
 }

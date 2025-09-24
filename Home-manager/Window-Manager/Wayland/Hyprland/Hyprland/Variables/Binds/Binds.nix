@@ -14,9 +14,9 @@ _: {
         "$mainMod, Escape, exec, hyprlock"
         "$mainMod SHIFT, Escape, exec, power-menu"
         
-	"SHIFT, Print, exec, mkdir -p \"$HOME/Imágenes/Capturas de Pantalla\" && grimblast --notify copysave area - | convert - -resize 3840x2160\! -strip png:- | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_area_$(date +'%Y-%m-%d_%H-%M-%S')_4k.png\" | wl-copy"
+	"SHIFT, Print, exec, mkdir -p \"$HOME/Imágenes/Capturas de Pantalla\" && grimblast --notify copysave area - | convert - -strip png:- | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_area_$(date +'%Y-%m-%d_%H-%M-%S').png\" | wl-copy"
 
-	", Print, exec, mkdir -p \"$HOME/Imágenes/Capturas de Pantalla\" && grimblast --notify copysave output - | convert - -resize 3840x2160\! -strip png:- | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_full_$(date +'%Y-%m-%d_%H-%M-%S')_4k.png\" | wl-copy"
+	", Print, exec, mkdir -p \"$HOME/Imágenes/Capturas de Pantalla\" && grimblast --notify copysave output - | convert - -strip png:- | tee \"$HOME/Imágenes/Capturas de Pantalla/Captura_full_$(date +'%Y-%m-%d_%H-%M-%S').png\" | wl-copy"
 
         "$mainMod, left, movefocus, l"
         "$mainMod, right, movefocus, r"
