@@ -34,7 +34,6 @@
     description = "Germán N. González";
     extraGroups = ["networkmanager" "wheel" "audio"];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
-    initialPassword = "1234";
   };
   # Final Usuarios.
 
