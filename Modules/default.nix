@@ -14,5 +14,6 @@ _: {
     ./Steam.nix
     ./Systemd.nix
     ./Zram.nix
+    ./Zsh.nix
   ];
 }

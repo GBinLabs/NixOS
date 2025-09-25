@@ -71,7 +71,7 @@
             home-manager = {
               useGlobalPkgs = true;
               useUserPackages = true;
-              users.german = import ./Hosts/PC/home.nix;
+              users.Bin = import ./Hosts/PC/home.nix;
               #users.tecnico = import ./Hosts/Bin-PC/home-tecnico.nix;
               backupFileExtension = "backup";
               sharedModules = [

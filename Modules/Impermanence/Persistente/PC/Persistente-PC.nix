@@ -25,7 +25,7 @@
           ];
 
           users = {
-            german = {
+            Bin = {
               directories = [
                 "Descargas"
                 "Documentos"
@@ -40,6 +40,10 @@
                 ".config/joplin-desktop"
                 ".local/share/Steam"
                 ".local/share/PrismLauncher"
+              ];
+              files = [
+              	".p10k.zsh"
+              	".zshrc"
               ];
             };
           };
