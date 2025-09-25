@@ -36,7 +36,7 @@
   users.mutableUsers = false;
   users.users.Bin = {
     isNormalUser = true;
-    home = "/home/german";
+    home = "/home/Bin";
     description = "Germán N. González";
     extraGroups = ["networkmanager" "wheel" "audio"];
     hashedPasswordFile = config.sops.secrets.usuario-Bin.path;
