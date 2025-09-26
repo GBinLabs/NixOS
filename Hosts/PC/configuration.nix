@@ -34,13 +34,12 @@
 
   # Usuarios
   users.mutableUsers = false;
-  users.users.Bin = {
+  users.users.german = {
     isNormalUser = true;
-    home = "/home/Bin";
+    home = "/home/german";
     description = "Germán N. González";
     extraGroups = ["networkmanager" "wheel" "audio"];
-    hashedPasswordFile = config.sops.secrets.usuario-Bin.path;
-    initialPassword = "1234";
+    hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
 
   users.users.Tecnico = {

@@ -25,7 +25,7 @@
           ];
 
           users = {
-            Bin = {
+            german = {
               directories = [
                 "Descargas"
                 "Documentos"

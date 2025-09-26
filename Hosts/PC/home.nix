@@ -10,8 +10,8 @@
 
   # Usuario.
   home = {
-    username = "Bin";
-    homeDirectory = "/home/Bin";
+    username = "german";
+    homeDirectory = "/home/german";
     # ¡DEJAR ASI!
     stateVersion = "24.11";
   };
