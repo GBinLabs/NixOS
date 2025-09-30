@@ -7,6 +7,10 @@
   Git-Netbook.enable = false;
   Git-PC.enable = true;
   # Final Git.
+  
+  # Monitor.
+  Monitor-Notebook.enable = false;
+  Monitor-PC.enable = true;
 
   # Usuario.
   home = {

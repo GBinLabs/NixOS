@@ -7,6 +7,7 @@ _: {
     ./Git/default.nix
     ./Joplin.nix
     ./Languages/Python/Python.nix
+    ./MangoHud/MangoHud.nix
     ./Navegadores/default.nix
     ./Terminales/default.nix
   ];
