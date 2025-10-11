@@ -53,6 +53,7 @@
               users.german = import ./Hosts/Netbook/home.nix;
               backupFileExtension = "backup";
               sharedModules = [
+                inputs.nixcord.homeModules.nixcord
               ];
             };
           }
