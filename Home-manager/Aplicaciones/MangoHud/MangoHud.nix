@@ -27,6 +27,7 @@ _: {
         battery = false;
         fps = true;
         fps_metrics = "avg 0.01";
+        percentiles = true;
         engine_version = true;
         engine_color = "EB5B5B";
         arch = true;

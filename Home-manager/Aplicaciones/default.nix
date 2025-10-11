@@ -1,5 +1,6 @@
 _: {
   imports = [
+    ./Discord/Discord.nix
     ./EasyEffects.nix
     ./Editores/default.nix
     ./General.nix
@@ -9,6 +10,7 @@ _: {
     ./Languages/Python/Python.nix
     ./MangoHud/MangoHud.nix
     ./Navegadores/default.nix
+    ./OBS/default.nix
     ./Terminales/default.nix
   ];
 }

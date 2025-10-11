@@ -33,7 +33,7 @@
     # Visualizador de videos.
     vlc
     # Editor de Video.
-    shotcut
+    #shotcut
     # Herramientas.
     pciutils
     # Btop.
@@ -44,7 +44,5 @@
     imagemagick
     # Mouse.
     piper
-    # Discord.
-    discord
   ];
 }

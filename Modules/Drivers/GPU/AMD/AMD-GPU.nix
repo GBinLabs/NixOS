@@ -17,9 +17,6 @@
         initrd = {
           enable = true;
         };
-        amdvlk = {
-          enable = true;
-        };
       };
 
       graphics = {
@@ -32,6 +29,19 @@
         ];
       };
     };
-      environment.variables.AMD_VULKAN_ICD = "RADV";
+    environment.variables = {
+      AMD_VULKAN_ICD = "RADV";
+      RADV_PERFTEST = "nggc";
+      RADV_DEBUG = "nodcc,nohiz";
+      MESA_GLTHREAD = "true";
+      mesa_glthread = "true";
+      MESA_DISK_CACHE_SIZE = "4096M";
+      vblank_mode = "0";
+    };
+    
+    powerManagement = {
+      enable = false;
+      cpuFreqGovernor = "performance";
+    };  
   };
 }

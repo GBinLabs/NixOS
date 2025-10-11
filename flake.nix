@@ -18,6 +18,10 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixcord = {
+      url = "github:kaylorben/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = {
@@ -75,6 +79,7 @@
               #users.tecnico = import ./Hosts/Bin-PC/home-tecnico.nix;
               backupFileExtension = "backup";
               sharedModules = [
+                inputs.nixcord.homeModules.nixcord
               ];
             };
           }
