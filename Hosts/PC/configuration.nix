@@ -38,16 +38,16 @@
     isNormalUser = true;
     home = "/home/german";
     description = "Germán N. González";
-    extraGroups = ["networkmanager" "wheel" "audio"];
+    extraGroups = ["networkmanager" "wheel" "audio" "gamemode"];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
 
-  users.users.Tecnico = {
-    isNormalUser = true;
-    description = "Técnico";
-    extraGroups = [];
-    initialPassword = "1234";
-  };
+  #users.users.Tecnico = {
+  #  isNormalUser = true;
+  #  description = "Técnico";
+  #  extraGroups = [];
+  #  initialPassword = "1234";
+  #};
   # Final Usuarios.
 
   # DEJAR ASI #
