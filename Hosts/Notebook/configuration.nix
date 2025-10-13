@@ -1,7 +1,7 @@
 {config, ...}: {
   imports = [
     ./hardware-configuration.nix
-    ../../NixOS-modules/default.nix
+    ../../Modules/default.nix
     ./disko.nix
   ];
 
