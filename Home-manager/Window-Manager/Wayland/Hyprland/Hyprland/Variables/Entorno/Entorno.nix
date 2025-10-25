@@ -1,8 +1,9 @@
 { ... }:
 {
   home.sessionVariables = {
-    GTK_THEME = "Nordic";
-    QT_QPA_PLATFORMTHEME = "gtk2";
+    GTK_THEME = "Gruvbox";
+    QT_QPA_PLATFORMTHEME = "qt6ct";
+    QT_STYLE_OVERRIDE = "kvantum";
     
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";

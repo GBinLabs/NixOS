@@ -2,11 +2,7 @@
 
 let
   customized_sddm_astronaut = pkgs.sddm-astronaut.override {
-    embeddedTheme = "black_hole"; # The name of the theme you most loved
-    themeConfig = {
-      #BackgroundPlaceholder = "Wallpaper/Black-Hole.mp4";
-      Background = "${Wallpaper/Black-Hole.mp4}"; # This theme also accepts videos
-    };
+    embeddedTheme = "pixel_sakura"; # The name of the theme you most loved
   };
 in
 {

@@ -25,9 +25,13 @@
                 settings = {
                   allowDiscards = true;
                 };
+                extraFormatArgs = [        # ← NUEVO: LUKS2
+                  "--type luks2"
+                  "--pbkdf argon2id"
+                ];
                 content = {
                   type = "btrfs";
-                  extraArgs = [];
+                  extraArgs = ["-f"];
                   subvolumes = {
                     "/root" = {
                       mountpoint = "/";
@@ -36,7 +40,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "ssd"
+                        "discard=async"    # ← NUEVO: TRIM asíncrono
                       ];
                     };
                     "/nix" = {
@@ -46,7 +50,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "ssd"
+                        "discard=async"    # ← NUEVO
                       ];
                     };
                     "/persist" = {
@@ -56,7 +60,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "ssd"
+                        "discard=async"    # ← NUEVO
                       ];
                     };
                   };

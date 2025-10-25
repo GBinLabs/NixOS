@@ -12,8 +12,16 @@
   CPU-Intel.enable = false;
 
   # GPU.
-  GPU-AMD.enable = true;
-  GPU-Intel.enable = false;
+  GPU-AMD = {
+    enable = true;
+    performanceProfile = "gaming";
+    enableTuning = false;  # true si quieres overclock/control manual
+  };
+  GPU-Intel = {
+    enable = false;
+    #vaDriver = "iHD";  # O "auto"
+    #enableOptimizations = true;
+  };
   # Final Drivers.
 
   # Impermanence.

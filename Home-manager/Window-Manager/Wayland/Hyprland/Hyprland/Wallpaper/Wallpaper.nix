@@ -11,16 +11,16 @@
 	enable = true;
 	package = pkgs.hyprpaper;
 	settings = {
-		ipc = "on";
+		ipc = "off";
 		splash = false;
 		splash_offset = 2.0;
 
 		preload = [
-			"${config.home.homeDirectory}/.config/hypr/Wallpapers/Astronaut.png"
+			"${config.home.homeDirectory}/.config/hypr/Wallpapers/NixOS.png"
 		];
 
 		wallpaper = [
-			",${config.home.homeDirectory}/.config/hypr/Wallpapers/Astronaut.png"
+			",${config.home.homeDirectory}/.config/hypr/Wallpapers/NixOS.png"
 		];
 	};
   };

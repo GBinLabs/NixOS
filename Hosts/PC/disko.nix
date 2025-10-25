@@ -1,6 +1,7 @@
 {
   disko.devices = {
     disk = {
+      # ========== SSD SATA (/dev/sda) ==========
       ssd = {
         device = "/dev/sda";
         type = "disk";
@@ -23,11 +24,15 @@
                 type = "luks";
                 name = "p1";
                 settings = {
-                  allowDiscards = true;
+                  allowDiscards = true;  # ← Para SSD
                 };
+                extraFormatArgs = [      # ← LUKS2 moderno
+                  "--type luks2"
+                  "--pbkdf argon2id"
+                ];
                 content = {
                   type = "btrfs";
-                  extraArgs = [];
+                  extraArgs = ["-f"];
                   subvolumes = {
                     "/root" = {
                       mountpoint = "/";
@@ -36,7 +41,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "ssd"
+                        "discard=async"  # ← TRIM asíncrono para SSD
                       ];
                     };
                     "/nix" = {
@@ -46,7 +51,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "ssd"
+                        "discard=async"  # ← TRIM asíncrono para SSD
                       ];
                     };
                   };
@@ -56,7 +61,8 @@
           };
         };
       };
-
+      
+      # ========== HDD (/dev/sdb) ==========
       hdd = {
         device = "/dev/sdb";
         type = "disk";
@@ -68,19 +74,22 @@
             #  size = "200G";
             #  type = "0700";
             #};
-
             crypt_p2 = {
-              priority = 1; # 2 si esta activada la particion Windows
-              size = "0";
+              priority = 1; # 2 si está activada la partición Windows
+              size = "100%";  # ← Cambiado de "0" a "100%" (más explícito)
               content = {
                 type = "luks";
                 name = "p2";
                 settings = {
-                  allowDiscards = false;
+                  allowDiscards = false;  # ← Correcto para HDD
                 };
+                extraFormatArgs = [        # ← LUKS2 también para HDD
+                  "--type luks2"
+                  "--pbkdf argon2id"
+                ];
                 content = {
                   type = "btrfs";
-                  extraArgs = [];
+                  extraArgs = ["-f"];
                   subvolumes = {
                     "/home" = {
                       mountpoint = "/home";
@@ -89,7 +98,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "autodefrag"
+                        "autodefrag"     # ← Útil para HDDs (desfragmenta automáticamente)
                       ];
                     };
                     "/persist" = {
@@ -99,7 +108,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "autodefrag"
+                        "autodefrag"     # ← Útil para HDDs
                       ];
                     };
                   };
