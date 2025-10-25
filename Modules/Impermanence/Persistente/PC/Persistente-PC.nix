@@ -38,6 +38,7 @@
                 ".config/git"
                 ".config/Joplin"
                 ".config/joplin-desktop"
+                ".config/texstudio"
                 ".local/share/Steam"
                 ".local/share/PrismLauncher"
               ];

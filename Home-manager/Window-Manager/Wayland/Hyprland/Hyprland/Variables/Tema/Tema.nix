@@ -1,19 +1,21 @@
-{ pkgs, config, lib, ... }:
-let
-  gtkThemeName       = "Gruvbox-Dark";
-  gtkThemePackage    = pkgs.gruvbox-gtk-theme;
-  iconThemeName    = "Tela-brown-dark";  # o "Tela-orange-dark"
-  iconThemePackage = pkgs.tela-icon-theme;
-  cursorThemeName    = "Bibata-Modern-Amber";      # Cursor cálido para Gruvbox
-  cursorThemePackage = pkgs.bibata-cursors;
-  cursorSize         = 24;
-in
 {
+  pkgs,
+  config,
+  ...
+}: let
+  gtkThemeName = "Gruvbox-Dark";
+  gtkThemePackage = pkgs.gruvbox-gtk-theme;
+  iconThemeName = "Tela-brown-dark"; # o "Tela-orange-dark"
+  iconThemePackage = pkgs.tela-icon-theme;
+  cursorThemeName = "Bibata-Modern-Ice"; # Cursor cálido para Gruvbox
+  cursorThemePackage = pkgs.bibata-cursors;
+  cursorSize = 24;
+in {
   home.packages = with pkgs; [
     qt6ct
     qt6Packages.qtstyleplugin-kvantum
     libsForQt5.qtstyleplugin-kvantum
-    gruvbox-kvantum  # Tema Gruvbox para Kvantum
+    gruvbox-kvantum # Tema Gruvbox para Kvantum
   ];
 
   fonts.fontconfig.enable = true;
@@ -25,17 +27,17 @@ in
       size = 10;
     };
     theme = {
-      name    = gtkThemeName;
+      name = gtkThemeName;
       package = gtkThemePackage;
     };
     iconTheme = {
-      name    = iconThemeName;
+      name = iconThemeName;
       package = iconThemePackage;
     };
     cursorTheme = {
-      name    = cursorThemeName;
+      name = cursorThemeName;
       package = cursorThemePackage;
-      size    = cursorSize;
+      size = cursorSize;
     };
   };
 
@@ -102,9 +104,9 @@ in
 
   # Cursor theme
   home.pointerCursor = {
-    name    = cursorThemeName;
+    name = cursorThemeName;
     package = cursorThemePackage;
-    size    = cursorSize;
+    size = cursorSize;
     gtk.enable = true;
     x11 = {
       enable = true;
