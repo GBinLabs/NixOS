@@ -39,6 +39,10 @@
                 ".config/Joplin"
                 ".config/joplin-desktop"
               ];
+              files = [
+              	".p10k.zsh"
+              	".zshrc"
+              ];
             };
           };
         };
