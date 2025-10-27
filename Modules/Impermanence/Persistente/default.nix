@@ -1,6 +1,6 @@
 _: {
   imports = [
-    ./Netbook/Persistente-Netbook.nix
+    ./General/Persistente.nix
     ./PC/Persistente-PC.nix
   ];
 }

@@ -1,11 +1,8 @@
-{pkgs, ...}:
-
-let
+{pkgs, ...}: let
   customized_sddm_astronaut = pkgs.sddm-astronaut.override {
-    embeddedTheme = "pixel_sakura"; # The name of the theme you most loved
+    embeddedTheme = "hyprland_kath"; # The name of the theme you most loved
   };
-in
-{
+in {
   # Window-Manager Hyprland + SDDM.
 
   ## Hyprland.
@@ -43,9 +40,9 @@ in
         };
         theme = "sddm-astronaut-theme";
         settings = {
-        	Theme = {
-        		Current = "sddm-astronaut-theme";
-        	};
+          Theme = {
+            Current = "sddm-astronaut-theme";
+          };
         };
         package = pkgs.kdePackages.sddm;
         extraPackages = with pkgs; [
@@ -64,8 +61,8 @@ in
       nerd-fonts.jetbrains-mono
     ];
   };
-  
-  environment.systemPackages = with pkgs; [
-  	customized_sddm_astronaut
+
+  environment.systemPackages = [
+    customized_sddm_astronaut
   ];
 }

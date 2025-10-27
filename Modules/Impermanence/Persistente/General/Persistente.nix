@@ -4,10 +4,10 @@
   ...
 }: {
   options = {
-    Persistente-Netbook.enable = lib.mkEnableOption "Habilitar Persistencia-Netbook";
+    Persistente.enable = lib.mkEnableOption "Habilitar Persistencia";
   };
 
-  config = lib.mkIf config.Persistente-Netbook.enable {
+  config = lib.mkIf config.Persistente.enable {
     fileSystems = {
       "/persist" = {
         neededForBoot = true;
@@ -40,8 +40,8 @@
                 ".config/joplin-desktop"
               ];
               files = [
-              	".p10k.zsh"
-              	".zshrc"
+                ".p10k.zsh"
+                ".zshrc"
               ];
             };
           };

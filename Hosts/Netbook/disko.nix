@@ -25,7 +25,8 @@
                 settings = {
                   allowDiscards = true;
                 };
-                extraFormatArgs = [        # ← NUEVO: LUKS2
+                extraFormatArgs = [
+                  # ← NUEVO: LUKS2
                   "--type luks2"
                   "--pbkdf argon2id"
                 ];
@@ -40,7 +41,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "discard=async"    # ← NUEVO: TRIM asíncrono
+                        "discard=async" # ← NUEVO: TRIM asíncrono
                       ];
                     };
                     "/nix" = {
@@ -50,7 +51,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "discard=async"    # ← NUEVO
+                        "discard=async" # ← NUEVO
                       ];
                     };
                     "/persist" = {
@@ -60,7 +61,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "discard=async"    # ← NUEVO
+                        "discard=async" # ← NUEVO
                       ];
                     };
                   };

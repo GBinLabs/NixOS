@@ -18,14 +18,14 @@
   };
   GPU-Intel = {
     enable = true;
-    vaDriver = "iHD";  # O "auto"
+    vaDriver = "iHD"; # O "auto"
     enableOptimizations = true;
   };
   # Final Drivers.
 
   # Impermanence.
   Persistente-PC.enable = false;
-  Persistente-Netbook.enable = true;
+  Persistente.enable = true;
   Reset.enable = false;
   Reset-Netbook.enable = true;
   # Final Impermanence.

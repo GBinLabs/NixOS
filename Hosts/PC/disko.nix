@@ -24,9 +24,10 @@
                 type = "luks";
                 name = "p1";
                 settings = {
-                  allowDiscards = true;  # ← Para SSD
+                  allowDiscards = true; # ← Para SSD
                 };
-                extraFormatArgs = [      # ← LUKS2 moderno
+                extraFormatArgs = [
+                  # ← LUKS2 moderno
                   "--type luks2"
                   "--pbkdf argon2id"
                 ];
@@ -41,7 +42,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "discard=async"  # ← TRIM asíncrono para SSD
+                        "discard=async" # ← TRIM asíncrono para SSD
                       ];
                     };
                     "/nix" = {
@@ -51,7 +52,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "discard=async"  # ← TRIM asíncrono para SSD
+                        "discard=async" # ← TRIM asíncrono para SSD
                       ];
                     };
                   };
@@ -61,7 +62,7 @@
           };
         };
       };
-      
+
       # ========== HDD (/dev/sdb) ==========
       hdd = {
         device = "/dev/sdb";
@@ -76,14 +77,15 @@
             #};
             crypt_p2 = {
               priority = 1; # 2 si está activada la partición Windows
-              size = "100%";  # ← Cambiado de "0" a "100%" (más explícito)
+              size = "100%"; # ← Cambiado de "0" a "100%" (más explícito)
               content = {
                 type = "luks";
                 name = "p2";
                 settings = {
-                  allowDiscards = false;  # ← Correcto para HDD
+                  allowDiscards = false; # ← Correcto para HDD
                 };
-                extraFormatArgs = [        # ← LUKS2 también para HDD
+                extraFormatArgs = [
+                  # ← LUKS2 también para HDD
                   "--type luks2"
                   "--pbkdf argon2id"
                 ];
@@ -98,7 +100,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "autodefrag"     # ← Útil para HDDs (desfragmenta automáticamente)
+                        "autodefrag" # ← Útil para HDDs (desfragmenta automáticamente)
                       ];
                     };
                     "/persist" = {
@@ -108,7 +110,7 @@
                         "compress=zstd"
                         "noatime"
                         "space_cache=v2"
-                        "autodefrag"     # ← Útil para HDDs
+                        "autodefrag" # ← Útil para HDDs
                       ];
                     };
                   };

@@ -15,24 +15,32 @@
   GPU-AMD = {
     enable = true;
     performanceProfile = "gaming";
-    enableTuning = false;  # true si quieres overclock/control manual
+    enableTuning = false; # true si quieres overclock/control manual
   };
   GPU-Intel = {
     enable = false;
     #vaDriver = "iHD";  # O "auto"
     #enableOptimizations = true;
   };
+  GPU-Nvidia = {
+    enable = false;
+    #primeMode = "reverseSync"; # NVIDIA solo cuando se necesita
+    #intelBusId = "PCI:0:2:0"; # Verificar con: lspci | grep VGA
+    #nvidiaBusId = "PCI:4:0:0"; # Verificar con: lspci | grep NVIDIA
+    #enableUtils = true;
+  };
   # Final Drivers.
 
   # Impermanence.
   Persistente-PC.enable = true;
-  Persistente-Netbook.enable = false;
+  Persistente.enable = false;
   Reset.enable = true;
   Reset-Netbook.enable = false;
   # Final Impermanence.
 
   # RED.
   Red-Netbook.enable = false;
+  Red-Notebook.enable = false;
   Red-PC.enable = true;
   # Final RED.
 
