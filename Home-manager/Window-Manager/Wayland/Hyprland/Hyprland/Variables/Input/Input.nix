@@ -15,7 +15,7 @@ _: {
         repeat_delay = 600;
         sensitivity = 0;
         accel_profile = "flat";
-        force_no_accel = false;
+        force_no_accel = true;
         left_handed = false;
         scroll_points = "";
         scroll_method = "2fg";

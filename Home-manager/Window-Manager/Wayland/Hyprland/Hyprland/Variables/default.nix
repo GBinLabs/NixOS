@@ -4,7 +4,7 @@
     ./Entorno/Entorno.nix
     ./General/General.nix
     ./Input/Input.nix
-    ./Monitor/default.nix
+    ./Monitor.nix
     ./Spanish/Spanish.nix
     ./Tema/Tema.nix
   ];

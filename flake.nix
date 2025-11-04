@@ -1,117 +1,81 @@
 {
-  description = "Configuración personalizada";
+  description = "NixOS + Hyprland - Configuración de alto rendimiento";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-unstable";
-    disko = {
-      url = "github:nix-community/disko/latest";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    impermanence = {
-      url = "github:nix-community/impermanence";
+    
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    impermanence.url = "github:nix-community/impermanence";
+    
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
     nixcord = {
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = {
-    nixpkgs,
-    disko,
-    home-manager,
-    impermanence,
-    sops-nix,
-    ...
-  } @ inputs: {
-    nixosConfigurations = {
-      Netbook = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          disko.nixosModules.disko
-          impermanence.nixosModules.impermanence
-          sops-nix.nixosModules.sops
-          ./Hosts/Netbook/configuration.nix
-          {
-            nixpkgs.overlays = [
+  outputs = { self, nixpkgs, home-manager, hyprland, ... }@inputs:
+    let
+      system = "x86_64-linux";
+      
+      # Configuración base compartida
+      baseModules = [
+        inputs.disko.nixosModules.disko
+        inputs.impermanence.nixosModules.impermanence
+        inputs.sops-nix.nixosModules.sops
+        
+        home-manager.nixosModules.home-manager {
+          home-manager = {
+            useGlobalPkgs = true;
+            useUserPackages = true;
+            backupFileExtension = "backup";
+            sharedModules = [
+              inputs.nixcord.homeModules.nixcord
+              hyprland.homeManagerModules.default
             ];
-          }
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.german = import ./Hosts/Netbook/home.nix;
-              backupFileExtension = "backup";
-              sharedModules = [
-                inputs.nixcord.homeModules.nixcord
-              ];
-            };
-          }
-        ];
+          };
+        }
+      ];
+      
+      # Función helper para crear hosts
+      mkHost = hostname: hostModule: homeModule:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = baseModules ++ [
+            hostModule
+            { home-manager.users.german = homeModule; }
+          ];
+        };
+    in {
+      nixosConfigurations = {
+        PC = mkHost "PC" ./Hosts/PC/configuration.nix ./Hosts/PC/home.nix;
+        Notebook = mkHost "Notebook" ./Hosts/Notebook/configuration.nix ./Hosts/Notebook/home.nix;
+        Netbook = mkHost "Netbook" ./Hosts/Netbook/configuration.nix ./Hosts/Netbook/home.nix;
       };
-      Notebook = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          disko.nixosModules.disko
-          impermanence.nixosModules.impermanence
-          sops-nix.nixosModules.sops
-          ./Hosts/Notebook/configuration.nix
-          {
-            nixpkgs.overlays = [
-            ];
-          }
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.german = import ./Hosts/Notebook/home.nix;
-              backupFileExtension = "backup";
-              sharedModules = [
-              	inputs.nixcord.homeModules.nixcord
-              ];
-            };
-          }
-        ];
-      };
-      PC = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        specialArgs = {inherit inputs;};
-        modules = [
-          disko.nixosModules.disko
-          impermanence.nixosModules.impermanence
-          sops-nix.nixosModules.sops
-          ./Hosts/PC/configuration.nix
-          {
-            nixpkgs.overlays = [
-            ];
-          }
-          home-manager.nixosModules.home-manager
-          {
-            home-manager = {
-              useGlobalPkgs = true;
-              useUserPackages = true;
-              users.german = import ./Hosts/PC/home.nix;
-              #users.tecnico = import ./Hosts/Bin-PC/home-tecnico.nix;
-              backupFileExtension = "backup";
-              sharedModules = [
-                inputs.nixcord.homeModules.nixcord
-              ];
-            };
-          }
+      
+      # Development shell para testing
+      devShells.${system}.default = nixpkgs.legacyPackages.${system}.mkShell {
+        buildInputs = with nixpkgs.legacyPackages.${system}; [
+          nixfmt-rfc-style
+          statix
+          deadnix
         ];
       };
     };
-  };
 }

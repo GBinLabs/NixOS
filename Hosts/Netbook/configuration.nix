@@ -1,50 +1,56 @@
-{config, ...}: {
+# Hosts/Netbook/configuration.nix
+{ config, ... }: {
   imports = [
     ./hardware-configuration.nix
     ../../Modules/default.nix
     ./disko.nix
   ];
 
-  # Drivers
-  # CPU.
-  CPU-AMD.enable = false;
-  CPU-Intel.enable = true;
-
-  # GPU.
-  GPU-AMD = {
-    enable = false;
-    #performanceProfile = "gaming";
-    #enableTuning = false;  # true si quieres overclock/control manual
+  # === DRIVERS ===
+  CPU-Intel = {
+    enable = true;
+    powerProfile = "powersave";  # balanced o powersave en batería
   };
+
   GPU-Intel = {
     enable = true;
-    vaDriver = "iHD"; # O "auto"
+    vaDriver = "iHD";  # UHD 600 es Gen 9.5
     enableOptimizations = true;
+    powerProfile = "powersave";
   };
-  # Final Drivers.
 
-  # Impermanence.
-  Persistente-PC.enable = false;
+  # === OPTIMIZACIONES ===
+  # NO usar Zram en netbook con poca RAM - usar swap tradicional
+  Zram.enable = true;
+
+  # === IMPERMANENCE ===
   Persistente.enable = true;
-  Reset.enable = false;
   Reset-Netbook.enable = true;
-  # Final Impermanence.
 
-  # RED.
+  # === RED ===
   Red-Netbook.enable = true;
-  Red-PC.enable = false;
-  # Final RED.
 
-  # Usuarios.
+  # === SERVICIOS DE BAJO CONSUMO ===
+  services = {
+    # Thermald para control térmico Intel
+    thermald.enable = true;
+    
+    # Auto-CPUfreq (alternativa a TLP, más simple)
+    # auto-cpufreq.enable = true;
+    
+    # Deshabilitar servicios innecesarios
+    printing.enable = false;  # Si no usas impresora
+    avahi.enable = false;     # Descubrimiento de red
+  };
+
+  # Usuarios
   users.mutableUsers = false;
   users.users.german = {
     isNormalUser = true;
     description = "Germán N. González";
-    extraGroups = ["networkmanager" "wheel" "audio"];
+    extraGroups = [ "networkmanager" "wheel" "audio" "video" ];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
-  # Final Usuarios.
 
-  # ¡DEJAR ASI!#
   system.stateVersion = "24.11";
 }
