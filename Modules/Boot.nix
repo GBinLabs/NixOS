@@ -15,46 +15,31 @@
     kernelPackages = pkgs.linuxPackages_zen;
 
     kernelParams = [
-      # === PERFORMANCE ===
-      "mitigations=off"
-      "nowatchdog"
-      "nmi_watchdog=0"
-      "preempt=full"
-      "threadirqs"
-      "nohz=on"
-      "transparent_hugepage=always"
-      "hugepagesz=2M"
-      "default_hugepagesz=2M"
-      "hugepages=1024"
-      "vm.max_map_count=2147483642"
-      "split_lock_detect=off"
-
       # === BOOT RÁPIDO ===
       "quiet"
       "loglevel=3"
       "systemd.show_status=false"
-      "rd.systemd.show_status=false"
-      "rd.udev.log_level=3"
-      "udev.log_priority=3"
-      "vt.global_cursor_default=0"
 
-      # === AHORRO DE TIEMPO ===
+      # === PERFORMANCE (conservador) ===
       "nowatchdog"
-      "modprobe.blacklist=iTCO_wdt,iTCO_vendor_support"
+      "nmi_watchdog=0"
+      "transparent_hugepage=always"
+      "vm.max_map_count=2147483642"
 
-      # === ADICIONALES PARA PERFORMANCE ===
-      "processor.max_cstate=1" # Reduce latencia CPU
-      "intel_idle.max_cstate=1" # Solo Intel
-      "idle=poll" # Máximo rendimiento (más consumo)
+      # === AMD ESPECÍFICO ===
+      "amd_iommu=on"
+      "iommu=pt"
+
+      # === REMOVER TEMPORALMENTE ===
+      # "mitigations=off"  # Reactivar después si todo funciona
+      # "idle=poll"  # Demasiado agresivo
+      # "processor.max_cstate=1"  # Probar sin esto primero
 
       # Network
-      "net.ifnames=0" # Nombres de red simples
+      "net.ifnames=0"
 
       # Filesystem
       "rootflags=noatime,nodiratime"
-
-      # Disable debug
-      "debug.exception-trace=0"
     ];
 
     initrd = {

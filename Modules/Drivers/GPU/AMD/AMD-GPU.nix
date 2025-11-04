@@ -30,7 +30,6 @@
     environment.sessionVariables = {
       AMD_VULKAN_ICD = "RADV";
       RADV_PERFTEST = "nggc,sam,rt,nir";
-      RADV_FORCE_FAMILY = "gfx1012";
       MESA_GLTHREAD = "true";
       MESA_NO_ERROR = "1";
       MESA_DISK_CACHE_SIZE = "8192M";
@@ -57,7 +56,7 @@
 
     boot = {
       kernelModules = ["amdgpu"];
-      
+
       kernelParams = [
         "amdgpu.dpm=1"
         "amdgpu.gpu_recovery=1"
@@ -68,7 +67,7 @@
         "amdgpu.gttsize=8192"
         "amdgpu.dpm_force_performance_level=high"
       ];
-      
+
       initrd.kernelModules = ["amdgpu"];
     };
 
