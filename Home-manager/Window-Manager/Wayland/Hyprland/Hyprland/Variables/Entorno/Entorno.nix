@@ -18,15 +18,21 @@
     GDK_SCALE = "1";
     
     # === WAYLAND COMPOSITOR ===
-    WLR_DRM_NO_ATOMIC = "0";
-    WLR_NO_HARDWARE_CURSORS = "0";
+    WLR_DRM_NO_ATOMIC = "1"; # ← Cambiado a 1 para Firefox
+    WLR_NO_HARDWARE_CURSORS = "1"; # ← CRÍTICO: Deshabilitar cursores hardware
     WLR_USE_LIBINPUT = "1";
     WLR_RENDERER_ALLOW_SOFTWARE = "0";
     
     # === APLICACIONES ===
     NIXOS_OZONE_WL = "1";
+    
+    # === FIREFOX/LIBREWOLF ESPECÍFICO ===
     MOZ_ENABLE_WAYLAND = "1";
-    MOZ_WEBRENDER = "1";
+    MOZ_WAYLAND_USE_VAAPI = "1";
+    MOZ_USE_XINPUT2 = "1";
+    MOZ_DBUS_REMOTE = "1";
+    MOZ_DISABLE_RDD_SANDBOX = "1"; # Desactiva sandbox RDD que causa problemas
+    
     SDL_VIDEODRIVER = "wayland";
     SDL_AUDIODRIVER = "pipewire";
     GLFW_PLATFORM = "wayland";

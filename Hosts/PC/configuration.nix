@@ -1,5 +1,5 @@
 # Hosts/PC/configuration.nix
-{ config, ... }: {
+{config, ...}: {
   imports = [
     ./hardware-configuration.nix
     ../../Modules/default.nix
@@ -8,8 +8,6 @@
 
   CPU-AMD.enable = true;
   GPU-AMD.enable = true;
-  Gaming-Optimization.enable = true;
-  Ananicy-CPP.enable = true;
   Zram.enable = true;
   Steam.enable = true;
   Persistente-PC.enable = true;
@@ -20,7 +18,7 @@
   users.users.german = {
     isNormalUser = true;
     description = "Germán N. González";
-    extraGroups = [ "networkmanager" "wheel" "audio" "gamemode" "video" ];
+    extraGroups = ["networkmanager" "wheel" "audio" "video" "gamemode"];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
 

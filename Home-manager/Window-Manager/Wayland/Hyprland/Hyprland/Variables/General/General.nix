@@ -16,12 +16,9 @@
 
       decoration = {
         rounding = 8;
-
         blur.enabled = false;
         shadow.enabled = false;
         dim_inactive = false;
-
-        # Activar screen shader solo si tienes uno
         screen_shader = "";
       };
 
@@ -42,73 +39,56 @@
         };
       };
 
-      gestures = {
-        #workspace_swipe = false;
-      };
+      gestures = {};
 
       misc = {
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
         vfr = true;
-        vrr = 2;
+        vrr = 1; # Cambiado de 2 a 1 (menos agresivo)
         mouse_move_enables_dpms = true;
         key_press_enables_dpms = true;
         disable_autoreload = true;
         focus_on_activate = true;
-
-        # GAMING CRÍTICO
-        #no_direct_scanout = false;
         enable_swallow = false;
         swallow_regex = "";
-
-        # Reducir overhead
         animate_manual_resizes = false;
         animate_mouse_windowdragging = false;
-
-        # Rendimiento
-        #render_ahead_of_time = false;
-        #render_ahead_safezone = 1;
       };
 
-      # === OPTIMIZACIONES DE RENDERING ===
+      # === RENDER OPTIMIZADO PARA FIREFOX ===
       render = {
-        #explicit_sync = 2; # Wayland explicit sync (reduce latencia)
-        #explicit_sync_kms = 2;
+        #explicit_sync = 0; # ← CRÍTICO: Desactivar para Firefox/LibreWolf
+        #explicit_sync_kms = 0; # ← CRÍTICO: Desactivar para Firefox/LibreWolf
         direct_scanout = true;
       };
 
-      # === OPTIMIZACIONES OPENGL ===
       opengl = {
         nvidia_anti_flicker = false;
-        #force_introspection = 0;
       };
 
-      # === CURSOR ===
+      # === CURSOR (FIX DEL ROMBO) ===
       cursor = {
-        no_hardware_cursors = false;
-        no_break_fs_vrr = true;
-        min_refresh_rate = 75; # Ajusta a tu monitor
+        no_hardware_cursors = true; # ← FIX: Deshabilitar cursores hardware
+        no_break_fs_vrr = false; # Cambiado
+        min_refresh_rate = 60; # Reducido para estabilidad
         hide_on_key_press = false;
         inactive_timeout = 0;
       };
 
-      # === BINDS ===
       binds = {
         allow_workspace_cycles = false;
         workspace_back_and_forth = false;
-        focus_preferred_method = 0; # Historial
+        focus_preferred_method = 0;
       };
 
-      # === DWINDLE LAYOUT ===
       dwindle = {
         pseudotile = true;
         preserve_split = true;
-        #no_gaps_when_only = false;
         smart_split = false;
         smart_resizing = true;
       };
 
-      # === MASTER LAYOUT (por si lo usas) ===
       master = {
         new_status = "master";
         mfact = 0.5;
@@ -118,7 +98,6 @@
         force_zero_scaling = true;
       };
 
-      # === DEBUG (solo si tienes problemas) ===
       debug = {
         disable_logs = true;
         disable_time = true;

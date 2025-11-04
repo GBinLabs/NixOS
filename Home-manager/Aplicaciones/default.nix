@@ -1,9 +1,9 @@
+# Home-manager/Aplicaciones/default.nix
 _: {
   imports = [
     ./Discord/Discord.nix
     ./EasyEffects/EasyEffects.nix
     ./Editores/default.nix
-    ./Gaming-mode.nix
     ./General.nix
     ./Gestor-archivos/default.nix
     ./Git.nix

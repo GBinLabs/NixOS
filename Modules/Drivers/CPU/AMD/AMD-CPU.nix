@@ -1,61 +1,63 @@
 # Modules/Drivers/CPU/AMD/AMD-CPU.nix
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
-  options.CPU-AMD.enable = lib.mkEnableOption "CPU AMD - Máximo rendimiento gaming";
+{config, pkgs, lib, ...}: {
+  options.CPU-AMD.enable = lib.mkEnableOption "CPU AMD con undervolt";
 
   config = lib.mkIf config.CPU-AMD.enable {
     hardware.cpu.amd.updateMicrocode = true;
 
     boot = {
-      kernelModules = ["kvm-amd" "msr"];
-      
+      kernelModules = ["kvm-amd" "msr" "zenpower"];
       kernelParams = [
-        "mitigations=off"
         "amd_iommu=on"
         "iommu=pt"
-        "transparent_hugepage=always"
-        "hugepagesz=2M"
-        "default_hugepagesz=2M"
-        "preempt=full"
-        "nosmt=off"
+        "amd_pstate=active"
+        "amd_pstate.shared_mem=1"
       ];
     };
 
     powerManagement = {
       enable = true;
-      cpuFreqGovernor = "performance";
+      cpuFreqGovernor = "schedutil";
+    };
+
+    systemd.services.amd-undervolt = {
+      description = "AMD Ryzen Undervolt agresivo";
+      wantedBy = ["multi-user.target"];
+      after = ["multi-user.target"];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = pkgs.writeShellScript "amd-undervolt" ''
+          # Configurar TDP y límites de energía
+          echo 65000000 > /sys/class/hwmon/hwmon0/power1_cap || true
+          
+          # Configurar voltaje máximo y offset
+          for cpu in /sys/devices/system/cpu/cpu*/cpufreq/; do
+            echo 1100000 > ''${cpu}scaling_max_freq 2>/dev/null || true
+            echo performance > ''${cpu}energy_performance_preference 2>/dev/null || true
+          done
+          
+          # Habilitar boost controlado
+          echo 1 > /sys/devices/system/cpu/cpufreq/boost
+          
+          # Optimizar estados C
+          for state in /sys/devices/system/cpu/cpu*/cpuidle/state*/disable; do
+            echo 0 > $state 2>/dev/null || true
+          done
+        '';
+      };
     };
 
     systemd.tmpfiles.rules = [
       "w /sys/devices/system/cpu/cpufreq/boost - - - - 1"
-      "w /sys/devices/system/cpu/cpu*/cpuidle/state3/disable - - - - 1"
-      "w /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq - - - - 3600000"
+      "w /sys/devices/system/cpu/cpu*/cpufreq/scaling_min_freq - - - - 2200000"
     ];
 
     services.irqbalance.enable = true;
 
     environment.systemPackages = with pkgs; [
-      lm_sensors
-      cpufrequtils
-    ];
-
-    environment.sessionVariables = {
-      OMP_NUM_THREADS = "12";
-      OMP_PROC_BIND = "true";
-      OMP_PLACES = "cores";
-    };
-
-    security.pam.loginLimits = [
-      { domain = "@users"; type = "soft"; item = "rtprio"; value = "99"; }
-      { domain = "@users"; type = "hard"; item = "rtprio"; value = "99"; }
-      { domain = "@users"; type = "soft"; item = "nice"; value = "-20"; }
-      { domain = "@users"; type = "hard"; item = "nice"; value = "-20"; }
-      { domain = "@users"; type = "soft"; item = "memlock"; value = "unlimited"; }
-      { domain = "@users"; type = "hard"; item = "memlock"; value = "unlimited"; }
+      ryzenadj
+      zenmonitor
     ];
   };
 }

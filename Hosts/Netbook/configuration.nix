@@ -9,9 +9,7 @@
   CPU-Intel.enable = true;
   GPU-Intel.enable = true;
   Gaming-Optimization.enable = true;
-  Ananicy-CPP.enable = true;
   Zram.enable = true;
-  DNS-Smart.enable = true;
   Persistente.enable = true;
   Reset-Netbook.enable = true;
   Red-Netbook.enable = true;

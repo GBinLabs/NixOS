@@ -41,14 +41,34 @@
       };
     };
 
-    # Paquetes adicionales
-    environment.systemPackages = with pkgs; [
-      gamescope # Steam compositor
-      protonup-qt # Gestor de Proton GE
-      lutris # Launcher alternativo
-      heroic # Epic/GOG launcher
-      wine-staging # Wine con staging patches
-      winetricks
+    boot.kernel.sysctl = {
+      "net.ipv4.tcp_congestion_control" = "bbr";
+      "net.core.default_qdisc" = "fq";
+      "vm.dirty_ratio" = 10;
+      "vm.dirty_background_ratio" = 5;
+      "fs.file-max" = 2097152;
+      "vm.max_map_count" = 2147483642;
+    };
+
+    programs.gamemode = {
+      enable = true;
+      settings.general = {
+        renice = -10;
+        ioprio = 0;
+      };
+    };
+
+    security.pam.loginLimits = [
+      {
+        domain = "@users";
+        item = "rtprio";
+        value = "95";
+      }
+      {
+        domain = "@users";
+        item = "nice";
+        value = "-10";
+      }
     ];
   };
 }
