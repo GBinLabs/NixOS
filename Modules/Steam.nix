@@ -39,42 +39,6 @@
           };
         };
       };
-
-      # GameMode con configuración agresiva
-      gamemode = {
-        enable = true;
-        settings = {
-          general = {
-            softrealtime = "auto";
-            renice = -10;
-            ioprio = 0;
-          };
-
-          gpu = {
-            apply_gpu_optimisations = "accept-responsibility";
-            gpu_device = 0;
-            amd_performance_level = "high";
-          };
-
-          cpu = {
-            park_cores = "no";
-            pin_cores = "yes";
-          };
-
-          custom = {
-            start = "${pkgs.libnotify}/bin/notify-send 'GameMode activado'";
-            end = "${pkgs.libnotify}/bin/notify-send 'GameMode desactivado'";
-          };
-        };
-
-        enableRenice = true;
-      };
-
-      # MangoHud para overlay
-      #mangohud = {
-      #  enable = true;
-      #  enableSessionWide = false;  # Solo en Steam
-      #};
     };
 
     # Paquetes adicionales
