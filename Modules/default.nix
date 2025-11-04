@@ -1,10 +1,12 @@
 _: {
   imports = [
+    ./Ananicy-CPP.nix
     ./Audio.nix
     ./Bluetooth.nix
     ./Boot.nix
     ./DNS.nix
     ./Drivers/default.nix
+    ./Gaming-Optimization.nix
     ./Window-Manager/default.nix
     ./Impermanence/default.nix
     ./Keyboard.nix
