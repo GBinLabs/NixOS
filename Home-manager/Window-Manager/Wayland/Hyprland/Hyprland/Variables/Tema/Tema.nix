@@ -12,7 +12,7 @@
   cursorSize = 24;
 in {
   home.packages = with pkgs; [
-    qt6ct
+    qt6Packages.qt6ct
     qt6Packages.qtstyleplugin-kvantum
     libsForQt5.qtstyleplugin-kvantum
     gruvbox-kvantum # Tema Gruvbox para Kvantum

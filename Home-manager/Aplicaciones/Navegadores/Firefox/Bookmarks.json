@@ -8,20 +8,12 @@
         "url": "https://annas-archive.org/"
       },
       {
-        "name": "ChatGPT",
-        "url": "https://chatgpt.com/"
-      },
-      {
-        "name": "Claude",
-        "url": "https://claude.ai/new"
-      },
-      {
-        "name": "DeepSeek",
-        "url": "https://www.deepseek.com/"
-      },
-      {
         "name": "GitHub",
         "url": "https://github.com/"
+      },
+      {
+        "name": "GitLab",
+        "url": "https://gitlab.com/"
       },
       {
         "name": "Proton",
@@ -57,6 +49,23 @@
         ]
       },
       {
+        "name": "IA",
+        "bookmarks": [
+          {
+            "name": "ChatGPT",
+            "url": "https://chatgpt.com/"
+          },
+          {
+            "name": "Claude",
+            "url": "https://claude.ai/new"
+          },
+          {
+            "name": "DeepSeek",
+            "url": "https://www.deepseek.com"
+          }
+        ]
+      },
+      {
         "name": "NixOS",
         "bookmarks": [
           {
@@ -74,6 +83,44 @@
           {
             "name": "NixOS - Home-Manager",
             "url": "https://nix-community.github.io/home-manager/"
+          }
+        ]
+      },
+      {
+        "name": "Trabajo",
+        "bookmarks": [
+          {
+            "name": "Computrabajo",
+            "url": "https://ar.computrabajo.com/"
+          },
+          {
+            "name": "Linkedin",
+            "url": "https://www.linkedin.com/"
+          }
+        ]
+      },
+      {
+        "name": "UNT",
+        "bookmarks": [
+          {
+            "name": "Facet",
+            "url": "https://www.facet.unt.edu.ar/"
+          },
+          {
+            "name": "FacetVirtual",
+            "url": "https://facetvirtual.facet.unt.edu.ar/"
+          },
+          {
+            "name": "Licenciatura en Física",
+            "url": "https://www.facet.unt.edu.ar/licfisica/"
+          },
+          {
+            "name": "Siu Guarani",
+            "url": "https://guarani.unt.edu.ar/autogestion/"
+          },
+          {
+            "name": "UNT",
+            "url": "https://www.unt.edu.ar/"
           }
         ]
       },

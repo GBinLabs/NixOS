@@ -1,7 +1,9 @@
 _: {
   imports = [
+    ./Audio.nix
     ./Bluetooth.nix
     ./Boot.nix
+    ./DNS.nix
     ./Drivers/default.nix
     ./Window-Manager/default.nix
     ./Impermanence/default.nix
@@ -12,7 +14,6 @@ _: {
     ./Security/default.nix
     ./Services.nix
     ./Steam.nix
-    ./Systemd.nix
     ./Zram.nix
     ./Zsh.nix
   ];

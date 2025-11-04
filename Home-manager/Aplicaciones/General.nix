@@ -40,5 +40,7 @@
     imagemagick
     # Mouse.
     piper
+    # Minecraft
+    prismlauncher
   ];
 }

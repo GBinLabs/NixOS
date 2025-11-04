@@ -42,8 +42,8 @@
                 ".local/share/PrismLauncher"
               ];
               files = [
-              	".p10k.zsh"
-              	".zshrc"
+                ".p10k.zsh"
+                ".zshrc"
               ];
             };
           };

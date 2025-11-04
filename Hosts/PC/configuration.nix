@@ -8,7 +8,12 @@
 
   # Drivers
   # CPU.
-  CPU-AMD.enable = true;
+  CPU-AMD = {
+    enable = true;
+    performanceProfile = "gaming";
+    enableSchedulerTweaks = true;
+    enableCPUBoost = true;
+  };
   CPU-Intel.enable = false;
 
   # GPU.
@@ -30,6 +35,10 @@
     #enableUtils = true;
   };
   # Final Drivers.
+
+  # Zram.
+  Zram.enable = true;
+  # Final Zram.
 
   # Impermanence.
   Persistente-PC.enable = true;

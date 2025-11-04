@@ -26,7 +26,7 @@ _: {
         ram_color = "C26693";
         battery = false;
         fps = true;
-        fps_metrics = "avg 0.01";
+        fps_metrics = "avg,0.01,0.001"; # Promedio, 1% y 0.1%
         percentiles = true;
         engine_version = true;
         engine_color = "EB5B5B";
@@ -46,7 +46,7 @@ _: {
         gl_vsync = false;
         blacklist = "pamac-manager lact ghb bitwig-studio ptyxis yumex";
       };
-      enableSessionWide = false;
+      enableSessionWide = true;
     };
   };
 }
