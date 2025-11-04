@@ -1,42 +1,79 @@
-{ pkgs, config, ... }:
-{
-  # Instala zsh y lo habilita
+# Modules/Zsh.nix
+{ pkgs, config, ... }: {
   programs.zsh = {
     enable = true;
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     autosuggestions.enable = true;
+    
+    # Performance
+    enableGlobalCompInit = false;  # Faster startup
 
     ohMyZsh = {
       enable = true;
       plugins = [
         "git"
+        "sudo"
+        "copypath"
+        "dirhistory"
       ];
     };
     
+    # Prompt más rápido
     promptInit = ''
-      # Source the theme directly from the Nix store
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-      # Source your persisted configuration
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
     '';
 
     histSize = 10000;
     histFile = "$HOME/.zsh_history";
-    setOptions = [ "HIST_IGNORE_ALL_DUPS" ];
+    
+    setOptions = [ 
+      "HIST_IGNORE_ALL_DUPS"
+      "HIST_SAVE_NO_DUPS"
+      "HIST_REDUCE_BLANKS"
+      "SHARE_HISTORY"
+      "INC_APPEND_HISTORY"
+    ];
+    
+    # Aliases útiles
+    shellAliases = {
+      # Sistema
+      rebuild = "sudo nixos-rebuild switch --flake ~/.config/nixos";
+      update = "nix flake update ~/.config/nixos && rebuild";
+      clean = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
+      optimise = "nix-store --optimise";
+      
+      # Utils
+      ls = "ls --color=auto";
+      ll = "ls -lah";
+      grep = "grep --color=auto";
+      
+      # Git shortcuts
+      gs = "git status";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
+      gl = "git pull";
+      
+      # Performance
+      mem = "free -h";
+      cpu = "htop";
+      temps = "watch -n1 sensors";
+    };
   };
 
-  # Para que /etc/shells incluya zsh
   environment.shells = with pkgs; [ zsh ];
-
-  # Establecer zsh como shell por defecto para todos los usuarios
   users.defaultUserShell = pkgs.zsh;
 
-  # Incluir paquetes globales
   environment.systemPackages = with pkgs; [
     zsh
     zsh-powerlevel10k
     oh-my-zsh
   ];
+  
+  # Optimización de compinit
+  environment.etc."zshenv".text = ''
+    skip_global_compinit=1
+  '';
 }
-

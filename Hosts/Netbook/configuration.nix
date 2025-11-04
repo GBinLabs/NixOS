@@ -1,3 +1,4 @@
+# Hosts/Netbook/configuration.nix
 {config, ...}: {
   imports = [
     ./hardware-configuration.nix
@@ -5,26 +6,12 @@
     ./disko.nix
   ];
 
-  CPU-Intel = {
-    enable = true;
-    powerProfile = "balanced";
-  };
-
-  GPU-Intel = {
-    enable = true;
-    vaDriver = "iHD";
-    enableOptimizations = true;
-    powerProfile = "balanced";
-  };
-
-  # MISMAS optimizaciones que PC
-  #Gaming-Optimization.enable = false; # ← IGUAL que PC
-  Ananicy-CPP.enable = false; # ← IGUAL que PC
-  Zram.enable = true; # ← IGUAL que PC
-
-  # Solo para Netbook (universidad)
-  DNS-Smart.enable = true; # ← NUEVO
-
+  CPU-Intel.enable = true;
+  GPU-Intel.enable = true;
+  Gaming-Optimization.enable = true;
+  Ananicy-CPP.enable = true;
+  Zram.enable = true;
+  DNS-Smart.enable = true;
   Persistente.enable = true;
   Reset-Netbook.enable = true;
   Red-Netbook.enable = true;

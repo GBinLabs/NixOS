@@ -1,22 +1,47 @@
-_: {
-  programs = {
-    kitty = {
-      enable = true;
-      theme = "Gruvbox Dark Hard";  # ← Tema Gruvbox integrado
+# Home-manager/Aplicaciones/Terminales/Kitty/Kitty.nix
+{ pkgs, ... }: {
+  programs.kitty = {
+    enable = true;
+    
+    # Nueva sintaxis para tema
+    #themeFile = "Gruvbox Dark Hard";
+    
+    settings = {
+      confirm_os_window_close = 0;
+      background_opacity = "0.66";
+      scrollback_lines = 10000;
+      enable_audio_bell = false;
       
-      settings = {
-        confirm_os_window_close = 0;
-        background_opacity = "0.66";
-        scrollback_lines = 10000;
-        enable_audio_bell = false;
-        
-        # Fuente (opcional, para que coincida con tu sistema)
-        font_family = "JetBrains Mono";
-        font_size = "11.0";
-        
-        # Mejorar renderizado con transparencia
-        background_blur = 20;
-      };
+      # Fuente
+      font_family = "JetBrains Mono";
+      font_size = "11.0";
+      
+      # Blur
+      background_blur = 20;
+      
+      # Performance
+      repaint_delay = 10;
+      input_delay = 3;
+      sync_to_monitor = true;
+      
+      # Cursor
+      cursor_shape = "block";
+      cursor_blink_interval = 0;
+      
+      # Mouse
+      mouse_hide_wait = 3;
+      
+      # Window
+      remember_window_size = false;
+      initial_window_width = 100;
+      initial_window_height = 30;
+      
+      # Tabs
+      tab_bar_edge = "bottom";
+      tab_bar_style = "powerline";
+      
+      # Shell
+      shell = ".";
     };
-};
+  };
 }

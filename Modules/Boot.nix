@@ -1,74 +1,95 @@
 # Modules/Boot.nix
-{ pkgs, ... }: {
+{pkgs, ...}: {
   boot = {
     loader = {
       systemd-boot = {
         enable = true;
-        configurationLimit = 10;  # Limitar generaciones
-        consoleMode = "auto";
+        configurationLimit = 5; # Reducido a 5
+        consoleMode = "max"; # Resolución máxima
+        editor = false; # Deshabilitar editor (seguridad + velocidad)
       };
       efi.canTouchEfiVariables = true;
-      timeout = 1;  # Boot rápido
+      timeout = 0; # Boot instantáneo (0 = sin menú)
     };
-    
-    # Kernel Zen (óptimo para gaming)
+
     kernelPackages = pkgs.linuxPackages_zen;
-    
-    # Parámetros globales de rendimiento
+
     kernelParams = [
-      # === Performance ===
-      "mitigations=off"          # +5-10% FPS (SEGURO en PC gaming)
-      "nowatchdog"               # Reduce overhead
+      # === PERFORMANCE ===
+      "mitigations=off"
+      "nowatchdog"
       "nmi_watchdog=0"
-      
-      # === Scheduler ===
-      "preempt=full"             # Kernel 6.6+ baja latencia
-      
-      # === Transparent Huge Pages ===
-      "transparent_hugepage=madvise"
-      
-      # === Memory ===
+      "preempt=full"
+      "threadirqs"
+      "nohz=on"
+      "transparent_hugepage=always"
       "hugepagesz=2M"
       "default_hugepagesz=2M"
+      "hugepages=1024"
+      "vm.max_map_count=2147483642"
+      "split_lock_detect=off"
+
+      # === BOOT RÁPIDO ===
+      "quiet"
+      "loglevel=3"
+      "systemd.show_status=false"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+      "vt.global_cursor_default=0"
+
+      # === AHORRO DE TIEMPO ===
+      "nowatchdog"
+      "modprobe.blacklist=iTCO_wdt,iTCO_vendor_support"
+
+      # === ADICIONALES PARA PERFORMANCE ===
+      "processor.max_cstate=1" # Reduce latencia CPU
+      "intel_idle.max_cstate=1" # Solo Intel
+      "idle=poll" # Máximo rendimiento (más consumo)
+
+      # Network
+      "net.ifnames=0" # Nombres de red simples
+
+      # Filesystem
+      "rootflags=noatime,nodiratime"
+
+      # Disable debug
+      "debug.exception-trace=0"
     ];
-    
-    # Módulos en initrd para boot rápido
+
     initrd = {
-      availableKernelModules = [ 
-        "nvme" 
-        "xhci_pci" 
-        "ahci" 
-        "usbhid" 
+      availableKernelModules = [
+        "nvme"
+        "xhci_pci"
+        "ahci"
+        "usbhid"
         "sd_mod"
       ];
-      
-      # Compresión más rápida
+
       compressor = "zstd";
-      compressorArgs = [ "-19" "-T0" ];  # Máxima compresión multithread
+      compressorArgs = ["-19" "-T0"];
+
+      # Verbose OFF
+      verbose = false;
     };
-    
-    # Optimizaciones del kernel
-    kernel.sysctl = {
-      # Network performance (importante para online gaming)
-      "net.core.netdev_max_backlog" = 16384;
-      "net.core.rmem_default" = 1048576;
-      "net.core.rmem_max" = 16777216;
-      "net.core.wmem_default" = 1048576;
-      "net.core.wmem_max" = 16777216;
-      "net.ipv4.tcp_rmem" = "4096 1048576 2097152";
-      "net.ipv4.tcp_wmem" = "4096 65536 16777216";
-      "net.ipv4.tcp_fastopen" = 3;
-      "net.ipv4.tcp_mtu_probing" = 1;
-      
-      # File system
-      "fs.file-max" = 2097152;
-      "fs.inotify.max_user_watches" = 524288;
-    };
-    
-    # Plymouth para boot bonito (opcional)
-    plymouth = {
-      enable = true;
-      theme = "breeze";
-    };
+
+    # === SIN PLYMOUTH (menos overhead) ===
+    plymouth.enable = false;
+
+    # === CONSOLA ===
+    consoleLogLevel = 0;
+
+    # === KERNEL MODULES BLACKLIST ===
+    blacklistedKernelModules = [
+      # Watchdogs (innecesarios)
+      "iTCO_wdt"
+      "iTCO_vendor_support"
+
+      # PC Speaker (molesto)
+      "pcspkr"
+
+      # Bluetooth (si no lo usas)
+      # "btusb" "bluetooth"
+    ];
   };
 }

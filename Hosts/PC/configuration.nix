@@ -6,32 +6,16 @@
     ./disko.nix
   ];
 
-  # === DRIVERS ===
-  CPU-AMD = {
-    enable = true;
-    performanceProfile = "gaming";
-    enableSchedulerTweaks = true;
-    enableCPUBoost = true;
-  };
-
-  GPU-AMD = {
-    enable = true;
-    performanceProfile = "gaming";
-    enableTuning = true;  # Para usar LACT
-  };
-
-  # === OPTIMIZACIONES ===
+  CPU-AMD.enable = true;
+  GPU-AMD.enable = true;
+  Gaming-Optimization.enable = true;
+  Ananicy-CPP.enable = true;
   Zram.enable = true;
-  
-  # === GAMING ===
   Steam.enable = true;
-  
-  # === RESTO ===
   Persistente-PC.enable = true;
   Reset.enable = true;
   Red-PC.enable = true;
 
-  # Usuarios
   users.mutableUsers = false;
   users.users.german = {
     isNormalUser = true;

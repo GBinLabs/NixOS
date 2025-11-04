@@ -6,7 +6,7 @@ _: {
     ./Boot.nix
     ./DNS.nix
     ./Drivers/default.nix
-    #./Gaming-Optimization.nix
+    ./Gaming-Optimization.nix
     ./Window-Manager/default.nix
     ./Impermanence/default.nix
     ./Keyboard.nix
@@ -15,6 +15,7 @@ _: {
     ./Programs.nix
     ./Security/default.nix
     ./Services.nix
+    ./Systemd-Optimization.nix
     ./Steam.nix
     ./Zram.nix
     ./Zsh.nix
