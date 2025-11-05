@@ -8,7 +8,6 @@
 
   CPU-Intel.enable = true;
   GPU-Intel.enable = true;
-  Gaming-Optimization.enable = true;
   Zram.enable = true;
   Persistente.enable = true;
   Reset-Netbook.enable = true;
