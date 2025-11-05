@@ -7,8 +7,6 @@
     keyFile = "~/.ssh/id_ed25519_Netbook";
   };
 
-  Monitor-Netbook.enable = true;
-
   home = {
     username = "german";
     homeDirectory = "/home/german";

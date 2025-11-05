@@ -6,7 +6,7 @@ _: {
     ./Boot.nix
     ./DNS.nix
     ./Drivers/default.nix
-    ./Window-Manager/default.nix
+    ./Desktop/default.nix
     ./Impermanence/default.nix
     ./Keyboard.nix
     ./Network/default.nix
