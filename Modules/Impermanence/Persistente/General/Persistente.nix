@@ -38,6 +38,8 @@
                 ".config/git"
                 ".config/Joplin"
                 ".config/joplin-desktop"
+                ".config/BraveSoftware/"
+                ".local/share/BraveSoftware/"
               ];
               files = [
                 ".p10k.zsh"

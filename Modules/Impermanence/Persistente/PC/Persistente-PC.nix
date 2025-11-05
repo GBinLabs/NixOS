@@ -40,6 +40,8 @@
                 ".config/joplin-desktop"
                 ".local/share/Steam"
                 ".local/share/PrismLauncher"
+                ".config/BraveSoftware/"
+                ".local/share/BraveSoftware/"
               ];
               files = [
                 ".p10k.zsh"
