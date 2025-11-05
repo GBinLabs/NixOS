@@ -12,8 +12,6 @@
     evince
     # Visor de imagenes.
     eog
-    # Languagetool.
-    ltex-ls-plus
     # Upscaling
     upscayl
     # Inkscape
@@ -34,13 +32,5 @@
     pciutils
     # Btop.
     btop
-    # Captura de pantalla.
-    grimblast
-    wl-clipboard
-    imagemagick
-    # Mouse.
-    piper
-    # Minecraft
-    prismlauncher
   ];
 }

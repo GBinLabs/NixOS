@@ -4,8 +4,5 @@
       enable = true;
       package = pkgs.jdk;
     };
-    nm-applet = {
-    	enable = true;
-    };
   };
 }

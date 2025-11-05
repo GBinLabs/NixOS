@@ -16,7 +16,7 @@
         "default.clock.min-quantum" = 256;
         "default.clock.max-quantum" = 2048;
       };
-      
+
       "context.modules" = [
         {
           name = "libpipewire-module-rt";
@@ -54,9 +54,4 @@
   };
 
   security.rtkit.enable = true;
-  
-  environment.systemPackages = with pkgs; [
-    pavucontrol
-    easyeffects
-  ];
 }
