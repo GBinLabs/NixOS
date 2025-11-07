@@ -1,5 +1,10 @@
 # Modules/Drivers/CPU/AMD/AMD-CPU.nix
-{config, pkgs, lib, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   options.CPU-AMD.enable = lib.mkEnableOption "CPU AMD con undervolt";
 
   config = lib.mkIf config.CPU-AMD.enable {
@@ -30,16 +35,16 @@
         ExecStart = pkgs.writeShellScript "amd-undervolt" ''
           # Configurar TDP y límites de energía
           echo 65000000 > /sys/class/hwmon/hwmon0/power1_cap || true
-          
+
           # Configurar voltaje máximo y offset
           for cpu in /sys/devices/system/cpu/cpu*/cpufreq/; do
             echo 1100000 > ''${cpu}scaling_max_freq 2>/dev/null || true
             echo performance > ''${cpu}energy_performance_preference 2>/dev/null || true
           done
-          
+
           # Habilitar boost controlado
           echo 1 > /sys/devices/system/cpu/cpufreq/boost
-          
+
           # Optimizar estados C
           for state in /sys/devices/system/cpu/cpu*/cpuidle/state*/disable; do
             echo 0 > $state 2>/dev/null || true
@@ -57,7 +62,6 @@
 
     environment.systemPackages = with pkgs; [
       ryzenadj
-      zenmonitor
     ];
   };
 }

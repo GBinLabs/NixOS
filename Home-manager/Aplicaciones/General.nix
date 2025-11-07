@@ -32,7 +32,5 @@
     pciutils
     # Btop.
     btop
-    # Brave
-    brave
   ];
 }
