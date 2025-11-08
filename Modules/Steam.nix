@@ -10,7 +10,6 @@
     programs.steam = {
       enable = true;
       extraCompatPackages = with pkgs; [proton-ge-bin];
-      gamescopeSession.enable = true;
 
       package = pkgs.steam.override {
         extraEnv = {
@@ -44,5 +43,6 @@
         };
       };
     };
+    environment.systemPackages = with pkgs; [prismlauncher];
   };
 }

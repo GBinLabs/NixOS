@@ -27,7 +27,7 @@ _: {
         battery = false;
         fps = true;
         fps_metrics = "avg,0.01,0.001"; # Promedio, 1% y 0.1%
-        percentiles = true;
+        #percentiles = true;
         engine_version = true;
         engine_color = "EB5B5B";
         arch = true;
@@ -46,7 +46,7 @@ _: {
         gl_vsync = false;
         blacklist = "pamac-manager lact ghb bitwig-studio ptyxis yumex";
       };
-      enableSessionWide = true;
+      enableSessionWide = false;
     };
   };
 }
