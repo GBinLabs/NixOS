@@ -20,7 +20,13 @@
   };
   Zram.enable = true;
   Steam.enable = true;
-  Persistente-PC.enable = true;
+  Persistencia = {
+    enable = true;
+    extraDirectories = [
+      ".local/share/Steam"
+      ".local/share/PrismLauncher"
+    ];
+  };
   Reset.enable = true;
   Red-PC.enable = true;
 

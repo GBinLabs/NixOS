@@ -1,6 +1,6 @@
 _: {
   imports = [
-    ./Persistente/default.nix
+    ./Persistencia.nix
     ./Reset/default.nix
   ];
 }

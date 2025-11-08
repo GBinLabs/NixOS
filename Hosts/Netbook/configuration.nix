@@ -16,7 +16,7 @@
     rc6Level = 3;
   };
   Zram.enable = true;
-  Persistente.enable = true;
+  Persistencia.enable = true;
   Reset-Netbook.enable = true;
   Red-Netbook.enable = true;
 

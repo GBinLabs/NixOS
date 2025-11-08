@@ -36,7 +36,7 @@
       font-antialiasing = "rgba";
       font-hinting = "slight";
 
-      enable-animations = true;
+      enable-animations = false;
       gtk-enable-primary-paste = false;
     };
 
@@ -66,7 +66,7 @@
     "org/gnome/mutter" = {
       dynamic-workspaces = false;
       edge-tiling = true;
-      experimental-features = ["scale-monitor-framebuffer"];
+      experimental-features = ["scale-monitor-framebuffer" "variable-refresh-rate"];
     };
 
     "org/gnome/desktop/wm/preferences" = {

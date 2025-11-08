@@ -16,6 +16,9 @@
       core-apps.enable = false;
       localsearch.enable = false;
       tinysparql.enable = false;
+      #evolution-data-server.enable = false;
+      gnome-browser-connector.enable = false;
+      gnome-initial-setup.enable = false;
     };
   };
 

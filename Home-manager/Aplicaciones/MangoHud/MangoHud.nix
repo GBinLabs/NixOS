@@ -27,7 +27,6 @@ _: {
         battery = false;
         fps = true;
         fps_metrics = "avg,0.01,0.001"; # Promedio, 1% y 0.1%
-        #percentiles = true;
         engine_version = true;
         engine_color = "EB5B5B";
         arch = true;
@@ -48,5 +47,9 @@ _: {
       };
       enableSessionWide = false;
     };
+  };
+  home.sessionVariables = {
+    MANGOHUD = 1;
+    MANGOHUD_DLSYM = 0;
   };
 }
