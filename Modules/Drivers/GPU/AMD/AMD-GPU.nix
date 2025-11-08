@@ -1,89 +1,80 @@
-# Modules/Drivers/GPU/AMD/AMD-GPU.nix
+{ config, lib, pkgs, ... }:
+
+with lib;
+
+let
+  cfg = config.GPU-AMD;
+  GPU = "/sys/class/drm/card0/device";
+  HWMON = "${GPU}/hwmon/hwmon*";
+in
 {
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
-  options.GPU-AMD.enable = lib.mkEnableOption "GPU AMD con undervolt";
-
-  config = lib.mkIf config.GPU-AMD.enable {
-    hardware = {
-      amdgpu = {
-        opencl.enable = true;
-        initrd.enable = true;
-      };
-      graphics = {
-        enable = true;
-        enable32Bit = true;
-        extraPackages = with pkgs; [
-          rocmPackages.clr.icd
-          rocmPackages.clr
-        ];
-      };
-    };
-
-    environment.sessionVariables = {
-      AMD_VULKAN_ICD = "RADV";
-      RADV_PERFTEST = "nggc,sam";
-    };
-
-    boot = {
-      kernelModules = ["amdgpu"];
-      kernelParams = [
-        "amdgpu.ppfeaturemask=0xffffffff"
-        "amdgpu.gpu_recovery=1"
-      ];
-      initrd.kernelModules = ["amdgpu"];
-    };
-
-    systemd.services.amd-gpu-undervolt = {
-      description = "AMD GPU Undervolt y optimización";
-      wantedBy = ["multi-user.target"];
-      after = ["multi-user.target"];
-      serviceConfig = {
-        Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = pkgs.writeShellScript "amd-gpu-setup" ''
-          CARD=$(ls /sys/class/drm/card*/device/pp_od_clk_voltage 2>/dev/null | head -1)
-          if [ -n "$CARD" ]; then
-            CARDPATH=$(dirname "$CARD")
-
-            # Modo manual
-            echo "manual" > "$CARDPATH/power_dpm_force_performance_level"
-
-            # Configurar estados GPU (RX 5500 XT)
-            # Estado 0: 800MHz @ 750mV
-            # Estado 1: 1300MHz @ 800mV
-            # Estado 2: 1717MHz @ 950mV (reducido de ~1100mV stock)
-
-            echo "s 0 800 750" > "$CARD"
-            echo "s 1 1300 800" > "$CARD"
-            echo "s 2 1717 950" > "$CARD"
-            echo "c" > "$CARD"
-
-            # Configurar ventilador más agresivo
-            echo "1" > "$CARDPATH/hwmon/hwmon"*/pwm1_enable
-            echo "120" > "$CARDPATH/hwmon/hwmon"*/pwm1
-
-            # Habilitar performance auto
-            echo "auto" > "$CARDPATH/power_dpm_force_performance_level"
-          fi
-        '';
-      };
-    };
-
-    services.lact = {
-      enable = true;
-      package = pkgs.lact;
-    };
-
-    environment.systemPackages = with pkgs; [
-      radeontop
-      lact
-      (writeShellScriptBin "gpu-stats" ''
-        watch -n1 'radeontop -d - -l 1 | grep -E "gpu|vram"'
-      '')
-    ];
+  options.GPU-AMD = {
+    enable = mkEnableOption "AMD RX 5500XT - drivers RADV + undervolt";
+    gpuClock = mkOption { type = types.str; default = "1900"; };
+    gpuVoltage = mkOption { type = types.str; default = "1120"; };
+    memVoltage = mkOption { type = types.str; default = "950"; };
+    powerLimit = mkOption { type = types.int; default = 120; };
   };
+
+  config = mkIf cfg.enable (mkMerge [
+    {
+      hardware.graphics = {
+        enable = true;
+        extraPackages = with pkgs; [ mesa vulkan-loader ];
+      };
+      environment.variables."AMD_VULKAN_ICD" = "RADV";
+      boot.kernelParams = [ "amdgpu.ppfeaturemask=0xffffffff" ];
+    }
+
+    {
+      systemd.services.amdgpu-undervolt = {
+        enable = true;
+        description = "Undervolt RX 5500XT";
+        wantedBy = [ "graphical-session.target" ];
+        after = [ "graphical-session.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = pkgs.writeShellScript "gpu-uv" ''
+            echo manual > ${GPU}/power_dpm_force_performance_level
+            cat > ${GPU}/pp_od_clk_voltage << EOF
+            s 0 300 800
+            s 1 1350 940
+            s 2 1450 970
+            s 3 1550 1000
+            s 4 1650 1030
+            s 5 1750 1060
+            s 6 1850 1090
+            s 7 ${cfg.gpuClock} ${cfg.gpuVoltage}
+            m 0 300 800
+            m 1 1750 ${cfg.memVoltage}
+            c
+            EOF
+            echo ${toString (cfg.powerLimit * 1000000)} > ${HWMON}/power1_cap
+          '';
+        };
+      };
+
+      systemd.tmpfiles.rules = [
+        "Z ${GPU} 0660 root wheel - -"
+        "Z ${HWMON} 0660 root wheel - -"
+      ];
+    }
+
+    {
+      environment.systemPackages = with pkgs; [
+        (writeShellScriptBin "gpu-status" ''
+          echo "=== RX 5500XT ==="
+          echo "Config: ${cfg.gpuClock}MHz @ ${cfg.gpuVoltage}mV / ${cfg.memVoltage}mV"
+          echo "GPU: $(grep '*' ${GPU}/pp_dpm_sclk 2>/dev/null || echo 'N/A')"
+          echo "Temp: $(cat ${HWMON}/temp1_input 2>/dev/null | awk '{print $1/1000\"°C"}' || echo 'N/A')"
+        '')
+      ];
+      environment.shellAliases.gpu-temp = "cat ${HWMON}/temp1_input | awk '{print \$1/1000\"°C\"}'";
+    }
+
+    {
+      warnings = optional cfg.enable
+        "GPU-AMD: Undervolt activado (${cfg.gpuClock}MHz @ ${cfg.gpuVoltage}mV)";
+    }
+  ]);
 }

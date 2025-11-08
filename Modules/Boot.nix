@@ -1,4 +1,3 @@
-# Modules/Boot.nix
 {pkgs, ...}: {
   boot = {
     loader = {
@@ -12,30 +11,39 @@
       timeout = 0;
     };
 
+    # Kernel LTS estable (no latest) para evitar regresiones de audio
     kernelPackages = pkgs.linuxPackages_latest;
 
     kernelParams = [
       "quiet"
+      "splash"
       "loglevel=3"
-      "systemd.show_status=false"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+      "vt.global_cursor_default=0"
       "nowatchdog"
-      "nmi_watchdog=0"
-      "transparent_hugepage=always"
+      # "transparent_hugepage=always"  # <-- ELIMINADO (causa latencia irregular)
       "vm.max_map_count=2147483642"
-      "net.ifnames=0"
-      "rootflags=noatime,nodiratime"
+      # "mitigations=off"  # <-- Opcional: quita si tienes inestabilidad
     ];
 
     initrd = {
-      availableKernelModules = ["nvme" "xhci_pci" "ahci" "usbhid" "sd_mod" "sdhci_pci"];
       compressor = "zstd";
       compressorArgs = ["-19" "-T0"];
       verbose = false;
+      systemd.enable = true;
     };
 
-    plymouth.enable = false;
-    consoleLogLevel = 0;
+    plymouth = {
+      enable = true;
+      theme = "bgrt";
+      extraConfig = ''
+        DeviceScale=1
+      '';
+    };
 
+    consoleLogLevel = 0;
     blacklistedKernelModules = ["iTCO_wdt" "iTCO_vendor_support" "pcspkr"];
   };
 }

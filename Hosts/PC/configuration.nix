@@ -6,8 +6,18 @@
     ./disko.nix
   ];
 
-  CPU-AMD.enable = true;
-  GPU-AMD.enable = true;
+  CPU-AMD = {
+    enable = true;
+    vid = 64;
+    frequencyMHz = 4200;
+  };
+  GPU-AMD = {
+    enable = true;
+    gpuClock = "1950";
+    gpuVoltage = "1100";
+    memVoltage = "950";
+    powerLimit = 110;
+  };
   Zram.enable = true;
   Steam.enable = true;
   Persistente-PC.enable = true;

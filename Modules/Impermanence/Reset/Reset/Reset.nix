@@ -1,9 +1,5 @@
-{
-  config,
-  lib,
-  pkgs,
-  ...
-}: {
+# Modules/Impermanence/Reset/Reset/Reset.nix
+{config, lib, pkgs, ...}: {
   options = {
     Reset.enable = lib.mkEnableOption "Habilitar Reset";
   };
@@ -18,112 +14,97 @@
       };
     };
 
-    boot = {
-      initrd = {
-        postDeviceCommands = lib.mkAfter ''
-          set -x
-
-          list_subvolumes() {
-            local mount_point="$1"
-            btrfs subvolume list "$mount_point" | sed 's/^ID [0-9]* gen [0-9]* top level [0-9]* path //g'
-          }
-
-          delete_subvolumes() {
-            local mount_point="$1"
-            local target_subvol="$2"
-
-            if [ ! -d "$mount_point" ]; then
-              echo "ERROR: Punto de montaje $mount_point no existe"
-              return 1
-            fi
-
-            if ! mountpoint -q "$mount_point"; then
-              echo "ERROR: $mount_point no está montado"
-              return 1
-            fi
-
-            echo "Listando subvolúmenes en $mount_point:"
-            list_subvolumes "$mount_point"
-
-            if ! btrfs subvolume list "$mount_point" | grep -q " path $target_subvol$"; then
-              echo "AVISO: El subvolumen $target_subvol no existe en $mount_point"
-              return 0
-            fi
-
-            local child_subvols=$(btrfs subvolume list -o "$mount_point/$target_subvol" | sed 's/^ID [0-9]* gen [0-9]* top level [0-9]* path //g' | sort -r)
-
-            if [ -n "$child_subvols" ]; then
-              echo "Subvolúmenes hijos encontrados para $target_subvol:"
-              echo "$child_subvols"
-
-              for subvol in $child_subvols; do
+    boot.initrd.systemd = {
+      enable = true;
+      
+      services = {
+        "reset-root" = {
+          description = "Resetear subvolumen root en SSD";
+          wantedBy = ["initrd.target"];
+          after = ["systemd-cryptsetup@p1.service"];
+          before = ["sysroot.mount"];
+          unitConfig.DefaultDependencies = "no";
+          serviceConfig.Type = "oneshot";
+          script = ''
+            mkdir -p /mnt-root
+            mount -o subvolid=5 /dev/mapper/p1 /mnt-root
+            
+            if [[ -e /mnt-root/root ]]; then
+              # Eliminar subvolúmenes hijos recursivamente
+              while IFS= read -r subvol; do
                 echo "Eliminando subvolumen hijo: $subvol"
-                btrfs subvolume delete "$mount_point/$subvol" || echo "ERROR: No se pudo eliminar $subvol"
-              done
-            else
-              echo "No se encontraron subvolúmenes hijos para $target_subvol"
+                btrfs subvolume delete "/mnt-root/$subvol" || true
+              done < <(btrfs subvolume list -o /mnt-root/root | cut -f9- -d' ' | sort -r)
+              
+              # Eliminar el subvolumen root principal
+              echo "Eliminando subvolumen root"
+              btrfs subvolume delete /mnt-root/root || true
             fi
-
-            echo "Eliminando subvolumen objetivo: $target_subvol"
-            btrfs subvolume delete "$mount_point/$target_subvol" || echo "ERROR: No se pudo eliminar $target_subvol"
-          }
-
-          echo "=== Procesando disco SSD (/dev/mapper/p1) ==="
-          mkdir -p /mnt-root
-          mount -o subvolid=5 /dev/mapper/p1 /mnt-root || { echo "ERROR: No se pudo montar /dev/mapper/p1"; exit 1; }
-
-          delete_subvolumes "/mnt-root" "root"
-
-          echo "Creando nuevo subvolumen root"
-          btrfs subvolume create /mnt-root/root || echo "ERROR: No se pudo crear subvolumen root"
-
-          umount /mnt-root
-
-          echo "=== Procesando disco HDD (/dev/mapper/p2) ==="
-          mkdir -p /mnt-home
-          mount -o subvolid=5 /dev/mapper/p2 /mnt-home || { echo "ERROR: No se pudo montar /dev/mapper/p2"; exit 1; }
-
-          delete_subvolumes "/mnt-home" "home"
-
-          echo "Creando nuevo subvolumen home"
-          btrfs subvolume create /mnt-home/home || echo "ERROR: No se pudo crear subvolumen home"
-
-          umount /mnt-home
-
-          set +x
-
-          echo "=== Proceso de regeneración de subvolúmenes completado ==="
-        '';
+            
+            # Crear nuevo subvolumen root
+            echo "Creando nuevo subvolumen root"
+            btrfs subvolume create /mnt-root/root
+            
+            umount /mnt-root
+          '';
+        };
+        
+        "reset-home" = {
+          description = "Resetear subvolumen home en HDD";
+          wantedBy = ["initrd.target"];
+          after = ["systemd-cryptsetup@p2.service"];
+          before = ["sysroot.mount"];
+          unitConfig.DefaultDependencies = "no";
+          serviceConfig.Type = "oneshot";
+          script = ''
+            mkdir -p /mnt-home
+            mount -o subvolid=5 /dev/mapper/p2 /mnt-home
+            
+            if [[ -e /mnt-home/home ]]; then
+              # Eliminar subvolúmenes hijos recursivamente
+              while IFS= read -r subvol; do
+                echo "Eliminando subvolumen hijo: $subvol"
+                btrfs subvolume delete "/mnt-home/$subvol" || true
+              done < <(btrfs subvolume list -o /mnt-home/home | cut -f9- -d' ' | sort -r)
+              
+              # Eliminar el subvolumen home principal
+              echo "Eliminando subvolumen home"
+              btrfs subvolume delete /mnt-home/home || true
+            fi
+            
+            # Crear nuevo subvolumen home
+            echo "Creando nuevo subvolumen home"
+            btrfs subvolume create /mnt-home/home
+            
+            umount /mnt-home
+          '';
+        };
       };
     };
 
-    systemd = {
-      services = {
-        setup-home = {
-          description = "Configurar el directorio /home después del arranque";
-          wantedBy = ["multi-user.target"];
-          serviceConfig = {
-            Type = "oneshot";
-            RemainAfterExit = true;
-            ExecStart = pkgs.writeShellScript "setup-home" ''
-              for user in /persist/home/*; do
-                if [ -d "$user" ]; then
-                  username=$(basename "$user")
-                  if [ ! -d "/home/$username" ]; then
-                    echo "Configurando /home para el usuario $username"
-                    mkdir -p "/home/$username"
-                    cp -a /etc/skel/. "/home/$username/"
-                    chown -R "$username:users" "/home/$username"
-                    chmod 750 "/home/$username"
-                  fi
-                fi
-              done
-            '';
-          };
-          after = ["local-fs.target"];
-          before = ["display-manager.service"];
-        };
+    systemd.services.setup-home = {
+      description = "Configurar el directorio /home después del arranque";
+      wantedBy = ["multi-user.target"];
+      serviceConfig = {
+        Type = "oneshot";
+        RemainAfterExit = true;
+        ExecStart = pkgs.writeShellScript "setup-home" ''
+          for user in /persist/home/*; do
+            if [ -d "$user" ]; then
+              username=$(basename "$user")
+              if [ ! -d "/home/$username" ]; then
+                echo "Configurando /home para el usuario $username"
+                mkdir -p "/home/$username"
+                cp -a /etc/skel/. "/home/$username/"
+                chown -R "$username:users" "/home/$username"
+                chmod 750 "/home/$username"
+              fi
+            fi
+          done
+        '';
       };
+      after = ["local-fs.target"];
+      before = ["display-manager.service"];
     };
   };
 }

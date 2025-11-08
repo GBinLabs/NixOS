@@ -54,4 +54,28 @@
   };
 
   security.rtkit.enable = true;
+  # Solución robusta para el micrófono con múltiples fallbacks
+  systemd.user.services.microphone-volume = {
+    description = "Configurar micrófono al 30%";
+    wantedBy = ["graphical-session.target"];
+    after = ["wireplumber.service"];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStart = pkgs.writeShellScript "set-mic-volume" ''
+        # Espera hasta que el micrófono esté disponible
+        for i in {1..10}; do
+          MIC=$(${pkgs.wireplumber}/bin/wpctl status | grep -i "microphone" | head -n1 | cut -d'.' -f1 | tr -d ' ')
+          if [ -n "$MIC" ]; then
+            ${pkgs.wireplumber}/bin/wpctl set-volume "$MIC" 0.3
+            exit 0
+          fi
+          sleep 1
+        done
+
+        # Fallback final: usa pactl si wpctl falla
+        ${pkgs.pulseaudio}/bin/pactl set-source-volume @DEFAULT_SOURCE@ 30%
+      '';
+    };
+  };
 }

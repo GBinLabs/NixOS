@@ -1,22 +1,35 @@
-# Modules/Drivers/CPU/Intel/Intel-CPU.nix
-{config, lib, pkgs, ...}: {
-  options.CPU-Intel.enable = lib.mkEnableOption "CPU Intel con undervolt";
+# /etc/nixos/modules/Intel-CPU.nix
+{ config, lib, pkgs, ... }:
 
-  config = lib.mkIf config.CPU-Intel.enable {
+with lib;
+
+let
+  cfg = config.CPU-Intel;
+in
+{
+  options.CPU-Intel = {
+    enable = mkEnableOption "Intel N4020 - undervolt real con intel-undervolt";
+    # Valores seguros por defecto (-50mV es agresivo pero estable para N4020)
+    cpuOffset = mkOption { type = types.int; default = -50; };
+    gpuOffset = mkOption { type = types.int; default = -50; };
+    cacheOffset = mkOption { type = types.int; default = -50; };
+  };
+
+  config = mkIf cfg.enable {
+    # Drivers y microcode
     hardware.cpu.intel.updateMicrocode = true;
+    
+    # Governor performance para máxima velocidad
+    powerManagement.cpuFreqGovernor = "performance";
 
-    powerManagement = {
-      enable = true;
-      cpuFreqGovernor = "schedutil";
-    };
-
+    # Thermal daemon para control térmico agresivo
     services.thermald = {
       enable = true;
-      configFile = pkgs.writeText "thermald.conf" ''
+      configFile = pkgs.writeText "thermald-n4020.conf" ''
         <?xml version="1.0"?>
         <ThermalConfiguration>
           <Platform>
-            <Name>Intel Celeron</Name>
+            <Name>Intel-N4020</Name>
             <ProductName>*</ProductName>
             <Preference>PERFORMANCE</Preference>
             <ThermalZones>
@@ -25,17 +38,8 @@
                 <TripPoints>
                   <TripPoint>
                     <SensorType>cpu</SensorType>
-                    <Temperature>75000</Temperature>
+                    <Temperature>80000</Temperature>
                     <Type>passive</Type>
-                    <CoolingDevice>
-                      <Type>intel_pstate</Type>
-                      <SamplingPeriod>5</SamplingPeriod>
-                    </CoolingDevice>
-                  </TripPoint>
-                  <TripPoint>
-                    <SensorType>cpu</SensorType>
-                    <Temperature>85000</Temperature>
-                    <Type>active</Type>
                   </TripPoint>
                 </TripPoints>
               </ThermalZone>
@@ -45,52 +49,52 @@
       '';
     };
 
-    systemd.services.intel-undervolt = {
-      description = "Intel CPU Undervolt agresivo";
-      wantedBy = ["multi-user.target"];
-      after = ["thermald.service"];
+    # Paquete oficial de NixOS para undervolt
+    environment.systemPackages = with pkgs; [ intel-undervolt ];
+
+    # Configuración de undervolt
+    environment.etc."intel-undervolt.conf".text = ''
+      undervolt 0 'CPU' ${toString cfg.cpuOffset}
+      undervolt 1 'GPU' ${toString cfg.gpuOffset}
+      undervolt 2 'CPU Cache' ${toString cfg.cacheOffset}
+      undervolt 3 'System Agent' ${toString cfg.cacheOffset}
+      undervolt 4 'Analog I/O' ${toString cfg.cacheOffset}
+      
+      # Limitar TDP a 10W (stock es 6W, esto es conservador)
+      power limit long 0 10000 28000
+      power limit short 0 15000 28000
+    '';
+
+    # Servicio que aplica el undervolt al arrancar
+    systemd.services.intel-undervolt-apply = {
+      enable = true;
+      description = "Aplicar undervolt Intel N4020";
+      wantedBy = [ "multi-user.target" ];
+      after = [ "thermald.service" ];
       serviceConfig = {
         Type = "oneshot";
-        RemainAfterExit = true;
-        ExecStart = pkgs.writeShellScript "intel-undervolt" ''
-          ${pkgs.intel-undervolt}/bin/intel-undervolt apply << EOF
-          undervolt 0 'CPU' -75
-          undervolt 1 'GPU' -60
-          undervolt 2 'CPU Cache' -75
-          undervolt 3 'System Agent' -50
-          undervolt 4 'Analog I/O' -50
-          EOF
-          
-          # Configurar Intel P-State
-          echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
-          
-          for cpu in /sys/devices/system/cpu/cpu*/cpufreq/; do
-            echo balance_performance > ''${cpu}energy_performance_preference 2>/dev/null || true
-          done
-        '';
+        ExecStart = "${pkgs.intel-undervolt}/bin/intel-undervolt apply";
       };
     };
 
+    # Parámetros del kernel
     boot.kernelParams = [
       "intel_pstate=active"
       "intel_pstate.hwp_only=1"
     ];
 
+    # Herramientas de monitoreo
     environment.systemPackages = with pkgs; [
-      intel-undervolt
-      intel-gpu-tools
-      powertop
+      (writeShellScriptBin "intel-status" ''
+        echo "=== Intel N4020 Status ==="
+        echo "Freq: $(cat /proc/cpuinfo | grep 'cpu MHz' | head -1 | awk '{print $4" MHz"}')"
+        echo "Temp: $(sensors 2>/dev/null | grep 'Package id 0' | awk '{print $4}' || echo 'N/A')"
+      '')
     ];
 
-    environment.etc."intel-undervolt.conf".text = ''
-      undervolt 0 'CPU' -75
-      undervolt 1 'GPU' -60
-      undervolt 2 'CPU Cache' -75
-      undervolt 3 'System Agent' -50
-      undervolt 4 'Analog I/O' -50
-      
-      power limit long 1 15000 6000000
-      power limit short 1 25000 28000
-    '';
+    environment.shellAliases = {
+      intel-temp = "sensors | grep 'Package id 0'";
+      intel-freq = "watch -n 1 'grep MHz /proc/cpuinfo | head -2'";
+    };
   };
 }
