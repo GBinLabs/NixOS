@@ -9,14 +9,11 @@
   # En configuration.nix
   CPU-Intel = {
     enable = true;
-    cpuOffset = -50; # -50mV (agresivo)
-    gpuOffset = -50; # -50mV
   };
   GPU-Intel = {
     enable = true;
-    # Opcional: personalizar
-    maxFreq = 550; # 550MHz = undervolt agresivo
-    rc6Level = 3; # deepest power saving
+    maxFreq = 550;
+    rc6Level = 3;
   };
   Zram.enable = true;
   Persistente.enable = true;

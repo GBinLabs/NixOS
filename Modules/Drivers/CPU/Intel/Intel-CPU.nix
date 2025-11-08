@@ -1,100 +1,98 @@
-# /etc/nixos/modules/Intel-CPU.nix
 { config, lib, pkgs, ... }:
 
 with lib;
 
 let
   cfg = config.CPU-Intel;
+  # Valores configurables
+  maxTemp = toString cfg.maxTemp;
+  maxFreq = toString cfg.maxFreq;
 in
 {
   options.CPU-Intel = {
-    enable = mkEnableOption "Intel N4020 - undervolt real con intel-undervolt";
-    # Valores seguros por defecto (-50mV es agresivo pero estable para N4020)
-    cpuOffset = mkOption { type = types.int; default = -50; };
-    gpuOffset = mkOption { type = types.int; default = -50; };
-    cacheOffset = mkOption { type = types.int; default = -50; };
+    enable = mkEnableOption "Intel N4020 - control térmico agresivo (sin undervolt)";
+    maxTemp = mkOption { type = types.int; default = 75000; description = "Temperatura límite (m°C)"; };
+    maxFreq = mkOption { type = types.int; default = 2400; description = "Frecuencia máxima (MHz)"; };
   };
 
-  config = mkIf cfg.enable {
-    # Drivers y microcode
-    hardware.cpu.intel.updateMicrocode = true;
-    
-    # Governor performance para máxima velocidad
-    powerManagement.cpuFreqGovernor = "performance";
+  config = mkIf cfg.enable (mkMerge [
+    {
+      # Microcode + governor conservador
+      hardware.cpu.intel.updateMicrocode = true;
+      powerManagement.cpuFreqGovernor = "powersave";
 
-    # Thermal daemon para control térmico agresivo
-    services.thermald = {
-      enable = true;
-      configFile = pkgs.writeText "thermald-n4020.conf" ''
-        <?xml version="1.0"?>
-        <ThermalConfiguration>
-          <Platform>
-            <Name>Intel-N4020</Name>
-            <ProductName>*</ProductName>
-            <Preference>PERFORMANCE</Preference>
-            <ThermalZones>
-              <ThermalZone>
-                <Type>cpu</Type>
-                <TripPoints>
-                  <TripPoint>
-                    <SensorType>cpu</SensorType>
-                    <Temperature>80000</Temperature>
-                    <Type>passive</Type>
-                  </TripPoint>
-                </TripPoints>
-              </ThermalZone>
-            </ThermalZones>
-          </Platform>
-        </ThermalConfiguration>
-      '';
-    };
+      # Kernel params para eficiencia
+      boot.kernelParams = [
+        "intel_pstate=passive"      # Desactivar pstate (usa acpi-cpufreq)
+        "processor.max_cstate=2"    # C-states profundos
+        "intel_idle.max_cstate=2"
+      ];
+    }
 
-    # Paquete oficial de NixOS para undervolt
-    environment.systemPackages = with pkgs; [ intel-undervolt ];
-
-    # Configuración de undervolt
-    environment.etc."intel-undervolt.conf".text = ''
-      undervolt 0 'CPU' ${toString cfg.cpuOffset}
-      undervolt 1 'GPU' ${toString cfg.gpuOffset}
-      undervolt 2 'CPU Cache' ${toString cfg.cacheOffset}
-      undervolt 3 'System Agent' ${toString cfg.cacheOffset}
-      undervolt 4 'Analog I/O' ${toString cfg.cacheOffset}
-      
-      # Limitar TDP a 10W (stock es 6W, esto es conservador)
-      power limit long 0 10000 28000
-      power limit short 0 15000 28000
-    '';
-
-    # Servicio que aplica el undervolt al arrancar
-    systemd.services.intel-undervolt-apply = {
-      enable = true;
-      description = "Aplicar undervolt Intel N4020";
-      wantedBy = [ "multi-user.target" ];
-      after = [ "thermald.service" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${pkgs.intel-undervolt}/bin/intel-undervolt apply";
+    {
+      # Thermal daemon con límite agresivo
+      services.thermald = {
+        enable = true;
+        configFile = pkgs.writeText "thermald-n4020.conf" ''
+          <?xml version="1.0"?>
+          <ThermalConfiguration>
+            <Platform>
+              <Name>N4020</Name>
+              <ProductName>*</ProductName>
+              <Preference>PERFORMANCE</Preference>
+              <ThermalZones>
+                <ThermalZone>
+                  <Type>cpu</Type>
+                  <TripPoints>
+                    <TripPoint>
+                      <SensorType>cpu</SensorType>
+                      <Temperature>${maxTemp}</Temperature>
+                      <Type>passive</Type>
+                    </TripPoint>
+                  </TripPoints>
+                </ThermalZone>
+              </ThermalZones>
+            </Platform>
+          </ThermalConfiguration>
+        '';
       };
-    };
 
-    # Parámetros del kernel
-    boot.kernelParams = [
-      "intel_pstate=active"
-      "intel_pstate.hwp_only=1"
-    ];
+      # Limitar frecuencia máxima (efecto similar a undervolt)
+      systemd.services.intel-cpu-limit = {
+        enable = true;
+        description = "Limitar frecuencia CPU N4020";
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = pkgs.writeShellScript "limit-freq" ''
+            for cpu in /sys/devices/system/cpu/cpu*/cpufreq; do
+              echo ${maxFreq}000 > ''${cpu}/scaling_max_freq
+            done
+          '';
+        };
+      };
+    }
 
-    # Herramientas de monitoreo
-    environment.systemPackages = with pkgs; [
-      (writeShellScriptBin "intel-status" ''
-        echo "=== Intel N4020 Status ==="
-        echo "Freq: $(cat /proc/cpuinfo | grep 'cpu MHz' | head -1 | awk '{print $4" MHz"}')"
-        echo "Temp: $(sensors 2>/dev/null | grep 'Package id 0' | awk '{print $4}' || echo 'N/A')"
-      '')
-    ];
+    {
+      # Herramientas de monitoreo
+      environment.systemPackages = with pkgs; [
+        lm_sensors
+        (writeShellScriptBin "cpu-status" ''
+          echo "=== Intel N4020 (Modo Seguro) ==="
+          echo "Freq Max: ${maxFreq}MHz (limitado)"
+          echo "Actual: $(cat /proc/cpuinfo | grep 'cpu MHz' | head -1 | awk '{print $4}')"
+          echo "Temp: $(sensors 2>/dev/null | grep 'Package id 0' | awk '{print $4}' || echo 'N/A')"
+        '')
+      ];
+      environment.shellAliases = {
+        cpu-temp = "sensors | grep 'Package id 0'";
+        cpu-limit = "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq | awk '{print \$1/1000\" MHz\"}'";
+      };
+    }
 
-    environment.shellAliases = {
-      intel-temp = "sensors | grep 'Package id 0'";
-      intel-freq = "watch -n 1 'grep MHz /proc/cpuinfo | head -2'";
-    };
-  };
+    {
+      warnings = optional cfg.enable
+        "CPU-Intel: Modo térmico agresivo (sin undervolt) - ${maxFreq}MHz max";
+    }
+  ]);
 }
