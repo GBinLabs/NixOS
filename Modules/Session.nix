@@ -36,7 +36,4 @@
     PROTON_ENABLE_NVAPI = "1"; # DLSS/RTX
     PROTON_HIDE_NVIDIA_GPU = "0"; # Mostrar GPU real
   };
-
-  # === LOCALE (no va en sessionVariables) ===
-  i18n.defaultLocale = "es_AR.UTF-8";
 }
