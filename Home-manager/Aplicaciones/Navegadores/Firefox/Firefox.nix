@@ -37,10 +37,6 @@
         "browser.download.useDownloadDir" = false;
         "media.autoplay.default" = 5;
         "media.eme.enabled" = true;
-
-        # Updates desactivados
-        "extensions.update.enabled" = false;
-        "app.update.auto" = false;
       };
 
       search.force = true;
@@ -53,6 +49,12 @@
     policies = {
       ExtensionSettings = {
         "*".installation_mode = "blocked";
+    
+    "uBlock0@raymondhill.net" = {
+      install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
+          installation_mode = "force_installed";
+        };
+        
         "jid1-MnnxcxisBPnSXQ@jetpack" = {
           install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/privacy-badger17/latest.xpi";
           installation_mode = "force_installed";
@@ -61,13 +63,15 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/duckduckgo-for-firefox/latest.xpi";
           installation_mode = "force_installed";
         };
-        "languagetool-webextension@languagetool.org" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/file/4470413/languagetool-8.19.4.xpi";
-          installation_mode = "force_installed";
-        };
+    	"languagetool-webextension@languagetool.org" = {
+      	install_url = "https://addons.mozilla.org/firefox/downloads/latest/languagetool-webextension/latest.xpi";
+      installation_mode = "force_installed";
+    };
+    
+    
       };
 
-      ExtensionUpdate = false;
+      ExtensionUpdate = true;
       DisableTelemetry = true;
       DisablePocket = true;
       PasswordManagerEnabled = false;

@@ -38,4 +38,8 @@
       "nvidia-x11"
       "nvidia-settings"
     ];
+    
+    nixpkgs.config.permittedInsecurePackages = [
+                #"electron-36.9.5"
+              ];
 }

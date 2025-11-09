@@ -8,7 +8,7 @@ in {
       enable = true;
       withUWSM = true;
       xwayland = {
-        enable = true;
+        enable = false;
       };
       portalPackage = pkgs.xdg-desktop-portal-hyprland;
       package = pkgs.hyprland;
