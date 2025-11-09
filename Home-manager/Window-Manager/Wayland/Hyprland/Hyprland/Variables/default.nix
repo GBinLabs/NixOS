@@ -1,11 +1,11 @@
 {...}: {
   imports = [
-    ./Binds/Binds.nix
-    ./Entorno/Entorno.nix
-    ./General/General.nix
-    ./Input/Input.nix
+    ./Binds.nix
+    ./Entorno.nix
+    ./General.nix
+    ./Input.nix
     ./Monitor.nix
-    ./Spanish/Spanish.nix
-    ./Tema/Tema.nix
+    ./Spanish.nix
+    ./Tema.nix
   ];
 }
