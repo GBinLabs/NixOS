@@ -5,9 +5,16 @@
 }: {
   options.Persistencia = {
     enable = lib.mkEnableOption "Habilitar Persistencia";
-    extraDirectories = lib.mkOption {
+    extraSystemDirectories = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [];
+      description = "Directorios adicionales del sistema a persistir (rutas absolutas)";
+    };
+    
+    extraUserDirectories = lib.mkOption {
+      type = lib.types.listOf lib.types.str;
+      default = [];
+      description = "Directorios adicionales del usuario a persistir (rutas relativas al home)";
     };
   };
 
@@ -20,22 +27,24 @@
           "/var/lib/nixos"
           "/etc/NetworkManager/system-connections"
         ]
-        ++ config.Persistencia.extraDirectories;
+        ++ config.Persistencia.extraSystemDirectories;
 
       users.german = {
-        directories = [
-          "Descargas"
-          "Documentos"
-          "Imágenes"
-          "Música"
-          "Vídeos"
-          ".GitHub"
-          ".ssh"
-          ".config/sops"
-          ".config/git"
-          ".config/Joplin"
-          ".config/joplin-desktop"
-        ];
+        directories =
+          [
+            "Descargas"
+            "Documentos"
+            "Imágenes"
+            "Música"
+            "Vídeos"
+            ".GitHub"
+            ".ssh"
+            ".config/sops"
+            ".config/git"
+            ".config/Joplin"
+            ".config/joplin-desktop"
+          ]
+          ++ config.Persistencia.extraUserDirectories;
         files = [".p10k.zsh" ".zshrc"];
       };
     };

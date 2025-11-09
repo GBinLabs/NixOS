@@ -22,7 +22,7 @@
   Steam.enable = true;
   Persistencia = {
     enable = true;
-    extraDirectories = [
+    extraUserDirectories = [
       ".local/share/Steam"
       ".local/share/PrismLauncher"
     ];
