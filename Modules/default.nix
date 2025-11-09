@@ -14,6 +14,7 @@ _: {
     ./Programs.nix
     ./Security/default.nix
     ./Services.nix
+    ./Session.nix
     ./Steam.nix
     ./Zram.nix
     ./Zsh.nix

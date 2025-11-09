@@ -720,7 +720,7 @@
         "wireplumber" = {
           format = "{icon} {volume}%";
           format-muted = " Mute";
-          on-click-right = "pavucontrol";
+          on-click-right = "pwvucontrol";
           format-icons = ["" "" "󰕾" ""];
           tooltip-format = "{icon} {desc} | {volume}%";
         };

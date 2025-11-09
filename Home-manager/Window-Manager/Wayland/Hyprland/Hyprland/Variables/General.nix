@@ -24,36 +24,24 @@
 
       animations.enabled = false;
 
-      input = {
-        kb_layout = "latam";
-        follow_mouse = 1;
-        sensitivity = 0;
-        accel_profile = "flat";
-        force_no_accel = true;
-
-        touchpad = {
-          natural_scroll = false;
-          disable_while_typing = true;
-          tap-to-click = true;
-          scroll_factor = 1.0;
-        };
-      };
-
       gestures = {};
 
+      # Optimización adicional
       misc = {
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
         vfr = true;
-        vrr = 1; # Cambiado de 2 a 1 (menos agresivo)
+        vrr = 1;
         mouse_move_enables_dpms = true;
         key_press_enables_dpms = true;
         disable_autoreload = true;
         focus_on_activate = true;
         enable_swallow = false;
-        swallow_regex = "";
         animate_manual_resizes = false;
         animate_mouse_windowdragging = false;
+        
+        # Nuevas optimizaciones
+        background_color = "0x000000";
       };
 
       # === RENDER OPTIMIZADO PARA FIREFOX ===

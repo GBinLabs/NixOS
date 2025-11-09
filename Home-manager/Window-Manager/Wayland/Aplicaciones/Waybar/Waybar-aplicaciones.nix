@@ -4,5 +4,6 @@
     gnome-system-monitor
     btop
     hyprlock
+    pwvucontrol
   ];
 }

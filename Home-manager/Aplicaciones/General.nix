@@ -12,7 +12,7 @@
     evince
     # Visor de imagenes.
     eog
-    # Upscaling
+    # Upscayl
     upscayl
     # Inkscape
     inkscape-with-extensions

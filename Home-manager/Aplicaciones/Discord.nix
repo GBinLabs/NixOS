@@ -1,34 +1,30 @@
-# Home-manager/Aplicaciones/Discord/Discord.nix
-{...}: {
+_: {
   programs.nixcord = {
     enable = true;
     discord.vencord.unstable = true;
-    
+    vesktop.enable = true;
+
     config = {
       useQuickCss = true;
-      
-      # Performance
       enableReactDevtools = false;
-      
+
       plugins = {
-        # === PERFORMANCE ===
-        fakeNitro.enable = true;  # Emojis HD sin Nitro
+        # Tu configuración existente completa...
+        fakeNitro.enable = false;
         noTypingAnimation.enable = true;
         noProfileThemes.enable = true;
-        
-        # === ÚTILES ===
         alwaysExpandRoles.enable = true;
         betterGifPicker.enable = true;
         betterSettings.enable = true;
         betterUploadButton.enable = true;
         biggerStreamPreview.enable = true;
         blurNSFW.enable = true;
-        
+
         callTimer = {
           enable = true;
           format = "human";
         };
-        
+
         clearURLs.enable = true;
         crashHandler.enable = true;
         disableCallIdle.enable = true;
@@ -43,7 +39,7 @@
         gifPaste.enable = true;
         greetStickerPicker.enable = true;
         hideMedia.enable = true;
-        
+
         ignoreActivities = {
           enable = true;
           ignorePlaying = true;
@@ -51,18 +47,18 @@
           ignoreWatching = true;
           ignoreCompeting = true;
         };
-        
+
         imageZoom.enable = true;
         implicitRelationships.enable = true;
         memberCount.enable = true;
-        
+
         messageLogger = {
           enable = true;
           collapseDeleted = true;
           ignoreSelf = true;
           ignoreBots = true;
         };
-        
+
         mutualGroupDMs.enable = true;
         newGuildSettings.enable = true;
         noBlockedMessages.enable = true;
@@ -71,10 +67,8 @@
         noMaskedUrlPaste.enable = true;
         noMosaic.enable = true;
         noPendingCount.enable = true;
-        #noProfileThemes.enable = true;
         normalizeMessageLinks.enable = true;
         noRPC.enable = true;
-        #noTypingAnimation.enable = true;
         noUnblockToJump.enable = true;
         onePingPerDM.enable = true;
         pauseInvitesForever.enable = true;
@@ -92,7 +86,7 @@
         showTimeoutDuration.enable = true;
         silentTyping.enable = true;
         streamerModeOnStream.enable = true;
-        
+
         textReplace = {
           enable = true;
           regexRules = [
@@ -130,7 +124,7 @@
             }
           ];
         };
-        
+
         themeAttributes.enable = true;
         translate.enable = true;
         typingIndicator.enable = true;
