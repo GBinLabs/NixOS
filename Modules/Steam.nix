@@ -11,17 +11,15 @@
       enable = true;
       extraCompatPackages = with pkgs; [proton-ge-bin];
 
-      # Usar el paquete de Steam con configuraciones para Wayland
       package = pkgs.steam.override {
-        extraProfile = ''
-          export SDL_VIDEODRIVER=wayland
-          export GDK_BACKEND=wayland
-          export QT_QPA_PLATFORM=wayland
-          export NIXOS_OZONE_WL=1
-        '';
+        extraEnv = {
+          AMD_VULKAN_ICD = "RADV";
+          RADV_PERFTEST = "nggc,sam,rt";
+          MESA_GLTHREAD = "true";
+          PROTON_ENABLE_NVAPI = "1";
+        };
       };
     };
-
     programs.gamemode = {
       enable = true;
       enableRenice = true;
@@ -45,7 +43,6 @@
         };
       };
     };
-
     environment.systemPackages = with pkgs; [prismlauncher];
   };
 }
