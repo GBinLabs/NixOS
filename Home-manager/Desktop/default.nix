@@ -3,7 +3,8 @@
 {
 
   imports = [
-	./Gnome/Gnome.nix
+    ./Cosmic/Cosmic.nix
+	#./Gnome/Gnome.nix
   ];
 
 }

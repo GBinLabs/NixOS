@@ -20,6 +20,14 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    
+    cosmic-manager = {
+      url = "github:HeitorAugustoLN/cosmic-manager";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        home-manager.follows = "home-manager";
+      };
+    };
 
     nixcord = {
       url = "github:kaylorben/nixcord";
@@ -31,6 +39,7 @@
     self,
     nixpkgs,
     home-manager,
+    cosmic-manager,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -49,6 +58,7 @@
           backupFileExtension = "backup";
           sharedModules = [
             inputs.nixcord.homeModules.nixcord
+            cosmic-manager.homeManagerModules.cosmic-manager
           ];
         };
       }
