@@ -1,8 +1,8 @@
-{pkgs, ...}: {
+{pkgs, lib, ...}: {
   programs = {
     helix = {
       enable = true;
-      defaultEditor = true;
+      #defaultEditor = true;
       extraPackages = with pkgs; [
         # Nix
         nixd
@@ -23,6 +23,7 @@
         theme = "gruvbox_transparent";
 
         editor = {
+          terminal = "kitty";
           line-number = "relative";
           mouse = false;
 
@@ -189,4 +190,41 @@
       };
     };
   };
+  programs.helix.extraConfig = lib.mkForce "";
+
+  
+  # ==== CREAR TU ÚNICO LANZADOR MANUAL ====
+  # El nombre "helix" aquí creará el archivo ~/.local/share/applications/helix.desktop
+  xdg.desktopEntries.helix = {
+    name = "Helix";
+    genericName = "Text Editor";
+    comment = "A post-modern modal text editor";
+    exec = "${pkgs.kitty}/bin/kitty --class helix-editor ${pkgs.helix}/bin/hx %F";
+    icon = "helix";
+    terminal = false;  # <--- CRUCIAL: Kitty ya es el terminal
+    categories = [ "Development" "TextEditor" ];
+    startupNotify = true;
+    #mimeTypes = [
+     # "text/plain"
+     # "text/x-nix"
+     # "text/x-typst"
+     # "text/markdown"
+     # "application/x-shellscript"
+     # "text/x-diff"
+    #];
+  };
+
+  # ==== ASOCIAR ARCHIVOS A HELIX.DESKTOP ====
+  xdg.mimeApps.defaultApplications = {
+    "text/plain" = "helix.desktop";
+    "text/x-nix" = "helix.desktop";
+    "text/x-typst" = "helix.desktop";
+    "text/markdown" = "helix.desktop";
+    "application/x-shellscript" = "helix.desktop";
+  };
+
+  ## ==== ACTUALIZAR CACHE MIME (corrección del error 'hm') ====
+  #home.activation.updateMime = lib.dag.entryAfter ["writeBoundary"] ''
+   # ${pkgs.shared-mime-info}/bin/update-mime-database ~/.local/share/mime
+  #'';
 }

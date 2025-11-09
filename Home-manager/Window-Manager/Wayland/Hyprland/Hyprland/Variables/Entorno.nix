@@ -27,5 +27,9 @@ _: {
     LANG = "es_AR.UTF-8";
     LC_ALL = "es_AR.UTF-8";
     LC_MESSAGES = "es_AR.UTF-8";
+    
+    TERMINAL = "kitty";
+    EDITOR = "helix";
+    
   };
 }
