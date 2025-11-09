@@ -1,6 +1,6 @@
-_: {
+{...}: {
   imports = [
     ./Aplicaciones/default.nix
-    ./Window-Manager/default.nix
+    ./Hyprland/default.nix
   ];
 }
