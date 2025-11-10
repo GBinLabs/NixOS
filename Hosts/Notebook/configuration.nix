@@ -48,6 +48,14 @@
   Steam.enable = false;
   # Final Steam.
 
+  # Variables de entorno para sistema híbrido Intel+NVIDIA
+  environment.sessionVariables = {
+    # Intel para tareas generales
+    LIBVA_DRIVER_NAME = "i965"; # i965 para Intel de 4ta generación
+    # NVIDIA usará VDPAU cuando esté activa
+    VDPAU_DRIVER = "nvidia";
+  };
+
   # Usuarios
   users.mutableUsers = false;
   users.users.german = {

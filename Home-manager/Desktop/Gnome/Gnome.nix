@@ -66,7 +66,7 @@
     "org/gnome/mutter" = {
       dynamic-workspaces = false;
       edge-tiling = true;
-      experimental-features = ["scale-monitor-framebuffer" "variable-refresh-rate"];
+      experimental-features = ["scale-monitor-framebuffer" "variable-refresh-rate" "xwayland-native-scaling"];
     };
 
     "org/gnome/desktop/wm/preferences" = {
@@ -118,6 +118,8 @@
       default-folder-viewer = "icon-view";
       search-filter-time-type = "last_modified";
       show-hidden-files = false;
+      default-sort-order = "name";
+      default-sort-in-reverse-order = false;
     };
 
     "org/gnome/nautilus/list-view" = {

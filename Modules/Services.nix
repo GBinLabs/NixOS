@@ -4,6 +4,7 @@ _: {
     avahi.enable = false;
     printing.enable = false;
     geoclue2.enable = false;
+    power-profiles-daemon.enable = true;
   };
 
   documentation = {

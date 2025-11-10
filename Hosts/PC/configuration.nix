@@ -30,6 +30,13 @@
   Reset.enable = true;
   Red-PC.enable = true;
 
+  # Variables de entorno para aceleración AMD
+  environment.sessionVariables = {
+    # AMD no requiere LIBVA_DRIVER_NAME explícito (usa radeonsi automáticamente)
+    VDPAU_DRIVER = "radeonsi";
+    AMD_VULKAN_ICD = "RADV";
+  };
+
   users.mutableUsers = false;
   users.users.german = {
     isNormalUser = true;

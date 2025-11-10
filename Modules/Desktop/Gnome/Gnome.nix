@@ -1,5 +1,8 @@
-# Modules/Desktop/Gnome/Gnome.nix
-{pkgs, ...}: {
+{
+  lib,
+  pkgs,
+  ...
+}: {
   services = {
     displayManager = {
       gdm = {
@@ -16,7 +19,7 @@
       core-apps.enable = false;
       localsearch.enable = false;
       tinysparql.enable = false;
-      #evolution-data-server.enable = false;
+      evolution-data-server.enable = lib.mkForce false;
       gnome-browser-connector.enable = false;
       gnome-initial-setup.enable = false;
     };
@@ -57,6 +60,24 @@
         style = "slight";
       };
       subpixel.rgba = "rgb";
+      cache32Bit = true;
     };
+  };
+
+  environment.sessionVariables = {
+    WAYLAND_DISPLAY = "wayland-0";
+    XDG_SESSION_TYPE = "wayland";
+    GDK_BACKEND = "wayland";
+    QT_QPA_PLATFORM = "wayland";
+    QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
+    SDL_VIDEODRIVER = "wayland";
+    _JAVA_AWT_WM_NONREPARENTING = "1";
+    _JAVA_OPTIONS = "-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true";
+    ELECTRON_OZONE_PLATFORM_HINT = "wayland";
+    NIXOS_OZONE_WL = "1";
+    MOZ_ENABLE_WAYLAND = "1";
+    MOZ_DBUS_REMOTE = "1";
+    CLUTTER_BACKEND = "wayland";
+    EGL_PLATFORM = "wayland";
   };
 }
