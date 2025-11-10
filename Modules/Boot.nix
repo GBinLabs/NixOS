@@ -3,7 +3,7 @@
     loader = {
       systemd-boot = {
         enable = true;
-        configurationLimit = 5;
+        configurationLimit = 3;
         consoleMode = "max";
         editor = false;
       };
@@ -11,8 +11,7 @@
       timeout = 0;
     };
 
-    # Kernel LTS estable (no latest) para evitar regresiones de audio
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
     kernelParams = [
       "quiet"
@@ -23,14 +22,12 @@
       "udev.log_priority=3"
       "vt.global_cursor_default=0"
       "nowatchdog"
-      # "transparent_hugepage=always"  # <-- ELIMINADO (causa latencia irregular)
       "vm.max_map_count=2147483642"
-      # "mitigations=off"  # <-- Opcional: quita si tienes inestabilidad
     ];
 
     initrd = {
       compressor = "zstd";
-      compressorArgs = ["-19" "-T0"];
+      compressorArgs = ["-10" "-T0"];
       verbose = false;
       systemd.enable = true;
     };
@@ -38,9 +35,6 @@
     plymouth = {
       enable = true;
       theme = "bgrt";
-      extraConfig = ''
-        DeviceScale=1
-      '';
     };
 
     consoleLogLevel = 0;

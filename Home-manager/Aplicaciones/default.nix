@@ -1,4 +1,3 @@
-# Home-manager/Aplicaciones/default.nix
 _: {
   imports = [
     ./Discord.nix
@@ -6,7 +5,7 @@ _: {
     ./General.nix
     ./Gestor-archivos/default.nix
     ./Git.nix
-    ./Joplin.nix
+    #./Joplin.nix
     ./Languages/Python/Python.nix
     ./MangoHud.nix
     ./Navegadores/default.nix
