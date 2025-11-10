@@ -25,7 +25,7 @@
     "org/gnome/desktop/interface" = {
       color-scheme = "prefer-dark";
       gtk-theme = "Gruvbox-Dark-BL";
-      icon-theme = "Tela-red-dark";
+      icon-theme = "Papirus-Dark";
       cursor-theme = "Bibata-Modern-Ice";
       cursor-size = 20;
 
@@ -161,8 +161,8 @@
     };
 
     "org/gnome/desktop/background" = {
-      picture-uri = "file://${config.home.homeDirectory}/Imágenes/Wallpapers/Astronauta2.png";
-      picture-uri-dark = "file://${config.home.homeDirectory}/Imágenes/Wallpapers/Astronauta2.png";
+      picture-uri = "file://${config.home.homeDirectory}/Imágenes/Wallpapers/NixOS.png";
+      picture-uri-dark = "file://${config.home.homeDirectory}/Imágenes/Wallpapers/NixOS.png";
       picture-options = "zoom";
     };
   };
@@ -179,7 +179,7 @@
 
   home.packages = with pkgs; [
     gruvbox-gtk-theme
-    tela-icon-theme
+    papirus-icon-theme
     bibata-cursors
   ];
 
@@ -189,6 +189,5 @@
 
   fonts.fontconfig.enable = true;
 
-  home.file."Imágenes/Wallpapers/Astronauta1.png".source = ./Wallpapers/Astronauta1.png;
-  home.file."Imágenes/Wallpapers/Astronauta2.png".source = ./Wallpapers/Astronauta2.png;
+  home.file."Imágenes/Wallpapers/NixOS.png".source = ./Wallpapers/NixOS.png;
 }

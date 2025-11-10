@@ -1,7 +1,0 @@
-keys:
-  - &Bin age13k6dz7hhxncdr0nlyty59xjr2q6kypndtc90m8hc9v9cchjgpv2qj4fz4x
-creation_rules:
-  - path_regex: Secrets/secrets.yaml$
-    key_groups:
-    - age:
-      - *Bin

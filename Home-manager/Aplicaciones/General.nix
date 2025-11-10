@@ -23,7 +23,7 @@
     # LibreOffice
     libreoffice
     # JabRef
-    #jabref
+    jabref
     # Visualizador de videos.
     vlc
     # Editor de Video.

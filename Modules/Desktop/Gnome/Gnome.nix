@@ -25,11 +25,12 @@
   hardware.bluetooth.powerOnBoot = false;
 
   environment = {
-    gnome.excludePackages = [pkgs.gnome-tour];
+    gnome.excludePackages = [pkgs.gnome-tour pkgs.gnome-user-docs];
     systemPackages = with pkgs; [
       adwaita-icon-theme
       gnome-themes-extra
     ];
+    shells = with pkgs; [zsh];
   };
 
   fonts = {

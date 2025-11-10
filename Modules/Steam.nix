@@ -9,7 +9,7 @@
   config = lib.mkIf config.Steam.enable {
     programs.steam = {
       enable = true;
-      extraCompatPackages = with pkgs; [proton-ge-bin];
+      extraCompatPackages = with pkgs; [proton-ge-bin steamtinkerlaunch];
 
       package = pkgs.steam.override {
         extraEnv = {
