@@ -6,7 +6,7 @@ _: {
     ./Gestor-archivos/default.nix
     ./Git.nix
     #./Joplin.nix
-    ./Languages/Python/Python.nix
+    ./Languages/default.nix
     ./MangoHud.nix
     ./Navegadores/default.nix
     ./OBS/default.nix
