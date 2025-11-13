@@ -21,6 +21,16 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    chaotic = {
+      url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nix-gaming = {
+      url = "github:fufexan/nix-gaming";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     nixcord = {
       url = "github:kaylorben/nixcord";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -31,6 +41,8 @@
     self,
     nixpkgs,
     home-manager,
+    chaotic,
+    nix-gaming,
     ...
   } @ inputs: let
     system = "x86_64-linux";
@@ -40,6 +52,9 @@
       inputs.disko.nixosModules.disko
       inputs.impermanence.nixosModules.impermanence
       inputs.sops-nix.nixosModules.sops
+      chaotic.nixosModules.default
+      inputs.nix-gaming.nixosModules.platformOptimizations
+      inputs.nix-gaming.nixosModules.pipewireLowLatency
 
       home-manager.nixosModules.home-manager
       {

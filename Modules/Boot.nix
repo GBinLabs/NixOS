@@ -11,7 +11,7 @@
       timeout = 0;
     };
 
-    kernelPackages = pkgs.linuxPackages_xanmod_latest;
+    kernelPackages = pkgs.linuxPackages_cachyos;
 
     kernelParams = [
       "quiet"
@@ -40,4 +40,5 @@
     consoleLogLevel = 0;
     blacklistedKernelModules = ["iTCO_wdt" "iTCO_vendor_support" "pcspkr"];
   };
+  services.scx.enable = true;
 }

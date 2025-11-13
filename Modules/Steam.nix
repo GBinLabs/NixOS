@@ -9,7 +9,11 @@
   config = lib.mkIf config.Steam.enable {
     programs.steam = {
       enable = true;
-      extraCompatPackages = with pkgs; [proton-ge-bin steamtinkerlaunch];
+      platformOptimizations.enable = true;
+      extraPackages = with pkgs; [
+        latencyflex-vulkan
+      ];
+      extraCompatPackages = with pkgs; [proton-ge-bin proton-cachyos];
 
       package = pkgs.steam.override {
         extraEnv = {

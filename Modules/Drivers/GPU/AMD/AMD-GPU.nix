@@ -1,37 +1,60 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
   cfg = config.GPU-AMD;
   GPU = "/sys/class/drm/card0/device";
   HWMON = "${GPU}/hwmon/hwmon*";
-in
-{
+in {
   options.GPU-AMD = {
     enable = mkEnableOption "AMD RX 5500XT - drivers RADV + undervolt";
-    gpuClock = mkOption { type = types.str; default = "1900"; };
-    gpuVoltage = mkOption { type = types.str; default = "1120"; };
-    memVoltage = mkOption { type = types.str; default = "950"; };
-    powerLimit = mkOption { type = types.int; default = 120; };
+    gpuClock = mkOption {
+      type = types.str;
+      default = "1900";
+    };
+    gpuVoltage = mkOption {
+      type = types.str;
+      default = "1120";
+    };
+    memVoltage = mkOption {
+      type = types.str;
+      default = "950";
+    };
+    powerLimit = mkOption {
+      type = types.int;
+      default = 120;
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
     {
       hardware.graphics = {
-        enable = true;
-        extraPackages = with pkgs; [ mesa vulkan-loader ];
+        enable = false;
+        #extraPackages = with pkgs; [mesa vulkan-loader];
+        #enable32Bit = true;
       };
       environment.variables."AMD_VULKAN_ICD" = "RADV";
-      boot.kernelParams = [ "amdgpu.ppfeaturemask=0xffffffff" ];
+      boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
+      chaotic = {
+        mesa-git = {
+          enable = true;
+          extraPackages = with pkgs; [mesa_git.opencl];
+          extraPackages32 = with pkgs.pkgsi686Linux; [mesa32_git.opencl];
+          fallbackSpecialisation = false;
+          replaceBasePackage = true;
+        };
+      };
     }
 
     {
       systemd.services.amdgpu-undervolt = {
         enable = true;
         description = "Undervolt RX 5500XT";
-        wantedBy = [ "graphical-session.target" ];
-        after = [ "graphical-session.target" ];
+        wantedBy = ["graphical-session.target"];
+        after = ["graphical-session.target"];
         serviceConfig = {
           Type = "oneshot";
           ExecStart = pkgs.writeShellScript "gpu-uv" ''
@@ -73,7 +96,8 @@ in
     }
 
     {
-      warnings = optional cfg.enable
+      warnings =
+        optional cfg.enable
         "GPU-AMD: Undervolt activado (${cfg.gpuClock}MHz @ ${cfg.gpuVoltage}mV)";
     }
   ]);
