@@ -18,9 +18,12 @@
       package = pkgs.steam.override {
         extraEnv = {
           AMD_VULKAN_ICD = "RADV";
-          RADV_PERFTEST = "nggc,sam,rt";
+          RADV_PERFTEST = "nggc,sam,rt,antilag2";
           MESA_GLTHREAD = "true";
           PROTON_ENABLE_NVAPI = "1";
+          WINEFSYNC = "1";
+          PROTON_ENABLE_NTSYNC = "1";
+          VK_INSTANCE_LAYERS = "VK_LAYER_MESA_anti_lag";
         };
       };
     };
@@ -47,6 +50,16 @@
         };
       };
     };
-    environment.systemPackages = with pkgs; [prismlauncher];
+    environment.systemPackages = with pkgs; [
+      (prismlauncher.override {
+        controllerSupport = false;
+        gamemodeSupport = true;
+        textToSpeechSupport = false;
+        additionalPrograms = [latencyflex-vulkan];
+        jdks = [
+          zulu25
+        ];
+      })
+    ];
   };
 }

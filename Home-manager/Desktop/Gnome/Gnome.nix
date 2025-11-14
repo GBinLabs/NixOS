@@ -10,7 +10,6 @@
       favorite-apps = [
         "librewolf.desktop"
         "org.gnome.Terminal.desktop"
-        "nixos-manual.desktop"
         "org.gnome.Nautilus.desktop"
       ];
       enabled-extensions = [

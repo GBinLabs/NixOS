@@ -33,8 +33,6 @@ in {
     {
       hardware.graphics = {
         enable = false;
-        #extraPackages = with pkgs; [mesa vulkan-loader];
-        #enable32Bit = true;
       };
       environment.variables."AMD_VULKAN_ICD" = "RADV";
       boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
@@ -89,16 +87,22 @@ in {
           echo "=== RX 5500XT ==="
           echo "Config: ${cfg.gpuClock}MHz @ ${cfg.gpuVoltage}mV / ${cfg.memVoltage}mV"
           echo "GPU: $(grep '*' ${GPU}/pp_dpm_sclk 2>/dev/null || echo 'N/A')"
-          echo "Temp: $(cat ${HWMON}/temp1_input 2>/dev/null | awk '{print $1/1000\"°C"}' || echo 'N/A')"
+          echo "Temp: $(cat ${HWMON}/temp1_input 2>/dev/null | awk '{print $1/1000"°C"}' || echo 'N/A')"
         '')
       ];
       environment.shellAliases.gpu-temp = "cat ${HWMON}/temp1_input | awk '{print \$1/1000\"°C\"}'";
+
+      # Variables de entorno para Anti-Lag 2
+      environment.sessionVariables = {
+        RADV_PERFTEST = "nggc,sam,rt,antilag2";
+        VK_INSTANCE_LAYERS = "VK_LAYER_MESA_anti_lag";
+      };
     }
 
     {
       warnings =
         optional cfg.enable
-        "GPU-AMD: Undervolt activado (${cfg.gpuClock}MHz @ ${cfg.gpuVoltage}mV)";
+        "GPU-AMD: Undervolt activado (${cfg.gpuClock}MHz @ ${cfg.gpuVoltage}mV) + Anti-Lag 2";
     }
   ]);
 }
