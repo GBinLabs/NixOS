@@ -21,6 +21,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     chaotic = {
       url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -41,6 +46,7 @@
     self,
     nixpkgs,
     home-manager,
+    hyprland,
     chaotic,
     nix-gaming,
     ...
@@ -52,6 +58,7 @@
       inputs.disko.nixosModules.disko
       inputs.impermanence.nixosModules.impermanence
       inputs.sops-nix.nixosModules.sops
+      inputs.hyprland.nixosModules.default
       chaotic.nixosModules.default
       inputs.nix-gaming.nixosModules.platformOptimizations
       inputs.nix-gaming.nixosModules.pipewireLowLatency
@@ -63,6 +70,7 @@
           useUserPackages = true;
           backupFileExtension = "backup";
           sharedModules = [
+            hyprland.homeManagerModules.default
             inputs.nixcord.homeModules.nixcord
           ];
         };
