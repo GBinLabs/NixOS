@@ -10,7 +10,7 @@
       default = [];
       description = "Directorios adicionales del sistema a persistir (rutas absolutas)";
     };
-    
+
     extraUserDirectories = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [];
@@ -25,7 +25,9 @@
       directories =
         [
           "/var/lib/nixos"
+          "/var/cache"
           "/etc/NetworkManager/system-connections"
+          "/root/.cache"
         ]
         ++ config.Persistencia.extraSystemDirectories;
 
