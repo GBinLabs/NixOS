@@ -11,7 +11,7 @@
       timeout = 0;
     };
 
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.linuxPackages_zen;
 
     kernelParams = [
       "quiet"
