@@ -1,28 +1,11 @@
 {pkgs, ...}: {
   services = {
     fwupd.enable = true;
-    gvfs.enable = true;
-    udisks2.enable = true;
     avahi.enable = false;
     printing.enable = false;
     geoclue2.enable = false;
-    languagetool = {
-      enable = true;
-      package = pkgs.languagetool;
-      settings = {};
-      port = 8081;
-      jvmOptions = ["-Xmx512m"];
-      public = false;
-      jrePackage = pkgs.zulu25;
-      allowOrigin = null;
-    };
-    ratbagd = {
-      enable = true;
-      package = pkgs.libratbag;
-    };
+    power-profiles-daemon.enable = true;
   };
-
-  environment.systemPackages = with pkgs; [usbutils];
 
   documentation = {
     enable = true;

@@ -42,6 +42,7 @@
                         "noatime"
                         "space_cache=v2"
                         "discard=async" # ← NUEVO: TRIM asíncrono
+                        "ssd"
                       ];
                     };
                     "/nix" = {
@@ -52,6 +53,7 @@
                         "noatime"
                         "space_cache=v2"
                         "discard=async" # ← NUEVO
+                        "ssd"
                       ];
                     };
                     "/persist" = {
@@ -62,6 +64,7 @@
                         "noatime"
                         "space_cache=v2"
                         "discard=async" # ← NUEVO
+                        "ssd"
                       ];
                     };
                   };

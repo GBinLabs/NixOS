@@ -43,6 +43,7 @@
     description = "Germán N. González";
     extraGroups = ["networkmanager" "wheel" "audio" "video" "gamemode"];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
+    initialPassword = "1234";
   };
 
   system.stateVersion = "24.11";

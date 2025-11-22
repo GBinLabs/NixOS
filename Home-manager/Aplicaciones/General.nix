@@ -32,11 +32,5 @@
     pciutils
     # Btop.
     btop
-    # Captura de pantalla.
-    grimblast
-    wl-clipboard
-    imagemagick
-    # Piper.
-    piper
   ];
 }

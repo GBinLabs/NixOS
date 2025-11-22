@@ -1,5 +1,9 @@
-{...}: {
+{...}:
+
+{
+
   imports = [
-    ./Wayland/default.nix
+	./Gnome/Gnome.nix
   ];
+
 }

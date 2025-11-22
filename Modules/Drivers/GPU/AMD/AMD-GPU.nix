@@ -33,9 +33,8 @@ in {
     {
       hardware.graphics = {
         enable = true;
-        extraPackages = with pkgs; [mesa mesa-demos vulkan-loader];
         enable32Bit = true;
-        extraPackages32 = with pkgs.pkgsi686Linux; [mesa mesa-demos];
+        extraPackages = with pkgs; [ mesa mesa-demos vulkan-loader ];
       };
       environment.variables."AMD_VULKAN_ICD" = "RADV";
       boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
