@@ -32,7 +32,6 @@
 
   # Variables de entorno para aceleración AMD
   environment.sessionVariables = {
-    # AMD no requiere LIBVA_DRIVER_NAME explícito (usa radeonsi automáticamente)
     VDPAU_DRIVER = "radeonsi";
     AMD_VULKAN_ICD = "RADV";
   };
@@ -43,7 +42,6 @@
     description = "Germán N. González";
     extraGroups = ["networkmanager" "wheel" "audio" "video" "gamemode"];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
-    initialPassword = "1234";
   };
 
   system.stateVersion = "24.11";
