@@ -5,6 +5,14 @@
     printing.enable = false;
     geoclue2.enable = false;
     power-profiles-daemon.enable = true;
+    languagetool = {
+      enable = true;
+      package = pkgs.languagetool;
+      port = 8081;
+      jvmOptions = ["-Xmx512m"];
+      public = false;
+      jrePackage = pkgs.zulu25;
+    };
   };
 
   documentation = {

@@ -2,7 +2,15 @@
 {...}: {
   programs.nixcord = {
     enable = true;
-    discord.vencord.unstable = true;
+    discord = {
+    	enable = true;
+    	equicord = {
+    		enable = true;
+    	};
+    	vencord = {
+    		enable = false;
+    	};
+    };
     
     config = {
       useQuickCss = true;
@@ -73,7 +81,7 @@
         noPendingCount.enable = true;
         #noProfileThemes.enable = true;
         normalizeMessageLinks.enable = true;
-        noRpc.enable = true;
+        #noRpc.enable = true;
         #noTypingAnimation.enable = true;
         noUnblockToJump.enable = true;
         onePingPerDm.enable = true;
@@ -140,7 +148,6 @@
         userVoiceShow.enable = true;
         validReply.enable = true;
         validUser.enable = true;
-        vencordToolbox.enable = true;
         viewIcons.enable = true;
         voiceChatDoubleClick.enable = true;
         volumeBooster.enable = true;

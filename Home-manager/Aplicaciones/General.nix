@@ -32,5 +32,9 @@
     pciutils
     # Btop.
     btop
+    # LaTeX.
+    texliveFull
+    # TexStudio.
+    texstudio
   ];
 }

@@ -10,10 +10,7 @@
     programs.steam = {
       enable = true;
       platformOptimizations.enable = true;
-      extraPackages = with pkgs; [
-        latencyflex-vulkan
-      ];
-      extraCompatPackages = with pkgs; [proton-ge-bin proton-cachyos];
+      extraCompatPackages = with pkgs; [proton-ge-bin];
 
       package = pkgs.steam.override {
         extraEnv = {
@@ -55,7 +52,6 @@
         controllerSupport = false;
         gamemodeSupport = true;
         textToSpeechSupport = false;
-        additionalPrograms = [latencyflex-vulkan];
         jdks = [
           zulu25
         ];
