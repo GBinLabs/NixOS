@@ -4,9 +4,9 @@
   lib,
   ...
 }: {
-  programs.librewolf = {
+  programs.firefox = {
     enable = true;
-    package = pkgs.librewolf;
+    package = pkgs.firefox;
 
     profiles.default = {
       id = 0;

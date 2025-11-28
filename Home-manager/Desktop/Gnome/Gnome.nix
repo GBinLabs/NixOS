@@ -8,7 +8,7 @@
   dconf.settings = {
     "org/gnome/shell" = {
       favorite-apps = [
-        "librewolf.desktop"
+        "firefox.desktop"
         "org.gnome.Terminal.desktop"
         "org.gnome.Nautilus.desktop"
       ];
