@@ -36,5 +36,7 @@
     texliveFull
     # TexStudio.
     texstudio
+    # Piper.
+    piper
   ];
 }

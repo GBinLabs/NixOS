@@ -10,7 +10,8 @@
     programs.steam = {
       enable = true;
       platformOptimizations.enable = true;
-      extraCompatPackages = with pkgs; [proton-ge-bin];
+      extraPackages = [ pkgs.latencyflex-vulkan ];
+      extraCompatPackages = with pkgs; [proton-ge-bin ];
 
       package = pkgs.steam.override {
         extraEnv = {

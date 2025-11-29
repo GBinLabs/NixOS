@@ -9,6 +9,7 @@ _: {
     ./Desktop/default.nix
     ./Impermanence/default.nix
     ./Keyboard.nix
+    ./Monitor.nix
     ./Network/default.nix
     ./Nix.nix
     ./Programs.nix

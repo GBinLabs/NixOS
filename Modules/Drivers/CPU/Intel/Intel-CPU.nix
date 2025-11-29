@@ -20,6 +20,7 @@ in
       # Microcode + governor conservador
       hardware.cpu.intel.updateMicrocode = true;
       powerManagement.cpuFreqGovernor = "performance";
+
       # Kernel params para eficiencia
       boot.kernelParams = [
         "intel_pstate=passive"      # Desactivar pstate (usa acpi-cpufreq)
