@@ -16,11 +16,11 @@
         tinymist
 
         # LanguageTool
-        ltex-ls
+        ltex-ls-plus
       ];
 
       settings = {
-        theme = "gruvbox_transparent";
+        theme = "gruvbox_dark_hard";
 
         editor = {
           line-number = "relative";
@@ -72,31 +72,6 @@
         };
       };
 
-      # Tema transparente personalizado mejorado
-      themes = {
-        gruvbox_transparent = {
-          inherits = "gruvbox_dark_hard";
-          "ui.background" = {};
-          "ui.statusline" = {
-            fg = "fg1";
-            bg = "bg1";
-          };
-          "ui.statusline.inactive" = {
-            fg = "fg4";
-            bg = "bg1";
-          };
-          "ui.bufferline" = {
-            fg = "fg2";
-            bg = "bg0";
-          };
-          "ui.bufferline.active" = {
-            fg = "orange";
-            bg = "bg1";
-            modifiers = ["bold"];
-          };
-        };
-      };
-
       languages = {
         language-server = {
           nixd = {
@@ -128,8 +103,8 @@
           };
 
           # LTeX con español e inglés
-          ltex-ls = {
-            command = "${pkgs.ltex-ls}/bin/ltex-ls";
+          ltex-ls-plus = {
+            command = "${pkgs.ltex-ls-plus}/bin/ltex-ls";
             config = {
               ltex = {
                 language = "es"; # Idioma principal

@@ -32,19 +32,13 @@ in {
   config = mkIf cfg.enable (mkMerge [
     {
       hardware.graphics = {
-        enable = false;
+        enable = true;
+        enable32Bit = true;
+        extraPackages = with pkgs; [mesa mesa-demos vulkan-loader];
+        extraPackages32 = with pkgs.pkgsi686Linux; [mesa mesa-demos];
       };
       environment.variables."AMD_VULKAN_ICD" = "RADV";
       boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
-      chaotic = {
-        mesa-git = {
-          enable = true;
-          extraPackages = with pkgs; [mesa_git.opencl];
-          extraPackages32 = with pkgs.pkgsi686Linux; [mesa32_git.opencl];
-          fallbackSpecialisation = false;
-          replaceBasePackage = true;
-        };
-      };
     }
 
     {

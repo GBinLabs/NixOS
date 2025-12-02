@@ -5,7 +5,6 @@ _: {
     ./General.nix
     ./Gestor-archivos/default.nix
     ./Git.nix
-    #./Joplin.nix
     ./Languages/default.nix
     ./MangoHud.nix
     ./Navegadores/default.nix

@@ -8,9 +8,7 @@
     pulse.enable = true;
     jack.enable = true;
     lowLatency = {
-      # enable this module
       enable = true;
-      # defaults (no need to be set unless modified)
       quantum = 64;
       rate = 48000;
     };
@@ -38,7 +36,7 @@
   };
 
   security.rtkit.enable = true;
-  # Solución robusta para el micrófono con múltiples fallbacks
+  
   systemd.user.services.microphone-volume = {
     description = "Configurar micrófono al 30%";
     wantedBy = ["graphical-session.target"];

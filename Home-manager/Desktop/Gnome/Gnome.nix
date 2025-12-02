@@ -135,15 +135,14 @@
       translate = true;
       apps = [
         "org.gnome.baobab.desktop"
+        "btop.desktop"
+        "org.gnome.Settings.desktop"
         "org.gnome.DiskUtility.desktop"
         "org.gnome.FileRoller.desktop"
-        "org.gnome.Evince.desktop"
-        "org.gnome.Settings.desktop"
-        "org.gnome.Extensions.desktop"
         "org.gnome.TextEditor.desktop"
-        "org.freedesktop.Piper.desktop"
+        "org.gnome.Extensions.desktop"
         "org.gnome.eog.desktop"
-        "btop.desktop"
+        "org.gnome.Evince.desktop"
       ];
     };
 
@@ -151,13 +150,13 @@
       name = "LibreOffice";
       translate = true;
       apps = [
-        "writer.desktop"
-        "calc.desktop"
+      	"startcenter.desktop"
+      	"base.desktop"
+      	"calc.desktop"
+      	"draw.desktop"
         "impress.desktop"
-        "draw.desktop"
-        "base.desktop"
-        "startcenter.desktop"
         "math.desktop"
+        "writer.desktop"
       ];
     };
 
@@ -191,4 +190,5 @@
   fonts.fontconfig.enable = true;
 
   home.file."Imágenes/Wallpapers/NixOS.png".source = ./Wallpapers/NixOS.png;
+  home.file."Imágenes/Wallpapers/Avatar-Bin.png".source = ./Wallpapers/Avatar-Bin.png;
 }

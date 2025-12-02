@@ -1,5 +1,8 @@
-# Modules/DNS.nix
-{config, lib, ...}: {
+{
+  config,
+  lib,
+  ...
+}: {
   options.DNS-Smart.enable = lib.mkEnableOption "DNS inteligente";
 
   config = lib.mkIf config.DNS-Smart.enable {
@@ -17,6 +20,12 @@
       '';
     };
 
-    networking.networkmanager.dns = "systemd-resolved";
+    networking.networkmanager = {
+      dns = "systemd-resolved";
+      wifi = {
+        backend = "iwd";
+        powersave = false;
+      };
+    };
   };
 }

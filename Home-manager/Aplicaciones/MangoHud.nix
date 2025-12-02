@@ -1,12 +1,8 @@
 {pkgs, ...}: {
   programs.mangohud = {
     enable = true;
-
-    # ¡IMPORTANTE! Usar tu paquete custom
     package = pkgs.mangohud;
-
     settings = {
-      # TU CONFIGURACIÓN ACTUAL
       legacy_layout = true;
       background_alpha = 0.6;
       background_color = "000000";
@@ -49,7 +45,6 @@
       gl_vsync = false;
       blacklist = "pamac-manager lact ghb bitwig-studio ptyxis yumex";
     };
-
     enableSessionWide = false;
   };
 }
