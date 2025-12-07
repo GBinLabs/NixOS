@@ -4,7 +4,16 @@
     avahi.enable = false;
     printing.enable = false;
     geoclue2.enable = false;
-    power-profiles-daemon.enable = true;
+    languagetool = {
+      enable = true;
+      package = pkgs.languagetool;
+      settings = {};
+      port = 8081;
+      jvmOptions = ["-Xmx512m"];
+      public = false;
+      jrePackage = pkgs.zulu25;
+      allowOrigin = null;
+    };
   };
 
   documentation = {
