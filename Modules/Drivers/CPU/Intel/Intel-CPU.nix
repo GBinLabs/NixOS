@@ -1,53 +1,72 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.CPU-Intel;
-  # Valores configurables
-  maxTemp = toString cfg.maxTemp;
-  maxFreq = toString cfg.maxFreq;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.CPU-Intel;
+in {
   options.CPU-Intel = {
-    enable = mkEnableOption "Intel N4020 - control térmico agresivo (sin undervolt)";
-    maxTemp = mkOption { type = types.int; default = 75000; description = "Temperatura límite (m°C)"; };
-    maxFreq = mkOption { type = types.int; default = 2400; description = "Frecuencia máxima (MHz)"; };
+    enable = mkEnableOption "Intel N4020 - MÁXIMO RENDIMIENTO (no juegos)";
+
+    # Parámetros performance
+    targetTemp = mkOption {
+      type = types.int;
+      default = 85000; # 85°C: antes de throttle
+      description = "Temperatura límite performance (m°C)";
+    };
+
+    minFreq = mkOption {
+      type = types.int;
+      default = 2400; # Frecuencia base (no bajar de aquí)
+      description = "Frecuencia mínima forzada (MHz)";
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
     {
-      # Microcode + governor conservador
+      # === PERFORMANCE CRUDA ===
       hardware.cpu.intel.updateMicrocode = true;
-      powerManagement.cpuFreqGovernor = "performance";
+      powerManagement.cpuFreqGovernor = lib.mkForce "performance";
 
-      # Kernel params para eficiencia
       boot.kernelParams = [
-        "intel_pstate=passive"      # Desactivar pstate (usa acpi-cpufreq)
-        "processor.max_cstate=2"    # C-states profundos
-        "intel_idle.max_cstate=2"
+        "intel_pstate=disable" # Usar acpi-cpufreq (más control)
+        "processor.max_cstate=1" # DORMIR ES DE DéBILES
+        "intel_idle.max_cstate=1"
+        "mitigations=off" # +5% rendimiento medible en Celeron
+        "nohz_full=0-1" # Timer tickless en ambos núcleos
+        "rcu_nocbs=0-1"
+        "intel_iommu=off" # Ahorra ciclos si no usas VMs
       ];
     }
 
     {
-      # Thermal daemon con límite agresivo
+      # === THERMALD PERMISSIVO ===
       services.thermald = {
         enable = true;
-        configFile = pkgs.writeText "thermald-n4020.conf" ''
+        configFile = pkgs.writeText "n4020-performance.conf" ''
           <?xml version="1.0"?>
           <ThermalConfiguration>
             <Platform>
-              <Name>N4020</Name>
+              <Name>Intel N4020 Performance</Name>
               <ProductName>*</ProductName>
               <Preference>PERFORMANCE</Preference>
               <ThermalZones>
                 <ThermalZone>
                   <Type>cpu</Type>
                   <TripPoints>
+                    <!-- No limitar hasta 85°C -->
                     <TripPoint>
                       <SensorType>cpu</SensorType>
-                      <Temperature>${maxTemp}</Temperature>
+                      <Temperature>${toString cfg.targetTemp}</Temperature>
                       <Type>passive</Type>
+                    </TripPoint>
+                    <!-- Emergencia: 90°C -->
+                    <TripPoint>
+                      <SensorType>cpu</SensorType>
+                      <Temperature>90000</Temperature>
+                      <Type>critical</Type>
                     </TripPoint>
                   </TripPoints>
                 </ThermalZone>
@@ -57,42 +76,39 @@ in
         '';
       };
 
-      # Limitar frecuencia máxima (efecto similar a undervolt)
-      systemd.services.intel-cpu-limit = {
+      # === FORZAR FRECUENCIAS ALTAS ===
+      systemd.services.intel-cpu-performance = {
         enable = true;
-        description = "Limitar frecuencia CPU N4020";
-        wantedBy = [ "multi-user.target" ];
+        description = "N4020 - Performance Max";
+        wantedBy = ["multi-user.target"];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = pkgs.writeShellScript "limit-freq" ''
+          RemainAfterExit = true;
+          ExecStart = pkgs.writeShellScript "n4020-max" ''
+            echo "Forzando N4020 a máximo rendimiento..."
+
+            # Governor performance + frecuencias máximas
             for cpu in /sys/devices/system/cpu/cpu*/cpufreq; do
-              echo ${maxFreq}000 > ''${cpu}/scaling_max_freq
+              echo performance > ''${cpu}/scaling_governor
+              echo ${toString cfg.minFreq}000 > ''${cpu}/scaling_min_freq  # No bajar
+              echo 2800000 > ''${cpu}/scaling_max_freq                   # Burst siempre disponible
+
+              # Reducir latencia de transición
+              echo 1 > ''${cpu}/scaling_min_freq
             done
+
+            # Desactivar C-states completamente (lag de despertar)
+            for cpu in /sys/devices/system/cpu/cpu*/cpuidle; do
+              [ -d "$cpu" ] || continue
+              echo 1 > "$cpu/state1/disable" 2>/dev/null || true
+              echo 1 > "$cpu/state2/disable" 2>/dev/null || true
+              echo 1 > "$cpu/state3/disable" 2>/dev/null || true
+            done
+
+            echo "[CPU] N4020: Performance mode | Min freq: ${toString cfg.minFreq}MHz | No C-states"
           '';
         };
       };
-    }
-
-    {
-      # Herramientas de monitoreo
-      environment.systemPackages = with pkgs; [
-        lm_sensors
-        (writeShellScriptBin "cpu-status" ''
-          echo "=== Intel N4020 (Modo Seguro) ==="
-          echo "Freq Max: ${maxFreq}MHz (limitado)"
-          echo "Actual: $(cat /proc/cpuinfo | grep 'cpu MHz' | head -1 | awk '{print $4}')"
-          echo "Temp: $(sensors 2>/dev/null | grep 'Package id 0' | awk '{print $4}' || echo 'N/A')"
-        '')
-      ];
-      environment.shellAliases = {
-        cpu-temp = "sensors | grep 'Package id 0'";
-        cpu-limit = "cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq | awk '{print \$1/1000\" MHz\"}'";
-      };
-    }
-
-    {
-      warnings = optional cfg.enable
-        "CPU-Intel: Modo térmico agresivo (sin undervolt) - ${maxFreq}MHz max";
     }
   ]);
 }

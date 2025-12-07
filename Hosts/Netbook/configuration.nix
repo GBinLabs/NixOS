@@ -9,11 +9,13 @@
   # En configuration.nix
   CPU-Intel = {
     enable = true;
+    targetTemp = 85000;
+    minFreq = 2400;
   };
   GPU-Intel = {
     enable = true;
-    maxFreq = 550;
-    rc6Level = 3;
+    maxFreq = 650;
+    rc6Level = 0;
   };
   Zram.enable = true;
   Persistencia.enable = true;

@@ -1,87 +1,125 @@
-{ config, lib, pkgs, ... }:
-
-with lib;
-
-let
-  cfg = config.GPU-Intel;
-  GPU = "/sys/class/drm/card0/device";
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.GPU-Intel;
+  # Auto-detectar GPU Intel
+  gpuDevice =
+    if cfg.gpuDevicePath != null
+    then cfg.gpuDevicePath
+    else "/sys/class/drm/card0/device";
+in {
   options.GPU-Intel = {
-    enable = mkEnableOption "Intel UHD 600 - undervolt soft + optimización";
-    # Frecuencia máxima: stock 650MHz, reducida para undervolt "soft"
-    maxFreq = mkOption { type = types.int; default = 550; };
-    # RC6: nivel de power saving (1=enabled, 2=deep, 3=deepest)
-    rc6Level = mkOption { type = types.int; default = 3; };
+    enable = mkEnableOption "Intel UHD 600 - MODO MAX PERFORMANCE";
+
+    gpuDevicePath = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Override para GPU (si no es card0)";
+    };
+
+    maxFreq = mkOption {
+      type = types.int;
+      default = 650; # Frecuencia STOCK (no reducida)
+      description = "Frecuencia máxima (MHz)";
+    };
+
+    # Para performance, deshabilitamos RC6
+    rc6Level = mkOption {
+      type = types.int;
+      default = 0; # 0 = OFF (menor latencia)
+      description = "RC6 power saving (0=off, 1=on)";
+    };
   };
 
   config = mkIf cfg.enable (mkMerge [
     {
       hardware.graphics = {
         enable = true;
-        extraPackages = with pkgs; [ intel-media-driver intel-compute-runtime ];
+        enable32Bit = true;
+        extraPackages = with pkgs; [
+          intel-media-driver
+          intel-compute-runtime
+          intel-vaapi-driver
+          libvdpau-va-gl
+        ];
+        extraPackages32 = with pkgs.pkgsi686Linux; [
+          intel-media-driver
+        ];
       };
-      environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
-      
-      boot.kernelModules = [ "i915" ];
-      boot.initrd.kernelModules = [ "i915" ];
+
+      environment.sessionVariables = {
+        LIBVA_DRIVER_NAME = "iHD";
+        VDPAU_DRIVER = "va_gl";
+      };
+
+      boot.kernelModules = ["i915"];
+      boot.initrd.kernelModules = ["i915"];
+
+      # Parámetros de performance para i915
       boot.kernelParams = [
-        "i915.enable_guc=0"      # Deshabilitar GuC (no necesario para UHD 600)
-        "i915.enable_fbc=1"      # Frame Buffer Compression (ahorro de energía)
-        "i915.enable_psr=0"      # Panel Self Refresh (puede causar flickering)
-        "i915.fastboot=1"        # Boot más rápido
-        "i915.disable_power_well=0" # Mantener power wells habilitados
+        "i915.enable_guc=3" # Habilitar GuC/HuC (reduce overhead CPU)
+        "i915.enable_fbc=1" # Frame Buffer Compression
+        "i915.enable_psr=0" # Desactivar PSR (evita flicker/lag)
+        "i915.fastboot=1" # Boot más rápido
+        "i915.disable_power_well=0" # Power wells siempre on (menor latencia)
+        "i915.enable_dc=0" # Desactivar Display Power Saving
+        "i915.disable_lp_ring=1" # Desactivar low power ring
       ];
     }
 
     {
-      systemd.services.intel-gpu-undervolt = {
+      systemd.services.intel-gpu-performance = {
         enable = true;
-        description = "Intel GPU Undervolt Soft (frecuencia limitada)";
-        wantedBy = [ "multi-user.target" ];
+        description = "UHD 600 - Modo Performance";
+        wantedBy = ["multi-user.target"];
+        after = ["multi-user.target"];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = pkgs.writeShellScript "gpu-undervolt" ''
-            # Limitar frecuencia máxima (efecto similar a undervolt)
-            echo ${toString cfg.maxFreq} > ${GPU}/gt_max_freq_mhz 2>/dev/null || true
-            
-            # Configurar RC6 power states (ahorro de energía)
-            echo ${toString cfg.rc6Level} > ${GPU}/power/rc6_enable 2>/dev/null || true
-            
-            # Ajustar render boost (reducir sobrecarga)
-            echo 400 > ${GPU}/gt_boost_freq_mhz 2>/dev/null || true
-            
-            # Habilitar RPS (Render P-States) conservador
-            echo 1 > ${GPU}/rps_enabled 2>/dev/null || true
-            
-            echo "Intel GPU: frecuencia limitada a ${toString cfg.maxFreq}MHz"
+          RemainAfterExit = true;
+          ExecStart = pkgs.writeShellScript "gpu-max-perf" ''
+            GPU_DEV="${gpuDevice}"
+
+            # Auto-detectar si la ruta no existe
+            if [ ! -d "$GPU_DEV" ]; then
+              for card in /sys/class/drm/card*/device; do
+                if [ -f "$card/uevent" ] && grep -q "i915" "$card/uevent" 2>/dev/null; then
+                  GPU_DEV="$card"
+                  echo "GPU Intel encontrada: $GPU_DEV"
+                  break
+                fi
+              done
+            fi
+
+            # FORZAR FRECUENCIA MÁXIMA
+            echo ${toString cfg.maxFreq} > $GPU_DEV/gt_max_freq_mhz 2>/dev/null || true
+
+            # DESHABILITAR RC6 (menor latencia)
+            echo ${toString cfg.rc6Level} > $GPU_DEV/power/rc6_enable 2>/dev/null || true
+
+            # Configurar RPS (Render P-States) para performance
+            echo 1 > $GPU_DEV/rps_enabled 2>/dev/null || true
+
+            # Forzar render boost a máximo
+            echo ${toString cfg.maxFreq} > $GPU_DEV/gt_boost_freq_mhz 2>/dev/null || true
+
+            # Habilitar execlist (mejor scheduling)
+            echo 1 > $GPU_DEV/enable_execlist 2>/dev/null || true
+
+            echo "[GPU] UHD 600 configurada a ${toString cfg.maxFreq}MHz | RC6: ${toString cfg.rc6Level}"
           '';
         };
       };
 
+      # Permisos correctos
       systemd.tmpfiles.rules = [
-        "Z ${GPU} 0660 root wheel - -"
-        "Z ${GPU}/gt_max_freq_mhz 0660 root wheel - -"
-        "Z ${GPU}/power/rc6_enable 0660 root wheel - -"
+        "Z ${gpuDevice} 0660 root wheel - -"
+        "Z ${gpuDevice}/gt_max_freq_mhz 0660 root wheel - -"
+        "Z ${gpuDevice}/power/rc6_enable 0660 root wheel - -"
       ];
-    }
-
-    {
-      environment.systemPackages = with pkgs; [
-        intel-gpu-tools
-        (writeShellScriptBin "gpu-status" ''
-          echo "=== Intel UHD 600 ==="
-          echo "Freq Max: ${toString cfg.maxFreq}MHz (limitado)"
-          echo "Actual: $(cat ${GPU}/gt_cur_freq_mhz 2>/dev/null || echo 'N/A')MHz"
-          echo "RC6: $(cat ${GPU}/power/rc6_enable 2>/dev/null || echo 'N/A')"
-        '')
-      ];
-      environment.shellAliases.gpu-temp = "sensors | grep -i 'pkg-temp' | head -1";
-    }
-
-    {
-      warnings = optional cfg.enable
-        "GPU-Intel: Modo undervolt soft activado (${toString cfg.maxFreq}MHz max)";
     }
   ]);
 }
