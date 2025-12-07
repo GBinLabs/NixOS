@@ -8,15 +8,16 @@
 
   CPU-AMD = {
     enable = true;
-    vid = 64;
-    frequencyMHz = 4200;
+    pptLimit = 88;
+    boostMHz = 4200;
+    undervoltmV = -50;
   };
   GPU-AMD = {
     enable = true;
     gpuClock = "1950";
     gpuVoltage = "1100";
     memVoltage = "950";
-    powerLimit = 110;
+    powerLimit = 150;
   };
   Zram.enable = true;
   Steam.enable = true;

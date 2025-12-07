@@ -14,6 +14,10 @@
       jrePackage = pkgs.zulu25;
       allowOrigin = null;
     };
+    ratbagd = {
+      enable = true;
+      package = pkgs.libratbag;
+    };
   };
 
   documentation = {

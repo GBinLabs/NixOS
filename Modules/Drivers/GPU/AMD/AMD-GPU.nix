@@ -6,18 +6,29 @@
 }:
 with lib; let
   cfg = config.GPU-AMD;
-  GPU = "/sys/class/drm/card0/device";
-  HWMON = "${GPU}/hwmon/hwmon*";
+
+  # Auto-detectar GPU AMD
+  gpuDevice =
+    if cfg.gpuDevicePath != null
+    then cfg.gpuDevicePath
+    else "/sys/class/drm/card1/device";
 in {
   options.GPU-AMD = {
-    enable = mkEnableOption "AMD RX 5500XT - drivers RADV + undervolt";
+    enable = mkEnableOption "AMD GPU - Modo Performance";
+
+    gpuDevicePath = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Override para GPU (si no es card0)";
+    };
+
     gpuClock = mkOption {
       type = types.str;
-      default = "1900";
+      default = "1950";
     };
     gpuVoltage = mkOption {
       type = types.str;
-      default = "1120";
+      default = "1150";
     };
     memVoltage = mkOption {
       type = types.str;
@@ -25,7 +36,7 @@ in {
     };
     powerLimit = mkOption {
       type = types.int;
-      default = 120;
+      default = 150;
     };
   };
 
@@ -39,64 +50,72 @@ in {
       };
       environment.variables."AMD_VULKAN_ICD" = "RADV";
       boot.kernelParams = ["amdgpu.ppfeaturemask=0xffffffff"];
+      powerManagement.cpuFreqGovernor = lib.mkForce "performance";
     }
 
     {
-      systemd.services.amdgpu-undervolt = {
+      systemd.services.amdgpu-performance = {
         enable = true;
-        description = "Undervolt RX 5500XT";
-        wantedBy = ["graphical-session.target"];
-        after = ["graphical-session.target"];
+        description = "RX 5500XT - Modo Performance";
+        wantedBy = ["multi-user.target"];
+        after = ["multi-user.target"];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = pkgs.writeShellScript "gpu-uv" ''
-            echo manual > ${GPU}/power_dpm_force_performance_level
-            cat > ${GPU}/pp_od_clk_voltage << EOF
-            s 0 300 800
-            s 1 1350 940
-            s 2 1450 970
-            s 3 1550 1000
-            s 4 1650 1030
-            s 5 1750 1060
-            s 6 1850 1090
+          RemainAfterExit = true;
+          ExecStart = pkgs.writeShellScript "gpu-performance" ''
+            # AUTO-DETECTAR GPU SI NO EXISTE LA RUTA
+            GPU_DEVICE="${gpuDevice}"
+            if [ ! -d "$GPU_DEVICE" ]; then
+              echo "Buscando GPU AMD..."
+              for card in /sys/class/drm/card*/device; do
+                if [ -f "$card/uevent" ] && grep -q "AMD" "$card/uevent" 2>/dev/null; then
+                  GPU_DEVICE="$card"
+                  echo "GPU AMD encontrada: $GPU_DEVICE"
+                  break
+                fi
+              done
+            fi
+
+            HWMON_PATH=$(ls -d $GPU_DEVICE/hwmon/hwmon* | head -1)
+
+            # Aplicar configuración
+            echo high > $GPU_DEVICE/power_dpm_force_performance_level
+
+            cat > $GPU_DEVICE/pp_od_clk_voltage << EOF
+            s 0 300 750
+            s 1 1400 900
+            s 2 1500 950
+            s 3 1600 1000
+            s 4 1700 1050
+            s 5 1800 1100
+            s 6 1900 1150
             s 7 ${cfg.gpuClock} ${cfg.gpuVoltage}
             m 0 300 800
             m 1 1750 ${cfg.memVoltage}
             c
             EOF
-            echo ${toString (cfg.powerLimit * 1000000)} > ${HWMON}/power1_cap
+
+            echo ${toString (cfg.powerLimit * 1000000)} > $HWMON_PATH/power1_cap
+
+            # NOTA: ${toString cfg.powerLimit} para convertir entero a string
+            echo "[GPU] Performance: ${cfg.gpuClock}MHz @ ${cfg.gpuVoltage}mV, ${toString cfg.powerLimit}W"
           '';
         };
       };
 
       systemd.tmpfiles.rules = [
-        "Z ${GPU} 0660 root wheel - -"
-        "Z ${HWMON} 0660 root wheel - -"
+        "Z ${gpuDevice} 0660 root wheel - -"
       ];
     }
 
     {
-      environment.systemPackages = with pkgs; [
-        (writeShellScriptBin "gpu-status" ''
-          echo "=== RX 5500XT ==="
-          echo "Config: ${cfg.gpuClock}MHz @ ${cfg.gpuVoltage}mV / ${cfg.memVoltage}mV"
-          echo "GPU: $(grep '*' ${GPU}/pp_dpm_sclk 2>/dev/null || echo 'N/A')"
-          echo "Temp: $(cat ${HWMON}/temp1_input 2>/dev/null | awk '{print $1/1000"°C"}' || echo 'N/A')"
-        '')
-      ];
-      environment.shellAliases.gpu-temp = "cat ${HWMON}/temp1_input | awk '{print \$1/1000\"°C\"}'";
-
-      # Variables de entorno para Anti-Lag 2
       environment.sessionVariables = {
         RADV_PERFTEST = "nggc,sam,rt,antilag2";
         VK_INSTANCE_LAYERS = "VK_LAYER_MESA_anti_lag";
+        AMDGPU_CS_QUEUE_PRIORITY = "high";
+        mesa_glthread = "true";
+        AMD_DEBUG = "nongfxbrightness";
       };
-    }
-
-    {
-      warnings =
-        optional cfg.enable
-        "GPU-AMD: Undervolt activado (${cfg.gpuClock}MHz @ ${cfg.gpuVoltage}mV) + Anti-Lag 2";
     }
   ]);
 }
