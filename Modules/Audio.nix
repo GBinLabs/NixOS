@@ -1,4 +1,9 @@
-{pkgs, ...}: {
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}: {
   services.pipewire = {
     enable = true;
     alsa = {
@@ -16,7 +21,7 @@
     wireplumber = {
       enable = true;
       configPackages = [
-        (pkgs.writeTextDir "share/wireplumber/wireplumber.conf.d/51-alsa-disable-dsp.conf" ''
+        (pkgs.writeTextDir "share/wireplacker/wireplumber.conf.d/51-alsa-disable-dsp.conf" ''
           monitor.alsa.rules = [
             {
               matches = [{ node.name = "~alsa_.*" }]
@@ -36,6 +41,17 @@
   };
 
   security.rtkit.enable = true;
+
+  # Configuración específica para Intel HDA (Netbook)
+  boot = lib.mkMerge [
+    (lib.mkIf (config.Red-Netbook.enable or false) {
+      kernelModules = ["snd_hda_intel" "snd_soc_skl"];
+      extraModprobeConfig = ''
+        options snd_hda_intel power_save=1 power_save_controller=Y
+        options snd_soc_skl dyndbg=+p
+      '';
+    })
+  ];
 
   systemd.user.services.microphone-volume = {
     description = "Configurar micrófono al 30%";

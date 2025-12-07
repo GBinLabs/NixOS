@@ -8,70 +8,74 @@ with lib; let
   cfg = config.CPU-AMD;
 in {
   options.CPU-AMD = {
-    enable = mkEnableOption "Ryzen 5 3600 - Modo Performance Sweet Spot";
+    enable = mkEnableOption "Ryzen 5 3600 - Undervolt Máximo Validado";
 
-    # Parámetros ajustables (sweet spot para tu silicio)
-    pptLimit = mkOption {
-      type = types.int;
-      default = 88; # +35% TDP stock, límite seguro A320
-    };
-    boostMHz = mkOption {
-      type = types.int;
-      default = 4200; # Máximo boost stock (no OC)
-    };
     undervoltmV = mkOption {
       type = types.int;
-      default = -50; # -50mV = sweet spot Zen 2
+      default = 100;
+      description = "Undervolt validado como estable para este chip específico (mV)";
+    };
+
+    pptLimit = mkOption {
+      type = types.int;
+      default = 65;
+      description = "Límite PPT optimizado aprovechando eficiencia de undervolt (W)";
+    };
+
+    boostMHz = mkOption {
+      type = types.int;
+      default = 4200;
+      description = "Frecuencia boost nominal (MHz)";
+    };
+
+    targetTemp = mkOption {
+      type = types.int;
+      default = 75;
+      description = "Temperatura objetivo para gestión térmica (°C)";
     };
   };
 
   config = mkIf cfg.enable (mkMerge [
     {
-      # === KERNEL Y DRIVER ===
-      boot.kernelModules = ["msr" "cpufreq_performance"];
+      boot.kernelModules = ["msr" "cpufreq_schedutil"];
       boot.extraModprobeConfig = "options msr allow_writes=on";
+      
+      powerManagement.cpuFreqGovernor = lib.mkForce "schedutil";
+      
+      boot.kernelParams = [
+        "amd_pstate=active"
+      ];
 
-      # Gobernador PERFORMANCE (crítico para latencia baja)
-      powerManagement.cpuFreqGovernor = lib.mkForce "performance";
+      boot.kernel.sysctl = {
+        "kernel.sched_energy_aware" = 1;
+      };
     }
 
     {
-      # === RYZENADJ (método seguro y estable) ===
       systemd.services.ryzenadj-cpu = {
         enable = true;
-        description = "Ryzen 5 3600 - Performance Optimized";
+        description = "Ryzen 5 3600 - Undervolt Máximo Optimizado";
         wantedBy = ["multi-user.target"];
         after = ["multi-user.target"];
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
-          ExecStart = pkgs.writeShellScript "ryzenadj-script" ''
+          ExecStart = pkgs.writeShellScript "ryzenadj-optimized" ''
             sleep 3
 
-            # Aplicar límites de potencia (PPT/TDC/EDC)
-            # Valores seguros para VRM de A320 (4 fases típico)
             ${pkgs.ryzenadj}/bin/ryzenadj \
               --stapm-limit=${toString cfg.pptLimit}000 \
               --fast-limit=${toString cfg.pptLimit}000 \
               --slow-limit=${toString cfg.pptLimit}000 \
-              --tctl-temp=95 \
-              --cclk-up-core=${toString cfg.boostMHz}0
+              --tctl-temp=${toString cfg.targetTemp} \
+              --max-performance
 
-            # Undervolt moderado (-50mV)
             ${pkgs.ryzenadj}/bin/ryzenadj --volt-dec=${toString cfg.undervoltmV}
 
-            echo "[CPU] Ryzen 5 3600: ${toString cfg.boostMHz}MHz, PPT=${toString cfg.pptLimit}W, UV=${toString cfg.undervoltmV}mV"
+            echo "[CPU] Ryzen 5 3600 Optimizado: Boost ${toString cfg.boostMHz}MHz | PPT=${toString cfg.pptLimit}W | UV=-${toString cfg.undervoltmV}mV | Temp=${toString cfg.targetTemp}°C"
           '';
         };
       };
-    }
-
-    {
-      # === OPTIMIZACIONES DE JUEGOS ===
-      boot.kernelParams = [
-        "mitigations=off" # +2-3% FPS
-        "amd_no_smt=off" # Deja SMT ON (mejor para CS2/Dota)
-      ];
     }
   ]);
 }

@@ -6,32 +6,37 @@
 }:
 with lib; let
   cfg = config.GPU-Intel;
-  # Auto-detectar GPU Intel
+  
   gpuDevice =
     if cfg.gpuDevicePath != null
     then cfg.gpuDevicePath
     else "/sys/class/drm/card0/device";
 in {
   options.GPU-Intel = {
-    enable = mkEnableOption "Intel UHD 600 - MODO MAX PERFORMANCE";
+    enable = mkEnableOption "Intel UHD 600 - Optimización Extrema de Eficiencia";
 
     gpuDevicePath = mkOption {
       type = types.nullOr types.str;
       default = null;
-      description = "Override para GPU (si no es card0)";
+      description = "Override para GPU device path si difiere de card0";
     };
 
     maxFreq = mkOption {
       type = types.int;
-      default = 650; # Frecuencia STOCK (no reducida)
-      description = "Frecuencia máxima (MHz)";
+      default = 550;
+      description = "Frecuencia máxima GPU en MHz (reducida vs 650 MHz nominal)";
     };
 
-    # Para performance, deshabilitamos RC6
+    minFreq = mkOption {
+      type = types.int;
+      default = 200;
+      description = "Frecuencia mínima GPU en MHz (permite idle profundo)";
+    };
+
     rc6Level = mkOption {
       type = types.int;
-      default = 0; # 0 = OFF (menor latencia)
-      description = "RC6 power saving (0=off, 1=on)";
+      default = 1;
+      description = "Nivel RC6 power saving (1 = máximo ahorro)";
     };
   };
 
@@ -59,67 +64,78 @@ in {
       boot.kernelModules = ["i915"];
       boot.initrd.kernelModules = ["i915"];
 
-      # Parámetros de performance para i915
       boot.kernelParams = [
-        "i915.enable_guc=3" # Habilitar GuC/HuC (reduce overhead CPU)
-        "i915.enable_fbc=1" # Frame Buffer Compression
-        "i915.enable_psr=0" # Desactivar PSR (evita flicker/lag)
-        "i915.fastboot=1" # Boot más rápido
-        "i915.disable_power_well=0" # Power wells siempre on (menor latencia)
-        "i915.enable_dc=0" # Desactivar Display Power Saving
-        "i915.disable_lp_ring=1" # Desactivar low power ring
+        "i915.enable_guc=3"
+        "i915.enable_fbc=1"
+        "i915.enable_psr=2"
+        "i915.fastboot=1"
+        "i915.disable_power_well=1"
+        "i915.enable_dc=2"
+        "i915.modeset=1"
+        "i915.powersave=1"
       ];
     }
 
     {
-      systemd.services.intel-gpu-performance = {
+      systemd.services.intel-gpu-extreme-efficiency = {
         enable = true;
-        description = "UHD 600 - Modo Performance";
+        description = "UHD 600 - Configuración de Eficiencia Extrema";
         wantedBy = ["multi-user.target"];
         after = ["multi-user.target"];
         serviceConfig = {
           Type = "oneshot";
           RemainAfterExit = true;
-          ExecStart = pkgs.writeShellScript "gpu-max-perf" ''
+          ExecStart = pkgs.writeShellScript "gpu-extreme-efficiency" ''
             GPU_DEV="${gpuDevice}"
 
-            # Auto-detectar si la ruta no existe
             if [ ! -d "$GPU_DEV" ]; then
               for card in /sys/class/drm/card*/device; do
                 if [ -f "$card/uevent" ] && grep -q "i915" "$card/uevent" 2>/dev/null; then
                   GPU_DEV="$card"
-                  echo "GPU Intel encontrada: $GPU_DEV"
                   break
                 fi
               done
             fi
 
-            # FORZAR FRECUENCIA MÁXIMA
-            echo ${toString cfg.maxFreq} > $GPU_DEV/gt_max_freq_mhz 2>/dev/null || true
+            echo "[GPU] Aplicando configuración de eficiencia extrema para UHD 600"
 
-            # DESHABILITAR RC6 (menor latencia)
-            echo ${toString cfg.rc6Level} > $GPU_DEV/power/rc6_enable 2>/dev/null || true
+            # Establecer frecuencias restrictivas
+            echo ${toString cfg.minFreq} > "$GPU_DEV/gt_min_freq_mhz" 2>/dev/null || true
+            echo ${toString cfg.maxFreq} > "$GPU_DEV/gt_max_freq_mhz" 2>/dev/null || true
+            echo ${toString cfg.maxFreq} > "$GPU_DEV/gt_boost_freq_mhz" 2>/dev/null || true
 
-            # Configurar RPS (Render P-States) para performance
-            echo 1 > $GPU_DEV/rps_enabled 2>/dev/null || true
+            # Habilitar RC6 máximo para ahorro energético
+            echo ${toString cfg.rc6Level} > "$GPU_DEV/power/rc6_enable" 2>/dev/null || true
 
-            # Forzar render boost a máximo
-            echo ${toString cfg.maxFreq} > $GPU_DEV/gt_boost_freq_mhz 2>/dev/null || true
+            # Establecer nivel de power management agresivo
+            if [ -f "$GPU_DEV/power/control" ]; then
+              echo auto > "$GPU_DEV/power/control"
+            fi
 
-            # Habilitar execlist (mejor scheduling)
-            echo 1 > $GPU_DEV/enable_execlist 2>/dev/null || true
+            # Deshabilitar boost agresivo en favor de eficiencia
+            echo 0 > "$GPU_DEV/rps_enabled" 2>/dev/null || true
 
-            echo "[GPU] UHD 600 configurada a ${toString cfg.maxFreq}MHz | RC6: ${toString cfg.rc6Level}"
+            # Panel Self Refresh para reducir consumo de display
+            if [ -d /sys/class/drm/card0-eDP-1 ]; then
+              echo 1 > /sys/class/drm/card0-eDP-1/enabled 2>/dev/null || true
+            fi
+
+            echo "[GPU] Configuración aplicada: ${toString cfg.minFreq}-${toString cfg.maxFreq}MHz | RC6 habilitado | PSR activo"
           '';
         };
       };
 
-      # Permisos correctos
       systemd.tmpfiles.rules = [
         "Z ${gpuDevice} 0660 root wheel - -"
         "Z ${gpuDevice}/gt_max_freq_mhz 0660 root wheel - -"
+        "Z ${gpuDevice}/gt_min_freq_mhz 0660 root wheel - -"
         "Z ${gpuDevice}/power/rc6_enable 0660 root wheel - -"
+        "Z ${gpuDevice}/power/control 0660 root wheel - -"
       ];
+    }
+
+    {
+      powerManagement.powertop.enable = true;
     }
   ]);
 }

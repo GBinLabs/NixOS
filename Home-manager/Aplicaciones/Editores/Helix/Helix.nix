@@ -144,7 +144,7 @@
             scope = "source.typst";
             file-types = ["typ"];
             roots = ["template.typ"];
-            language-servers = ["tinymist" "ltex-ls"];
+            language-servers = ["tinymist" "ltex-ls-plus"];
 
             # Formateo automático al guardar
             auto-format = true;
