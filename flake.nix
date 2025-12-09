@@ -1,5 +1,5 @@
 {
-  description = "NixOS + Hyprland - Configuración de alto rendimiento";
+  description = "NixOS + Hyprland";
 
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
@@ -14,16 +14,18 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixos-facter-modules.url = "github:nix-community/nixos-facter-modules";
+
     impermanence.url = "github:nix-community/impermanence";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     chaotic = {
-    	url = "https://flakehub.com/f/chaotic-cx/nyx/*.tar.gz";
-    	inputs.nixpkgs.follows = "nixpkgs";
+      url = "https://flakehub.com/f/chaotic-cx/nyx/*.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nix-gaming = {
@@ -41,6 +43,7 @@
     self,
     nixpkgs,
     home-manager,
+    nixos-facter-modules,
     chaotic,
     nix-gaming,
     ...
@@ -50,6 +53,7 @@
     # Configuración base compartida
     baseModules = [
       inputs.disko.nixosModules.disko
+      inputs.nixos-facter-modules.nixosModules.facter
       inputs.impermanence.nixosModules.impermanence
       inputs.sops-nix.nixosModules.sops
       chaotic.nixosModules.default
@@ -70,26 +74,27 @@
     ];
 
     # Función helper para crear hosts
-    mkHost = hostname: hostModule: homeModule:
+    mkHost = hostname: hostModule: homeModule: facterPath:
       nixpkgs.lib.nixosSystem {
         inherit system;
         specialArgs = {inherit inputs;};
         modules =
           baseModules
           ++ [
+            {facter.reportPath = facterPath;}
             hostModule
             {home-manager.users.german = homeModule;}
           ];
       };
   in {
     nixosConfigurations = {
-      PC = mkHost "PC" ./Hosts/PC/configuration.nix ./Hosts/PC/home.nix;
-      Notebook = mkHost "Notebook" ./Hosts/Notebook/configuration.nix ./Hosts/Notebook/home.nix;
-      Netbook = mkHost "Netbook" ./Hosts/Netbook/configuration.nix ./Hosts/Netbook/home.nix;
+      PC = mkHost "PC" ./Hosts/PC/configuration.nix ./Hosts/PC/home.nix ./Hosts/PC/facter.json;
+      Notebook = mkHost "Notebook" ./Hosts/Notebook/configuration.nix ./Hosts/Notebook/home.nix ./Hosts/Notebook/facter.json;
+      Netbook = mkHost "Netbook" ./Hosts/Netbook/configuration.nix ./Hosts/Netbook/home.nix ./Hosts/Netbook/facter.json;
     };
   };
-  
-    nixConfig = {
+
+  nixConfig = {
     extra-substituters = [
       "https://cache.nixos.org"
       "https://chaotic-nyx.cachix.org/"
@@ -103,5 +108,4 @@
       "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
     ];
   };
-
 }

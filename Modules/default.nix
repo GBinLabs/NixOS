@@ -5,7 +5,6 @@ _: {
     ./Bluetooth.nix
     ./Boot.nix
     ./DNS.nix
-    ./Drivers/default.nix
     ./Desktop/default.nix
     ./Impermanence/default.nix
     ./Keyboard.nix

@@ -1,9 +1,4 @@
-{
-  pkgs,
-  config,
-  lib,
-  ...
-}: {
+{pkgs, ...}: {
   services.pipewire = {
     enable = true;
     alsa = {
@@ -42,17 +37,6 @@
 
   security.rtkit.enable = true;
 
-  # Configuración específica para Intel HDA (Netbook)
-  boot = lib.mkMerge [
-    (lib.mkIf (config.Red-Netbook.enable or false) {
-      kernelModules = ["snd_hda_intel" "snd_soc_skl"];
-      extraModprobeConfig = ''
-        options snd_hda_intel power_save=1 power_save_controller=Y
-        options snd_soc_skl dyndbg=+p
-      '';
-    })
-  ];
-
   systemd.user.services.microphone-volume = {
     description = "Configurar micrófono al 30%";
     wantedBy = ["graphical-session.target"];
@@ -69,6 +53,7 @@
           fi
           sleep 1
         done
+        ${pkgs.pulseaudio}/bin/pactl set-source-volume @DEFAULT_SOURCE@ 30%
       '';
     };
   };

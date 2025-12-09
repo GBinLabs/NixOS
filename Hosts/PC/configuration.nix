@@ -1,13 +1,10 @@
 # Hosts/PC/configuration.nix
 {config, ...}: {
   imports = [
-    ./hardware-configuration.nix
     ../../Modules/default.nix
     ./disko.nix
   ];
 
-  CPU-AMD.enable = true;
-  GPU-AMD.enable = true;
   Zram.enable = true;
   Steam.enable = true;
   Persistencia = {
@@ -19,12 +16,6 @@
   };
   Reset.enable = true;
   Red-PC.enable = true;
-
-  # Variables de entorno para aceleración AMD
-  environment.sessionVariables = {
-    VDPAU_DRIVER = "radeonsi";
-    AMD_VULKAN_ICD = "RADV";
-  };
 
   users.mutableUsers = false;
   users.users.german = {

@@ -39,7 +39,7 @@
       frametime_color = "00FF00";
       fps_limit_method = "late";
       show_fps_limit = true;
-      fps_limit = 165;
+      fps_limit = 75;
       gamemode = true;
       vsync = true;
       gl_vsync = false;
