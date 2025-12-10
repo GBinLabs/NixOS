@@ -7,13 +7,7 @@
 
   Zram.enable = true;
   Steam.enable = true;
-  Persistencia = {
-    enable = true;
-    extraUserDirectories = [
-      ".local/share/Steam"
-      ".local/share/PrismLauncher"
-    ];
-  };
+  Persistencia.enable = true;
   Reset.enable = true;
   Red-PC.enable = true;
 
@@ -21,7 +15,7 @@
   users.users.german = {
     isNormalUser = true;
     description = "Germán N. González";
-    extraGroups = ["networkmanager" "wheel" "audio" "video" "gamemode"];
+    extraGroups = ["networkmanager" "wheel" "audio" "video"];
     hashedPasswordFile = config.sops.secrets.usuario-german.path;
   };
 

@@ -1,6 +1,6 @@
 {pkgs, ...}: let
   customized_sddm_astronaut = pkgs.sddm-astronaut.override {
-    embeddedTheme = "hyprland_kath"; # The name of the theme you most loved
+    embeddedTheme = "hyprland_kath";
   };
 in {
   programs = {
@@ -77,8 +77,6 @@ in {
       cache32Bit = true;
     };
   };
-
-  hardware.bluetooth.powerOnBoot = false;
 
   environment = {
     systemPackages = [

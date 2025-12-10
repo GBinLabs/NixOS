@@ -1,11 +1,16 @@
-# Modules/Impermanence/Reset/Reset/Reset.nix
-{config, lib, pkgs, ...}: {
-  options = {
-    Reset.enable = lib.mkEnableOption "Habilitar Reset";
-  };
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: {
+  options.Reset.enable = lib.mkEnableOption "Reset PC";
+  options.Reset-Netbook.enable = lib.mkEnableOption "Reset Netbook";
+    
 
-  config = lib.mkIf config.Reset.enable {
-    fileSystems = {
+config = lib.mkMerge [
+(lib.mkIf config.Reset.enable {
+fileSystems = {
       "/home" = {
         neededForBoot = true;
       };
@@ -16,7 +21,7 @@
 
     boot.initrd.systemd = {
       enable = true;
-      
+
       services = {
         "reset-root" = {
           description = "Resetear subvolumen root en SSD";
@@ -28,27 +33,27 @@
           script = ''
             mkdir -p /mnt-root
             mount -o subvolid=5 /dev/mapper/p1 /mnt-root
-            
+
             if [[ -e /mnt-root/root ]]; then
               # Eliminar subvolúmenes hijos recursivamente
               while IFS= read -r subvol; do
                 echo "Eliminando subvolumen hijo: $subvol"
                 btrfs subvolume delete "/mnt-root/$subvol" || true
               done < <(btrfs subvolume list -o /mnt-root/root | cut -f9- -d' ' | sort -r)
-              
+
               # Eliminar el subvolumen root principal
               echo "Eliminando subvolumen root"
               btrfs subvolume delete /mnt-root/root || true
             fi
-            
+
             # Crear nuevo subvolumen root
             echo "Creando nuevo subvolumen root"
             btrfs subvolume create /mnt-root/root
-            
+
             umount /mnt-root
           '';
         };
-        
+
         "reset-home" = {
           description = "Resetear subvolumen home en HDD";
           wantedBy = ["initrd.target"];
@@ -59,23 +64,23 @@
           script = ''
             mkdir -p /mnt-home
             mount -o subvolid=5 /dev/mapper/p2 /mnt-home
-            
+
             if [[ -e /mnt-home/home ]]; then
               # Eliminar subvolúmenes hijos recursivamente
               while IFS= read -r subvol; do
                 echo "Eliminando subvolumen hijo: $subvol"
                 btrfs subvolume delete "/mnt-home/$subvol" || true
               done < <(btrfs subvolume list -o /mnt-home/home | cut -f9- -d' ' | sort -r)
-              
+
               # Eliminar el subvolumen home principal
               echo "Eliminando subvolumen home"
               btrfs subvolume delete /mnt-home/home || true
             fi
-            
+
             # Crear nuevo subvolumen home
             echo "Creando nuevo subvolumen home"
             btrfs subvolume create /mnt-home/home
-            
+
             umount /mnt-home
           '';
         };
@@ -107,4 +112,5 @@
       before = ["display-manager.service"];
     };
   };
+})
 }

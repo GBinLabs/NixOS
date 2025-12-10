@@ -3,7 +3,7 @@
     loader = {
       systemd-boot = {
         enable = true;
-        configurationLimit = 3;
+        configurationLimit = null;
         consoleMode = "max";
         editor = false;
       };
@@ -11,7 +11,7 @@
       timeout = 0;
     };
 
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.linuxPackages_latest;
 
     initrd = {
       compressor = "zstd";
@@ -27,7 +27,9 @@
 
     consoleLogLevel = 0;
   };
-  services.scx.enable = true;
 
-  hardware.enableRedistributableFirmware = true;
+  hardware.bluetooth = {
+    enable = false;
+    powerOnBoot = false;
+  };
 }

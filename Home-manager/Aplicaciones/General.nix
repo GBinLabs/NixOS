@@ -36,8 +36,6 @@
     grimblast
     wl-clipboard
     imagemagick
-    # Piper
-    piper
     # Appflowy
     appflowy
   ];

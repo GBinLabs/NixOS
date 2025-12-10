@@ -56,10 +56,7 @@
         animate_mouse_windowdragging = false;
       };
 
-      # === RENDER OPTIMIZADO PARA FIREFOX ===
       render = {
-        #explicit_sync = 0; # ← CRÍTICO: Desactivar para Firefox/LibreWolf
-        #explicit_sync_kms = 0; # ← CRÍTICO: Desactivar para Firefox/LibreWolf
         direct_scanout = true;
       };
 

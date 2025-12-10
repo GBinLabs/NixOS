@@ -6,9 +6,11 @@
     avahi.enable = false;
     printing.enable = false;
     geoclue2.enable = false;
-    ratbagd = {
+    scx = {
       enable = true;
-      package = pkgs.libratbag;
+      package = pkgs.scx.rustscheds;
+      scheduler = "scx_cosmos";
+      extraArgs = ["-m" "powersave" "-d" "-p" "5000"];
     };
   };
 

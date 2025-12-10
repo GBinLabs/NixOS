@@ -2,7 +2,6 @@
 _: {
   imports = [
     ./Audio.nix
-    ./Bluetooth.nix
     ./Boot.nix
     ./DNS.nix
     ./Desktop/default.nix
@@ -13,7 +12,6 @@ _: {
     ./Programs.nix
     ./Security/default.nix
     ./Services.nix
-    ./Steam.nix
     ./Zram.nix
     ./Zsh.nix
   ];

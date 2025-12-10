@@ -7,32 +7,7 @@
     };
     pulse.enable = true;
     jack.enable = true;
-    lowLatency = {
-      enable = true;
-      quantum = 64;
-      rate = 48000;
-    };
-
-    wireplumber = {
-      enable = true;
-      configPackages = [
-        (pkgs.writeTextDir "share/wireplacker/wireplumber.conf.d/51-alsa-disable-dsp.conf" ''
-          monitor.alsa.rules = [
-            {
-              matches = [{ node.name = "~alsa_.*" }]
-              actions = {
-                update-props = {
-                  audio.format = "S16LE"
-                  audio.rate = 48000
-                  api.alsa.period-size = 512
-                  api.alsa.headroom = 512
-                }
-              }
-            }
-          ]
-        '')
-      ];
-    };
+    wireplumber.enable = true;
   };
 
   security.rtkit.enable = true;
