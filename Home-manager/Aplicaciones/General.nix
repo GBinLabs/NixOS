@@ -38,5 +38,7 @@
     imagemagick
     # Piper
     piper
+    # Appflowy
+    appflowy
   ];
 }

@@ -10,7 +10,7 @@
       default = [];
       description = "Directorios adicionales del sistema a persistir (rutas absolutas)";
     };
-    
+
     extraUserDirectories = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = [];
@@ -41,8 +41,7 @@
             ".ssh"
             ".config/sops"
             ".config/git"
-            ".config/Joplin"
-            ".config/joplin-desktop"
+            ".local/share/io.appflowy.appflowy"
           ]
           ++ config.Persistencia.extraUserDirectories;
         files = [".p10k.zsh" ".zshrc"];
