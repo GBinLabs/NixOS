@@ -1,5 +1,5 @@
 _: {
   imports = [
-    ./Yazi/Yazi.nix
+    ./Nautilus/Nautilus.nix
   ];
 }

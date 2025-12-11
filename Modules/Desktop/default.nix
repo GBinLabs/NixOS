@@ -1,5 +1,5 @@
 _: {
   imports = [
-    ./Hyprland/Hyprland.nix
+    ./Gnome/Gnome.nix
   ];
 }

@@ -5,7 +5,7 @@ _: {
     ./Boot.nix
     ./DNS.nix
     ./Desktop/default.nix
-    ./Impermanence/default.nix
+    ./Impermanence.nix
     ./Keyboard.nix
     ./Network/default.nix
     ./Nix.nix
