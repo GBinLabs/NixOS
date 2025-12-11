@@ -5,6 +5,19 @@
   pkgs,
   ...
 }: {
+
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+    desktop = "${config.home.homeDirectory}/Escritorio";
+    documents = "${config.home.homeDirectory}/Documentos";
+    download = "${config.home.homeDirectory}/Descargas";
+    music = "${config.home.homeDirectory}/Música";
+    pictures = "${config.home.homeDirectory}/Imágenes";
+    publicShare = "${config.home.homeDirectory}/Público";
+    templates = "${config.home.homeDirectory}/Plantillas";
+    videos = "${config.home.homeDirectory}/Vídeos";
+  };
   dconf.settings = {
     "org/gnome/shell" = {
       favorite-apps = [
@@ -66,6 +79,10 @@
       dynamic-workspaces = false;
       edge-tiling = true;
       experimental-features = ["scale-monitor-framebuffer" "variable-refresh-rate" "xwayland-native-scaling"];
+    };
+    
+    "org/gnome/gnome-screenshot" = {
+      auto-save-directory = "file://${config.home.homeDirectory}/Imágenes/Capturas de pantalla";
     };
 
     "org/gnome/desktop/wm/preferences" = {

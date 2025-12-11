@@ -7,9 +7,9 @@ _: {
     ./Desktop/default.nix
     ./Impermanence.nix
     ./Keyboard.nix
-    ./Network/default.nix
     ./Nix.nix
     ./Programs.nix
+    ./Red.nix
     ./Security/default.nix
     ./Services.nix
     ./Zram.nix

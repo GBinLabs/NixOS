@@ -1,167 +1,199 @@
-{pkgs, ...}: {
-  programs = {
-    helix = {
-      enable = true;
-      defaultEditor = true;
-      extraPackages = with pkgs; [
-        # Nix
-        nixd
-        nixfmt-rfc-style
-        alejandra
-        statix
-        deadnix
+{ pkgs, ... }:
+{
+  programs.helix = {
+    enable = true;
+    defaultEditor = true;
 
-        # Typst
-        typst
-        tinymist
+    extraPackages = with pkgs; [
+      # Nix
+      nixd
+      nixfmt-rfc-style
 
-        # LanguageTool
-        ltex-ls-plus
-      ];
+      # Typst
+      typst
+      tinymist
 
-      settings = {
-        theme = "gruvbox_dark_hard";
+      # Grammar checking (Harper)
+      harper
 
-        editor = {
-          line-number = "relative";
-          mouse = false;
+      # Python
+      python3
+      ruff
+      pyright
 
-          # Soft wrap para líneas largas
+      # Rust
+      rust-analyzer
+      rustfmt
+      clippy
+    ];
+
+    settings = {
+      theme = "gruvbox_dark_hard";
+
+      editor = {
+        line-number = "relative";
+        mouse = false;
+
+        soft-wrap = {
+          enable = true;
+          max-wrap = 100;
+          wrap-indicator = "↪ ";
+        };
+
+        scroll-lines = 3;
+        scrolloff = 5;
+
+        color-modes = true;
+        bufferline = "multiple";
+        true-color = true;
+        gutters = [
+          "diagnostics"
+          "line-numbers"
+          "spacer"
+        ];
+
+        whitespace = {
+          render = "all";
+          characters = {
+            space = "·";
+            nbsp = "⍽";
+            tab = "→";
+            newline = "⏎";
+          };
+        };
+
+        cursor-shape = {
+          insert = "bar";
+          normal = "block";
+          select = "underline";
+        };
+
+        lsp = {
+          display-messages = true;
+          display-inlay-hints = true;
+          auto-signature-help = true;
+        };
+
+        auto-format = true;
+        auto-save = true;
+      };
+    };
+
+    languages = {
+      language-server = {
+        nixd = {
+          command = "nixd";
+        };
+
+        tinymist = {
+          command = "tinymist";
+          config = {
+            exportPdf = "onSave";
+            formatterMode = "typstyle";
+          };
+        };
+
+        harper-ls = {
+          command = "harper-ls";
+          args = [ "--stdio" ];
+        };
+
+        pyright = {
+          command = "pyright-langserver";
+          args = [ "--stdio" ];
+          config = {
+            python = {
+              analysis = {
+                typeCheckingMode = "basic";
+                autoSearchPaths = true;
+                useLibraryCodeForTypes = true;
+              };
+            };
+          };
+        };
+
+        ruff = {
+          command = "ruff";
+          args = [ "server" ];
+        };
+
+        rust-analyzer = {
+          command = "rust-analyzer";
+          config = {
+            check = {
+              command = "clippy";
+            };
+            cargo = {
+              allFeatures = true;
+            };
+            procMacro = {
+              enable = true;
+            };
+          };
+        };
+      };
+
+      language = [
+        {
+          name = "nix";
+          auto-format = true;
+          formatter = {
+            command = "nixfmt";
+          };
+          language-servers = [ "nixd" ];
+          indent = {
+            tab-width = 2;
+            unit = "  ";
+          };
+        }
+
+        {
+          name = "typst";
+          language-servers = [
+            "tinymist"
+            "harper-ls"
+          ];
+          auto-format = true;
           soft-wrap = {
             enable = true;
-            max-wrap = 100;
-            wrap-indicator = "↪ ";
+            max-wrap = 80;
           };
-
-          # Navegación más fluida
-          scroll-lines = 3;
-          scrolloff = 5;
-
-          # Visualización mejorada
-          color-modes = true;
-          bufferline = "multiple";
-          true-color = true;
-          gutters = ["diagnostics" "line-numbers" "spacer"];
-
-          # Espacios en blanco visibles (útil para Typst)
-          whitespace = {
-            render = "all";
-            characters = {
-              space = "·";
-              nbsp = "⍽";
-              tab = "→";
-              newline = "⏎";
-            };
+          indent = {
+            tab-width = 2;
+            unit = "  ";
           };
+        }
 
-          cursor-shape = {
-            insert = "bar";
-            normal = "block";
-            select = "underline";
-          };
-
-          lsp = {
-            display-messages = true;
-            display-inlay-hints = true;
-            auto-signature-help = true;
-          };
-
+        {
+          name = "python";
+          language-servers = [
+            "pyright"
+            "ruff"
+          ];
           auto-format = true;
-          auto-save = true;
-          shell = ["${pkgs.kitty}/bin/kitty" "--class" "helix-term"];
-        };
-      };
-
-      languages = {
-        language-server = {
-          nixd = {
-            command = "${pkgs.nixd}/bin/nixd";
-            config = {
-              nixd = {
-                options = {
-                  enable = true;
-                  target = {
-                    installable = "nixpkgs#nixosConfigurations.$(hostname).options";
-                  };
-                };
-                eval = {
-                  enable = true;
-                  target = {
-                    installable = ".";
-                  };
-                };
-              };
-            };
+          formatter = {
+            command = "ruff";
+            args = [
+              "format"
+              "-"
+            ];
           };
-
-          tinymist = {
-            command = "${pkgs.tinymist}/bin/tinymist";
-            config = {
-              exportPdf = "onSave";
-              formatterMode = "typstyle";
-            };
+          indent = {
+            tab-width = 4;
+            unit = "    ";
           };
+        }
 
-          # LTeX con español e inglés
-          ltex-ls-plus = {
-            command = "${pkgs.ltex-ls-plus}/bin/ltex-ls";
-            config = {
-              ltex = {
-                language = "es"; # Idioma principal
-                enabled = ["es" "en-US"]; # Ambos idiomas habilitados
-                checkFrequency = "save";
-                additionalRules = {
-                  enablePickyRules = true;
-                  motherTongue = "es";
-                };
-                # Diccionarios personalizados (opcional)
-                dictionary = {
-                  "es" = [];
-                  "en-US" = [];
-                };
-              };
-            };
+        {
+          name = "rust";
+          language-servers = [ "rust-analyzer" ];
+          auto-format = true;
+          indent = {
+            tab-width = 4;
+            unit = "    ";
           };
-        };
-
-        language = [
-          {
-            name = "nix";
-            auto-format = true;
-            formatter = {
-              command = "${pkgs.alejandra}/bin/alejandra";
-              args = [];
-            };
-            language-servers = ["nixd"];
-            indent = {
-              tab-width = 2;
-              unit = "  ";
-            };
-          }
-
-          {
-            name = "typst";
-            scope = "source.typst";
-            file-types = ["typ"];
-            roots = ["template.typ"];
-            language-servers = ["tinymist" "ltex-ls-plus"];
-
-            # Formateo automático al guardar
-            auto-format = true;
-
-            # Soft wrap específico para Typst (ideal para libros)
-            soft-wrap = {
-              enable = true;
-              max-wrap = 80; # Ancho típico para texto de libros
-            };
-
-            indent = {
-              tab-width = 2;
-              unit = "  ";
-            };
-          }
-        ];
-      };
+        }
+      ];
     };
   };
 }
