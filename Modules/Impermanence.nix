@@ -203,7 +203,7 @@
             ".ssh"
             ".config/sops"
             ".config/git"
-            ".local/share/io.appflowy.appflowy"
+            ".config/obsidian"
           ]
           ++ config.Persistencia.extraUserDirectories;
         files = [".p10k.zsh" ".zshrc"];

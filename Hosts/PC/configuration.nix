@@ -4,9 +4,7 @@
     ../../Modules/default.nix
     ./disko.nix
   ];
-
-  Zram.enable = true;
-  Steam.enable = true;
+  
   Persistencia.enable = true;
   Reset.enable = true;
   Red-PC.enable = true;

@@ -32,7 +32,7 @@
     pciutils
     # Btop.
     btop
-    # Appflowy
-    appflowy
+    # Obsidian
+    obsidian
   ];
 }
