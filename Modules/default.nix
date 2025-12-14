@@ -12,6 +12,7 @@ _: {
     ./Red.nix
     ./Security/default.nix
     ./Services.nix
+    ./Steam.nix
     ./Zram.nix
     ./Zsh.nix
   ];

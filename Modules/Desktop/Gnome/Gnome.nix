@@ -42,8 +42,7 @@
       noto-fonts-color-emoji
       liberation_ttf
       nerd-fonts.jetbrains-mono
-      stix-two
-      stix-otf
+      times-newer-roman
     ];
 
     fontconfig = {

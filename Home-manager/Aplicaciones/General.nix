@@ -32,6 +32,8 @@
     pciutils
     # Btop.
     btop
+    # Piper
+    piper
     # Obsidian
     obsidian
   ];

@@ -7,8 +7,12 @@
     scx = {
       enable = true;
       package = pkgs.scx.rustscheds;
-      scheduler = "scx_cosmos";
-      extraArgs = ["-m" "powersave" "-d" "-p" "5000"];
+      scheduler = "scx_lavd";
+      extraArgs = ["--performance"];
+    };
+    ratbagd = {
+    	enable = true;
+    	package = pkgs.libratbag;
     };
   };
 

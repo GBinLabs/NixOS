@@ -11,7 +11,7 @@
       timeout = 0;
     };
 
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_cachyos;
 
     initrd = {
       compressor = "zstd";
@@ -26,6 +26,8 @@
     };
 
     consoleLogLevel = 0;
+    
+    kernelParams = ["video=HDMI-A-1:1920x1080@75"];
   };
 
   hardware.bluetooth = {

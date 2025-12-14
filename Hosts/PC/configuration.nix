@@ -5,7 +5,14 @@
     ./disko.nix
   ];
   
-  Persistencia.enable = true;
+  Steam.enable = true;
+  Persistencia = {
+    enable = true;
+    extraUserDirectories = [
+      ".local/share/Steam"
+      ".local/share/PrismLauncher"
+    ];
+  };
   Reset.enable = true;
   Red-PC.enable = true;
 
