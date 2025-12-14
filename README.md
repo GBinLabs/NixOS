@@ -1,76 +1,26 @@
-# NixOS + Hyprland Configuration
+# NixOS + GNOME Configuration
 
-Configuración de NixOS con Hyprland optimizada para alto rendimiento, usando flakes modernos y gestión declarativa completa.
+Configuración de NixOS con GNOME optimizada para gaming de alto rendimiento, implementada mediante flakes y gestión declarativa completa del sistema.
 
-## 🚀 Características
+# Filosofía del proyecto
+Este repositorio documenta una implementación de NixOS enfocada en extraer el máximo rendimiento de hardware AMD para gaming mientras mantiene seguridad y reproducibilidad. El sistema utiliza impermanence con Btrfs, resetando completamente el estado del sistema en cada arranque mientras preserva únicamente los datos esenciales en volúmenes persistentes.
 
-- **Window Manager**: Hyprland con UWSM
-- **Display Manager**: SDDM con tema Astronaut
-- **Shell**: Zsh con Powerlevel10k
-- **Gestión de Secretos**: SOPS + age
-- **Impermanence**: Sistema de archivos efímero con Btrfs
-- **Particionado**: Disko para configuración declarativa
-- **Optimizaciones**: 
-  - Zram para gaming (200% RAM)
-  - Kernel Zen con parámetros optimizados
-  - Drivers AMD/Intel/NVIDIA configurables
-  - PipeWire + EasyEffects para audio profesional
+# Características principales
 
-## 📁 Estructura
-```
-.
-├── flake.nix              # Entrada principal
-├── Hosts/                 # Configuraciones por máquina
-│   ├── PC/               # Desktop gaming (AMD)
-│   ├── Notebook/         # Laptop híbrida (Intel+NVIDIA)
-│   └── Netbook/          # Ultrabook ligera (Intel)
-├── Modules/              # Módulos del sistema
-│   ├── Drivers/         # CPU y GPU
-│   ├── Impermanence/    # Persistencia
-│   ├── Network/         # Red por host
-│   └── ...
-├── Home-manager/         # Configuraciones de usuario
-│   ├── Aplicaciones/    # Apps y dotfiles
-│   └── Window-Manager/  # Hyprland + Waybar
-└── Secrets/             # Secretos encriptados (SOPS)
-```
+El sistema implementa GNOME sobre Wayland como entorno de escritorio, gestión de secretos mediante SOPS con encriptación age, y particionado declarativo con Disko. Las optimizaciones incluyen kernel CachyOS con parámetros ajustados para latencia mínima, scheduler scx_lavd en modo performance, Zram con swappiness de 180 para gaming, drivers AMD con todas las optimizaciones RADV habilitadas, y PipeWire configurado para latencia de audio inferior a 2 milisegundos.
 
-## 🔧 Instalación
-```bash
-# Clonar repositorio
-git clone https://github.com/TU_USUARIO/nixos-config.git
-cd nixos-config
+# Hardware de referencia
 
-# Generar clave age para SOPS
-mkdir -p ~/.config/sops/age
-age-keygen -o ~/.config/sops/age/keys.txt
+El sistema principal opera sobre procesador AMD Ryzen 5 3600, tarjeta gráfica RX 5500 XT con 4GB de VRAM, 16GB de RAM, SSD de 240GB para sistema y HDD de 2TB para datos de usuario. La configuración secundaria utiliza procesador Intel N4020 con gráficos integrados Intel UHD Graphics 600 y 8GB de RAM.
 
-# Editar secretos (agregar tu hash de contraseña)
-# Obtener hash: mkpasswd -m sha-512
-sops Secrets/secrets.yaml
+# Estructura modular
 
-# Instalar (reemplaza HOST por: PC, Notebook o Netbook)
-sudo nixos-rebuild switch --flake .#HOST
-```
+El proyecto organiza la configuración en módulos independientes dentro del directorio Modules, abarcando audio, arranque, DNS, escritorio, impermanence, teclado, optimizaciones de Nix, red, seguridad, servicios, gaming y shell. La configuración de usuario se gestiona completamente mediante Home-manager en el directorio correspondiente, separando aplicaciones, configuración de editores, gestor de archivos, navegadores y terminal.
 
-## 🖥️ Hosts Disponibles
+# Seguridad implementada
 
-| Host | CPU | GPU | Uso |
-|------|-----|-----|-----|
-| PC | AMD Ryzen 5 3600 | AMD RX 5500 XT | Gaming de alto rendimiento |
-| Notebook | Intel i5 (4th gen) | Intel + NVIDIA 820M | Laptop híbrida |
-| Netbook | Intel Celeron N4020 | Intel UHD 600 | Portátil básica |
+El sistema utiliza DNS over TLS estricto con Quad9, proporcionando cifrado completo de consultas DNS, validación DNSSEC obligatoria y bloqueo automático de dominios maliciosos. LUKS2 con Argon2id protege el almacenamiento mediante encriptación de disco completo. El firewall bloquea conexiones entrantes no solicitadas mientras permite todo el tráfico saliente necesario para gaming y comunicaciones de red.
 
-## ⌨️ Atajos de Teclado (Hyprland)
+#Propósito educativo
 
-| Atajo | Acción |
-|-------|--------|
-| `Super + Return` | Terminal (Kitty) |
-| `Super + D` | Lanzador de apps (Rofi) |
-| `Super + Shift + Q` | Cerrar ventana |
-| `Super + F` | Pantalla completa |
-| `Super + Space` | Flotante/Tiling |
-| `Print` | Screenshot completo |
-| `Shift + Print` | Screenshot área |
-| `Super + Esc` | Bloquear pantalla |
-| `Super + Shift + Esc` | Menú de apagado |
+Este repositorio se proporciona como referencia para usuarios que implementan configuraciones similares de NixOS. La exploración del código fuente y la estructura de módulos proporciona comprensión profunda de las decisiones de diseño y optimizaciones aplicadas. Se recomienda estudiar cada módulo individualmente para adaptar las soluciones a necesidades específicas en lugar de implementar directamente la configuración completa.

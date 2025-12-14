@@ -159,6 +159,7 @@
         "org.gnome.Extensions.desktop"
         "org.gnome.eog.desktop"
         "org.gnome.FileRoller.desktop"
+        "org.freedesktop.Piper.desktop"
         "org.gnome.Evince.desktop"
       ];
     };

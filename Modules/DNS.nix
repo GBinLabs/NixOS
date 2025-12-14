@@ -3,20 +3,21 @@
   lib,
   ...
 }: {
-  options.DNS-Smart.enable = lib.mkEnableOption "DNS inteligente";
-
-  config = lib.mkIf config.DNS-Smart.enable {
     services.resolved = {
       enable = true;
-      dnssec = "allow-downgrade";
+      dnssec = "true";
       domains = ["~."];
-      fallbackDns = ["94.140.14.14" "94.140.15.15"];
-      dnsovertls = "opportunistic";
+      dnsovertls = "true";
       extraConfig = ''
-        DNSOverTLS=opportunistic
-        DNSSEC=allow-downgrade
+        DNS=9.9.9.9#dns.quad9.net
+        DNS=149.112.112.112#dns.quad9.net
+        DNS=2620:fe::fe#dns.quad9.net
+        DNS=2620:fe::9#dns.quad9.net
         MulticastDNS=no
         LLMNR=no
+        Cache=yes
+        DNSStubListener=yes
+        CacheFromLocalhost=no
       '';
     };
 
@@ -27,5 +28,4 @@
         powersave = false;
       };
     };
-  };
 }
