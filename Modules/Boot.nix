@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   boot = {
     loader = {
       systemd-boot = {
@@ -11,11 +12,14 @@
       timeout = 0;
     };
 
-    kernelPackages = pkgs.linuxPackages_cachyos;
+    kernelPackages = pkgs.linuxPackages_xanmod_latest;
 
     initrd = {
       compressor = "zstd";
-      compressorArgs = ["-10" "-T0"];
+      compressorArgs = [
+        "-10"
+        "-T0"
+      ];
       verbose = false;
       systemd.enable = true;
     };
@@ -26,14 +30,14 @@
     };
 
     consoleLogLevel = 0;
-    
+
     kernelParams = [
       "video=HDMI-A-1:1920x1080@75"
       "split_lock_detect=off"
       "nowatchdog"
       "processor.max_cstate=1"
       "intel_idle.max_cstate=1"
-      "amdgpu.ppfeaturemask=0xffffffff"  
+      "amdgpu.ppfeaturemask=0xffffffff"
     ];
   };
 

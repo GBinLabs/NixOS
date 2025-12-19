@@ -3,15 +3,15 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   options.Steam.enable = lib.mkEnableOption "Habilitar Steam con optimizaciones gaming";
 
   config = lib.mkIf config.Steam.enable {
     programs.steam = {
       enable = true;
       platformOptimizations.enable = true;
-      extraPackages = [ pkgs.latencyflex-vulkan ];
-      extraCompatPackages = with pkgs; [proton-ge-bin proton-cachyos];
+      extraCompatPackages = with pkgs; [ proton-ge-bin ];
       package = pkgs.steam.override {
         extraEnv = {
           AMD_VULKAN_ICD = "RADV";

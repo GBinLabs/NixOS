@@ -3,30 +3,24 @@
   programs.helix = {
     enable = true;
     defaultEditor = true;
-
     extraPackages = with pkgs; [
       # Nix
       nixd
       nixfmt-rfc-style
-
       # Typst
       typst
       tinymist
-
-      # Grammar checking (Harper)
-      harper
-
+      # Grammar checking (ES + EN)
+      ltex-ls-plus
       # Python
       python3
       ruff
       pyright
-
       # Rust
       rust-analyzer
       rustfmt
       clippy
     ];
-
     settings = {
       theme = "gruvbox_dark_hard";
 
@@ -78,13 +72,11 @@
         auto-save = true;
       };
     };
-
     languages = {
       language-server = {
         nixd = {
           command = "nixd";
         };
-
         tinymist = {
           command = "tinymist";
           config = {
@@ -92,12 +84,23 @@
             formatterMode = "typstyle";
           };
         };
-
-        harper-ls = {
-          command = "harper-ls";
-          args = [ "--stdio" ];
+        ltex-ls-plus = {
+          command = "ltex-ls-plus";
+          config = {
+            ltex = {
+              language = "es-AR";
+              additionalRules = {
+                motherTongue = "es-AR";
+                enablePickyRules = true;
+              };
+              completionEnabled = true;
+              dictionary = {
+                "es-AR" = [];
+                "en-GB" = [];
+              };
+            };
+          };
         };
-
         pyright = {
           command = "pyright-langserver";
           args = [ "--stdio" ];
@@ -111,12 +114,10 @@
             };
           };
         };
-
         ruff = {
           command = "ruff";
           args = [ "server" ];
         };
-
         rust-analyzer = {
           command = "rust-analyzer";
           config = {
@@ -132,7 +133,6 @@
           };
         };
       };
-
       language = [
         {
           name = "nix";
@@ -146,12 +146,11 @@
             unit = "  ";
           };
         }
-
         {
           name = "typst";
           language-servers = [
             "tinymist"
-            "harper-ls"
+            "ltex-ls-plus"
           ];
           auto-format = true;
           soft-wrap = {
@@ -163,7 +162,18 @@
             unit = "  ";
           };
         }
-
+        {
+          name = "markdown";
+          language-servers = [ "ltex-ls-plus" ];
+          soft-wrap = {
+            enable = true;
+            max-wrap = 80;
+          };
+          indent = {
+            tab-width = 2;
+            unit = "  ";
+          };
+        }
         {
           name = "python";
           language-servers = [
@@ -183,7 +193,6 @@
             unit = "    ";
           };
         }
-
         {
           name = "rust";
           language-servers = [ "rust-analyzer" ];

@@ -21,12 +21,13 @@
   };
 
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-        "steam"
+    builtins.elem (lib.getName pkg) [ 
+      "steam"
       "steam-original"
       "steam-unwrapped"
       "steam-run"
       "discord"
-    	"obsidian"
+      "obsidian"
+      "vscode-extension-MS-python-vscode-pylance"
     ];
 }
