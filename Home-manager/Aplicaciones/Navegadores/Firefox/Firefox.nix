@@ -1,4 +1,3 @@
-# Home-manager/Aplicaciones/Navegadores/Firefox/Firefox.nix
 {
   pkgs,
   lib,
