@@ -1,4 +1,5 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
     # Estadisticas de almacenamiento.
     baobab
@@ -23,7 +24,7 @@
     # LibreOffice
     libreoffice
     # JabRef
-    jabref
+    #jabref
     # Visualizador de videos.
     vlc
     # Editor de Video.
@@ -32,6 +33,8 @@
     pciutils
     # Btop.
     btop
+    # Nix
+    nix-init
     # Piper
     piper
     # Obsidian
