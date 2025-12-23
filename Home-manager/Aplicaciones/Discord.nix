@@ -10,12 +10,12 @@ _: {
         betterSettings.enable = true;
         betterUploadButton.enable = true;
         biggerStreamPreview.enable = true;
-        blurNsfw.enable = true;
+        #blurNsfw.enable = true;
         callTimer = {
           enable = true;
           format = "human";
         };
-        clearUrLs.enable = true;
+        #clearUrLs.enable = true;
         crashHandler.enable = true;
         disableCallIdle.enable = true;
         dontRoundMyTimestamps.enable = true;
@@ -45,7 +45,7 @@ _: {
           ignoreSelf = true;
           ignoreBots = true;
         };
-        mutualGroupDMs.enable = true;
+        #mutualGroupDMs.enable = true;
         newGuildSettings.enable = true;
         noBlockedMessages.enable = true;
         noDevtoolsWarning.enable = true;
@@ -58,7 +58,7 @@ _: {
         #noRpc.enable = true;
         noTypingAnimation.enable = true;
         noUnblockToJump.enable = true;
-        onePingPerDm.enable = true;
+        #onePingPerDm.enable = true;
         pauseInvitesForever.enable = true;
         pictureInPicture.enable = true;
         platformIndicators.enable = true;
