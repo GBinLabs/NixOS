@@ -45,4 +45,6 @@
     enable = false;
     powerOnBoot = false;
   };
+
+  powerManagement.cpuFreqGovernor = "performance";
 }

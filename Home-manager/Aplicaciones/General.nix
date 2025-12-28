@@ -1,13 +1,10 @@
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   home.packages = with pkgs; [
-    # Estadisticas de almacenamiento.
-    baobab
     # Editor de texto.
     gnome-text-editor
     # Administrador de discos.
     gnome-disk-utility
-    # Descompresor de archivos.
-    file-roller
     # Visor de documento.
     evince
     # Visor de imagenes.
@@ -32,6 +29,10 @@
     pciutils
     # Btop.
     btop
+    # Captura de pantalla.
+    grimblast
+    wl-clipboard
+    imagemagick
     # Piper
     piper
     # Obsidian

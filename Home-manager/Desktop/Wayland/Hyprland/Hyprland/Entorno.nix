@@ -1,3 +1,4 @@
+# Home-manager/Desktop/Wayland/Hyprland/Hyprland/Entorno.nix
 {
   config,
   lib,
@@ -5,10 +6,6 @@
   ...
 }:
 let
-  gtkThemeName = "Nordic-darker";
-  gtkThemePackage = pkgs.nordic;
-  iconThemeName = "Papirus-Dark";
-  iconThemePackage = pkgs.papirus-icon-theme;
   cursorThemeName = "Bibata-Modern-Ice";
   cursorThemePackage = pkgs.bibata-cursors;
   cursorSize = 24;
@@ -19,10 +16,6 @@ in
   options.Monitor-Netbook.enable = lib.mkEnableOption "Monitor Netbook (eDP 768p@60Hz)";
   config = lib.mkMerge [
     {
-      home.packages = with pkgs; [
-        qt6Packages.qt6ct
-      ];
-
       fonts.fontconfig.enable = true;
 
       gtk = {
@@ -32,12 +25,12 @@ in
           size = 10;
         };
         theme = {
-          name = gtkThemeName;
-          package = gtkThemePackage;
+          name = "Adwaita-dark";
+          package = pkgs.gnome-themes-extra;
         };
         iconTheme = {
-          name = iconThemeName;
-          package = iconThemePackage;
+          name = "Adwaita";
+          package = pkgs.adwaita-icon-theme;
         };
         cursorTheme = {
           name = cursorThemeName;
@@ -48,8 +41,8 @@ in
 
       qt = {
         enable = true;
-        platformTheme.name = "qt6ct";
-        style.name = "adwaita-dark"; # Nativo, sin Kvantum
+        platformTheme.name = "gtk4";
+        style.name = "adwaita-dark";
       };
 
       home.pointerCursor = {
@@ -64,52 +57,41 @@ in
       };
 
       home.sessionVariables = {
-        # === WAYLAND ===
         XDG_CURRENT_DESKTOP = "Hyprland";
         XDG_SESSION_TYPE = "wayland";
         XDG_SESSION_DESKTOP = "Hyprland";
 
-        # === QT (sin Kvantum) ===
-        QT_QPA_PLATFORMTHEME = "qt6ct";
+        QT_QPA_PLATFORMTHEME = "gtk4";
         QT_QPA_PLATFORM = "wayland";
         QT_AUTO_SCREEN_SCALE_FACTOR = "1";
         QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
 
-        # === GTK ===
-        GTK_THEME = gtkThemeName;
+        GTK_THEME = "Adwaita-dark";
         GDK_BACKEND = "wayland";
 
-        # === APLICACIONES ===
         NIXOS_OZONE_WL = "1";
 
-        # === FIREFOX/LIBREWOLF ===
         MOZ_ENABLE_WAYLAND = "1";
         MOZ_WAYLAND_USE_VAAPI = "1";
         MOZ_DBUS_REMOTE = "1";
 
-        # === SDL (Juegos) ===
         SDL_VIDEODRIVER = "wayland";
         SDL_AUDIODRIVER = "pipewire";
 
-        # === JAVA (Minecraft/PrismLauncher) ===
         _JAVA_AWT_WM_NONREPARENTING = "1";
         GLFW_PLATFORM = "wayland";
 
-        # === IDIOMA ===
         LANG = "es_AR.UTF-8";
         LC_ALL = "es_AR.UTF-8";
       };
 
       xdg.userDirs = {
         enable = true;
-        desktop = "$HOME/Escritorio";
         documents = "$HOME/Documentos";
         download = "$HOME/Descargas";
         music = "$HOME/Música";
         pictures = "$HOME/Imágenes";
         videos = "$HOME/Vídeos";
-        templates = "$HOME/Plantillas";
-        publicShare = "$HOME/Público";
       };
     }
 

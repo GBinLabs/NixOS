@@ -1,11 +1,14 @@
 # Hosts/PC/home.nix
-{...}: {
-  imports = [../../Home-manager/default.nix];
+{ ... }:
+{
+  imports = [ ../../Home-manager/default.nix ];
 
   git-config = {
     enable = true;
     keyFile = "~/.ssh/id_ed25519_PC";
   };
+
+  Monitor-PC.enable = true;
 
   home = {
     username = "german";
