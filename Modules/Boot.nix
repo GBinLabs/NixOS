@@ -12,7 +12,7 @@
       timeout = 0;
     };
 
-    kernelPackages = pkgs.linuxPackages_xanmod_latest;
+    kernelPackages = pkgs.linuxPackages_lqx;
 
     initrd = {
       compressor = "zstd";

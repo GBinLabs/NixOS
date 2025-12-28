@@ -1,7 +1,6 @@
 # Hosts/PC/home.nix
-{ ... }:
-{
-  imports = [ ../../Home-manager/default.nix ];
+{...}: {
+  imports = [../../Home-manager/default.nix];
 
   git-config = {
     enable = true;

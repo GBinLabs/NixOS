@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   home.packages = with pkgs; [
     # Estadisticas de almacenamiento.
     baobab
@@ -33,8 +32,6 @@
     pciutils
     # Btop.
     btop
-    # Nix
-    nix-init
     # Piper
     piper
     # Obsidian
