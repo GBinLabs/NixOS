@@ -1,0 +1,9 @@
+{...}:
+
+{
+
+  imports = [
+	./Gnome/Gnome.nix
+  ];
+
+}

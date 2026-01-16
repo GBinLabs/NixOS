@@ -1,0 +1,112 @@
+[
+  {
+    "name": "Bookmarks Toolbar",
+    "toolbar": true,
+    "bookmarks": [
+      {
+        "name": "Anna's Archive",
+        "url": "https://annas-archive.li/"
+      },
+      {
+        "name": "GitHub",
+        "url": "https://github.com/"
+      },
+      {
+        "name": "GitLab",
+        "url": "https://gitlab.com/"
+      },
+      {
+        "name": "Proton",
+        "url": "https://proton.me/"
+      },
+      {
+        "name": "SimpleLogin",
+        "url": "https://simplelogin.io/"
+      },
+      {
+        "name": "WhatsApp Web",
+        "url": "https://web.whatsapp.com/"
+      },
+      {
+        "name": "Youtube",
+        "url": "https://www.youtube.com/"
+      },
+      {
+        "name": "Cursos",
+        "bookmarks": [
+          {
+            "name": "Coursera",
+            "url": "https://www.coursera.org/"
+          },
+          {
+            "name": "DataCamp",
+            "url": "https://www.datacamp.com/"
+          },
+          {
+            "name": "Roadmap",
+            "url": "https://roadmap.sh/"
+          },
+          {
+            "name": "Udemy",
+            "url": "https://www.udemy.com/"
+          }
+        ]
+      },
+      {
+        "name": "IA",
+        "bookmarks": [
+          {
+            "name": "ChatGPT",
+            "url": "https://chatgpt.com/"
+          },
+          {
+            "name": "Claude",
+            "url": "https://claude.ai/new"
+          },
+          {
+            "name": "DeepSeek",
+            "url": "https://www.deepseek.com"
+          },
+          {
+            "name": "Kimmi K2",
+            "url": "https://www.kimi.com/"
+          }
+        ]
+      },
+      {
+        "name": "NixOS",
+        "bookmarks": [
+          {
+            "name": "MyNixOS",
+            "url": "https://mynixos.com/"
+          },
+          {
+            "name": "NixOS - Packages",
+            "url": "https://search.nixos.org/packages"
+          },
+          {
+            "name": "NixOS - Wiki",
+            "url": "https://wiki.nixos.org/wiki/NixOS_Wiki"
+          },
+          {
+            "name": "NixOS - Home-Manager",
+            "url": "https://nix-community.github.io/home-manager/"
+          }
+        ]
+      },
+      {
+        "name": "Trabajo",
+        "bookmarks": [
+          {
+            "name": "Computrabajo",
+            "url": "https://ar.computrabajo.com/"
+          },
+          {
+            "name": "Linkedin",
+            "url": "https://www.linkedin.com/"
+          }
+        ]
+      }
+    ]
+  }
+]
