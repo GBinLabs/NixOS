@@ -34,9 +34,11 @@
     pciutils
     # Btop.
     btop
-    # Piper
+    # Piper.
     piper
-    # Obsidian
+    # FastFetch.
+    pfetch
+    # Obsidian.
     obsidian
   ];
 
