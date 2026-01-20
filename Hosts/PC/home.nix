@@ -1,4 +1,3 @@
-# Hosts/PC/home.nix
 { ... }:
 {
   imports = [ ../../Home-manager/default.nix ];

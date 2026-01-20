@@ -1,4 +1,3 @@
-# Home-manager/Aplicaciones/Git.nix
 {
   config,
   lib,
@@ -18,24 +17,18 @@
   config = lib.mkIf config.git-config.enable {
     programs.git = {
       enable = true;
-
-      # Nueva sintaxis para settings
       settings = {
         user = {
           name = "GBinLabs";
           email = "197016998+GBinLabs@users.noreply.github.com";
         };
-
         init.defaultBranch = "main";
         gpg.format = "ssh";
-
-        # Optimizaciones
         core = {
           fsmonitor = true;
           untrackedCache = true;
           pager = "delta";
         };
-
         feature.manyFiles = true;
 
         # Delta
@@ -65,9 +58,7 @@
 
     programs.ssh = {
       enable = true;
-
-      # Nueva sintaxis
-      enableDefaultConfig = true;
+      enableDefaultConfig = false;
 
       matchBlocks = {
         "*" = {

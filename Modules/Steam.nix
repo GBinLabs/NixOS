@@ -66,7 +66,8 @@ in
       platformOptimizations.enable = true;
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
       extraPackages = with pkgs; [
-        gamescope
+        gamemode
+        mangohud
       ];
     };
     

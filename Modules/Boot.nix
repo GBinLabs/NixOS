@@ -24,7 +24,7 @@
           timeout = 0;
         };
 
-        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest;
+        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto;
 
         initrd = {
           compressor = "zstd";
