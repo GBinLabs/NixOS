@@ -22,7 +22,7 @@
   security.rtkit.enable = true;
 
   systemd.user.services.microphone-volume = {
-    description = "Configurar micrófono al 30%";
+    description = "Configurar micrófono al 70%";
     wantedBy = [ "graphical-session.target" ];
     after = [ "wireplumber.service" "pipewire.service" ];
     requires = [ "wireplumber.service" ];
@@ -38,8 +38,8 @@
         while [ $attempt -lt $max_attempts ]; do
           # Verificar si existe un default audio source
           if ${pkgs.wireplumber}/bin/wpctl get-volume @DEFAULT_AUDIO_SOURCE@ 2>/dev/null | grep -q "Volume"; then
-            ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 0.3
-            echo "Volumen del micrófono configurado al 30%"
+            ${pkgs.wireplumber}/bin/wpctl set-volume @DEFAULT_AUDIO_SOURCE@ 0.7
+            echo "Volumen del micrófono configurado al 70%"
             exit 0
           fi
 

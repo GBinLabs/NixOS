@@ -11,9 +11,6 @@
     file-roller
     # Visor de imagenes.
     eog
-    # LaTeX
-    texliveFull
-    texstudio
     # Upscaling
     upscayl
     # Inkscape
@@ -25,7 +22,7 @@
     # LibreOffice
     libreoffice
     # JabRef
-    #jabref
+    jabref
     # Visualizador de videos.
     vlc
     # Editor de Video.

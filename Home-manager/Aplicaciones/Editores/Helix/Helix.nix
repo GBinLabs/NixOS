@@ -3,48 +3,57 @@
   programs.helix = {
     enable = true;
     defaultEditor = true;
+    
     extraPackages = with pkgs; [
       # Nix
       nixd
       nixfmt
-      # LaTeX
-      texlab
+      
+      # Typst
+      tinymist
+      typstyle
+      typst
+      
       # Grammar checking (ES + EN)
       ltex-ls-plus
+      
       # Python
       python3
       ruff
       pyright
+      
       # Rust
       rust-analyzer
       rustfmt
       clippy
     ];
+    
     settings = {
       theme = "gruvbox_dark_hard";
-
+      
       editor = {
         line-number = "relative";
         mouse = false;
-
+        
         soft-wrap = {
           enable = true;
           max-wrap = 100;
           wrap-indicator = "↪ ";
         };
-
+        
         scroll-lines = 3;
         scrolloff = 5;
-
+        
         color-modes = true;
         bufferline = "multiple";
         true-color = true;
+        
         gutters = [
           "diagnostics"
           "line-numbers"
           "spacer"
         ];
-
+        
         whitespace = {
           render = "all";
           characters = {
@@ -54,77 +63,59 @@
             newline = "⏎";
           };
         };
-
+        
         cursor-shape = {
           insert = "bar";
           normal = "block";
           select = "underline";
         };
-
+        
         lsp = {
           display-messages = true;
           display-inlay-hints = true;
           auto-signature-help = true;
         };
-
+        
         auto-format = true;
         auto-save = true;
       };
     };
+    
     languages = {
       language-server = {
-        nixd.command = "nixd";
-
-        texlab = {
-          command = "texlab";
-          config.texlab = {
-            build = {
-              executable = "latexmk";
-              args = [
-                "-pdf"
-                "-interaction=nonstopmode"
-                "-synctex=1"
-                "%f"
-              ];
-              onSave = true;
-              forwardSearchAfter = false;
-            };
-            forwardSearch = {
-              executable = "zathura";
-              args = [
-                "--synctex-forward"
-                "%l:1:%f"
-                "%p"
-              ];
-            };
-            chktex = {
-              onOpenAndSave = true;
-              onEdit = false;
-            };
-            diagnosticsDelay = 300;
-            latexFormatter = "latexindent";
-            latexindent = {
-              modifyLineBreaks = true;
-            };
-          };
+        nixd = {
+          command = "nixd";
         };
-
+        
+        tinymist = {
+          command = "tinymist";
+          config.exportPdf = "onSave";
+        };
+        
+        # Configuración CORREGIDA de ltex-ls-plus
         ltex-ls-plus = {
           command = "ltex-ls-plus";
+          args = [ "--stdio" ];  # CRÍTICO: permite comunicación con Helix
           config.ltex = {
+            # QUITADO: enabled = ["typst" "markdown"]; - No es necesario
             language = "es-AR";
-            additionalRules = {
-              motherTongue = "es-AR";
-              enablePickyRules = true;
-            };
+            motherTongue = "es-AR";
+            enablePickyRules = true;
             completionEnabled = true;
+            
             dictionary = {
               "es-AR" = [ ];
               "en-GB" = [ ];
             };
+            
+            # Opcional: deshabilitar reglas específicas
+            # disabledRules = {
+            #   "es-AR" = [ "PROFANITY" ];
+            #   "en-GB" = [ "PROFANITY" ];
+            # };
           };
         };
-
+        
         pyright = {
           command = "pyright-langserver";
           args = [ "--stdio" ];
@@ -134,12 +125,12 @@
             useLibraryCodeForTypes = true;
           };
         };
-
+        
         ruff = {
           command = "ruff";
           args = [ "server" ];
         };
-
+        
         rust-analyzer = {
           command = "rust-analyzer";
           config = {
@@ -149,15 +140,18 @@
           };
         };
       };
-
+      
       language = [
         {
-          name = "latex";
+          name = "typst";
           language-servers = [
-            "texlab"
-            "ltex-ls-plus"
+            "tinymist"
+            "ltex-ls-plus"  # Asignado correctamente al lenguaje
           ];
           auto-format = true;
+          formatter = {
+            command = "typstyle";
+          };
           soft-wrap = {
             enable = true;
             max-wrap = 80;
@@ -167,15 +161,7 @@
             unit = "  ";
           };
         }
-        {
-          name = "bibtex";
-          language-servers = [ "texlab" ];
-          auto-format = true;
-          indent = {
-            tab-width = 2;
-            unit = "  ";
-          };
-        }
+        
         {
           name = "nix";
           auto-format = true;
@@ -186,9 +172,10 @@
             unit = "  ";
           };
         }
+        
         {
           name = "markdown";
-          language-servers = [ "ltex-ls-plus" ];
+          language-servers = [ "ltex-ls-plus" ];  # También habilitado para markdown
           soft-wrap = {
             enable = true;
             max-wrap = 80;
@@ -198,6 +185,7 @@
             unit = "  ";
           };
         }
+        
         {
           name = "python";
           language-servers = [
@@ -217,6 +205,7 @@
             unit = "    ";
           };
         }
+        
         {
           name = "rust";
           language-servers = [ "rust-analyzer" ];
