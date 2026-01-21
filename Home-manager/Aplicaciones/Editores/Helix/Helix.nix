@@ -95,7 +95,7 @@
         # Configuración CORREGIDA de ltex-ls-plus
         ltex-ls-plus = {
           command = "ltex-ls-plus";
-          args = [ "--stdio" ];  # CRÍTICO: permite comunicación con Helix
+          timeout = 30;
           config.ltex = {
             # QUITADO: enabled = ["typst" "markdown"]; - No es necesario
             language = "es-AR";
