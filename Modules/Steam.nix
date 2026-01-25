@@ -65,12 +65,29 @@ in
       enable = true;
       platformOptimizations.enable = true;
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
-      extraPackages = with pkgs; [
-        gamemode
-        mangohud
-      ];
+      package = pkgs.steam.override {
+        extraPkgs =
+          pkgs': with pkgs'; [
+            xorg.libXcursor
+            xorg.libXi
+            xorg.libXinerama
+            xorg.libXScrnSaver
+            libpng
+            libpulseaudio
+            libvorbis
+            stdenv.cc.cc.lib
+            libkrb5
+            keyutils
+          ];
+      };
+      gamescopeSession.enable = true;
     };
-    
+
+    programs.gamescope = {
+      enable = true;
+      capSysNice = true;
+    };
+
     programs.gamemode = {
       enable = true;
       enableRenice = true;
