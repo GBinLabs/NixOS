@@ -7,6 +7,17 @@
     avahi.enable = false;
     printing.enable = false;
     geoclue2.enable = false;
+    ananicy = {
+      enable = true;
+      package = pkgs.ananicy-cpp;
+      rulesProvider = pkgs.ananicy-cpp;
+      extraRules = [
+        {
+          "name" = "gamescope";
+          "nice" = -20;
+        }
+      ];
+    };
     scx = {
       enable = true;
       package = pkgs.scx.rustscheds;

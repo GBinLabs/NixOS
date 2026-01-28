@@ -79,7 +79,7 @@ in
 
       settings = {
         general = {
-          renice = 15;
+          renice = 20;
           ioprio = 0;
           inhibit_screensaver = 1;
         };

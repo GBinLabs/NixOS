@@ -16,9 +16,6 @@
       ".local/share/Steam"
       ".local/share/PrismLauncher"
       ".local/share/Hytale"
-      ".cache/dxvk"
-      ".cache/vkd3d"
-      ".cache/mesa_shader_cache"
     ];
   };
   Reset.enable = true;
