@@ -14,7 +14,7 @@
       typstyle
       typst
 
-      # Grammar checking (ES + EN)
+      # Grammar checking - ltex-ls-plus actúa como cliente del servidor local
       ltex-ls-plus
 
       # Python
@@ -92,27 +92,154 @@
           config.exportPdf = "onSave";
         };
 
-        # Configuración CORREGIDA de ltex-ls-plus
+        # ═══════════════════════════════════════════════════════════════
+        # LTEX-LS-PLUS - Configuración para servidor LanguageTool local
+        # ═══════════════════════════════════════════════════════════════
         ltex-ls-plus = {
           command = "ltex-ls-plus";
-          timeout = 30;
+          timeout = 120;
           config.ltex = {
-            # QUITADO: enabled = ["typst" "markdown"]; - No es necesario
-            language = "es-AR";
-            motherTongue = "es-AR";
-            enablePickyRules = true;
-            completionEnabled = true;
+            # ─────────────────────────────────────────────────────────────
+            # Conexión al servidor LanguageTool local
+            # ─────────────────────────────────────────────────────────────
+            # CRÍTICO: Esta opción conecta ltex-ls-plus a tu servidor local
+            # en lugar de usar el LanguageTool embebido
+            #languageToolHttpServerUri = "http://localhost:8081/";
 
+            # ─────────────────────────────────────────────────────────────
+            # Idioma y configuración regional
+            # ─────────────────────────────────────────────────────────────
+            language = "es";
+            motherTongue = "es";
+
+            # ─────────────────────────────────────────────────────────────
+            # Nivel de diagnóstico
+            # ─────────────────────────────────────────────────────────────
+            # "error" | "warning" | "information" | "hint"
+            # Usar "information" para ver todos los problemas
+            diagnosticSeverity = "information";
+
+            # ─────────────────────────────────────────────────────────────
+            # Reglas adicionales - Máxima rigurosidad
+            # ─────────────────────────────────────────────────────────────
+            additionalRules = {
+              # Habilita reglas "picky" - detecta más problemas estilísticos
+              enablePickyRules = true;
+            };
+
+            # ─────────────────────────────────────────────────────────────
+            # Cache de oraciones - Mejora rendimiento
+            # ─────────────────────────────────────────────────────────────
+            # Número de oraciones cacheadas en ltex-ls-plus
+            # Para archivos grandes: 2000-5000
+            sentenceCacheSize = 5000;
+
+            # ─────────────────────────────────────────────────────────────
+            # Autocompletado y features
+            # ─────────────────────────────────────────────────────────────
+            completionEnabled = true;
+            
+            # ─────────────────────────────────────────────────────────────
+            # Configuración de Java para ltex-ls-plus embebido
+            # ─────────────────────────────────────────────────────────────
+            # Aumentar memoria si trabajas con archivos grandes
+            "ltex-ls".logLevel = "warning";
+            java = {
+              initialHeapSize = 256;
+              maximumHeapSize = 2048; # 2GB máximo
+            };
+
+            # ─────────────────────────────────────────────────────────────
+            # Diccionarios personalizados
+            # ─────────────────────────────────────────────────────────────
+            # Agregar palabras que LanguageTool marca incorrectamente
+            # Ejemplo: términos técnicos, nombres propios, etc.
             dictionary = {
-              "es-AR" = [ ];
+              "es" = [
+                # Términos matemáticos comunes
+                "subespacio"
+                "subespacios"
+                "autovalor"
+                "autovalores"
+                "autovector"
+                "autovectores"
+                "eigenvalor"
+                "eigenvalores"
+                "eigenvector"
+                "eigenvectores"
+                "biyectiva"
+                "sobreyectiva"
+                "inyectiva"
+                "homomorfismo"
+                "homomorfismos"
+                "isomorfismo"
+                "isomorfismos"
+                "endomorfismo"
+                "endomorfismos"
+                # Agregar más términos según necesites
+              ];
+              "en-GB" = [
+                "eigenvalue"
+                "eigenvalues"
+                "eigenvector"
+                "eigenvectors"
+              ];
+            };
+
+            # ─────────────────────────────────────────────────────────────
+            # Reglas deshabilitadas
+            # ─────────────────────────────────────────────────────────────
+            # Deshabilitar reglas que generen muchos falsos positivos
+            # Encontrar IDs de reglas: ver diagnósticos en Helix
+            disabledRules = {
+              "es" = [
+              ];
+              "en-GB" = [
+                # Ejemplo: deshabilitar profanity check
+                # "PROFANITY"
+              ];
+            };
+
+            # ─────────────────────────────────────────────────────────────
+            # Falsos positivos ocultos
+            # ─────────────────────────────────────────────────────────────
+            # Patrones regex para ocultar errores en contextos específicos
+            # Útil para fórmulas matemáticas o código inline
+            hiddenFalsePositives = {
+              "es-AR" = [
+                # Ejemplo: ignorar contenido entre $ $ (fórmulas)
+                # "\\$.*?\\$"
+              ];
               "en-GB" = [ ];
             };
 
-            # Opcional: deshabilitar reglas específicas
-            #disabledRules = {
-            #"es-AR" = [ ];
-            #"en-GB" = [ ];
-            #};
+            # ─────────────────────────────────────────────────────────────
+            # Configuración de LaTeX/Typst
+            # ─────────────────────────────────────────────────────────────
+            latex = {
+              # Comandos cuyos argumentos deben ignorarse
+              commands = {
+                # Ejemplo para Typst (si usas comandos personalizados)
+                # "\\label{}" = "ignore";
+                # "\\ref{}" = "ignore";
+              };
+              # Entornos cuyo contenido debe ignorarse
+              environments = {
+                # "lstlisting" = "ignore";
+                # "verbatim" = "ignore";
+              };
+            };
+
+            # ─────────────────────────────────────────────────────────────
+            # Configuración de Markdown
+            # ─────────────────────────────────────────────────────────────
+            markdown = {
+              # Nodos cuyo contenido debe ignorarse
+              nodes = {
+                # "CodeBlock" = "ignore";
+                # "FencedCodeBlock" = "ignore";
+              };
+            };
           };
         };
 
@@ -146,7 +273,7 @@
           name = "typst";
           language-servers = [
             "tinymist"
-            "ltex-ls-plus" # Asignado correctamente al lenguaje
+            "ltex-ls-plus"
           ];
           auto-format = true;
           formatter = {
@@ -175,7 +302,7 @@
 
         {
           name = "markdown";
-          language-servers = [ "ltex-ls-plus" ]; # También habilitado para markdown
+          language-servers = [ "ltex-ls-plus" ];
           soft-wrap = {
             enable = true;
             max-wrap = 80;

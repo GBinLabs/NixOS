@@ -170,10 +170,6 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/duckduckgo-for-firefox/latest.xpi";
           installation_mode = "force_installed";
         };
-        "languagetool-webextension@languagetool.org" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/languagetool/latest.xpi";
-          installation_mode = "force_installed";
-        };
       };
 
       DisableTelemetry = true;

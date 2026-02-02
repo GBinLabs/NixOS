@@ -2,7 +2,7 @@
   programs = {
     java = {
       enable = true;
-      package = pkgs.zulu25;
+      package = pkgs.temurin-bin-25;
     };
   };
 }
