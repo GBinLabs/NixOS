@@ -24,8 +24,6 @@
           timeout = 0;
         };
 
-        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
-
         initrd = {
           compressor = "zstd";
           compressorArgs = [
@@ -62,6 +60,7 @@
 
     (lib.mkIf config.hardware.pc.enable {
       boot = {
+        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
         kernelParams = [
           # Video
           "video=HDMI-A-1:1920x1080@75"
@@ -84,6 +83,7 @@
 
     (lib.mkIf config.hardware.netbook.enable {
       boot = {
+      	kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v2;
         kernelParams = [
           # Intel GPU
           "i915.enable_fbc=1"
@@ -92,6 +92,8 @@
           "nowatchdog"
           "nmi_watchdog=0"
           "threadirqs"
+          "acpi_osi=Linux"
+      "acpi_backlight=native"
         ];
         kernelModules = [ "i915" ];
       };

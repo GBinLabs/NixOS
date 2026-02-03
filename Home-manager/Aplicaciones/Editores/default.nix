@@ -1,5 +1,5 @@
 _: {
   imports = [
-    ./Helix/Helix.nix
+    ./VSCode/default.nix
   ];
 }

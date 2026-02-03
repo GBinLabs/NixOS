@@ -108,7 +108,7 @@ in
         gamemodeSupport = true;
         textToSpeechSupport = false;
         jdks = [
-          zulu25
+          temurin-bin-25
         ];
       })
       hytale

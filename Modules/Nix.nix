@@ -10,13 +10,6 @@
       trusted-users = ["root" "german"];
       warn-dirty = false;
     };
-
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-
     optimise.automatic = true;
   };
 
@@ -28,6 +21,9 @@
       "steam-run"
       "discord"
       "obsidian"
+      # VS Code y extensiones
+      "vscode"
       "vscode-extension-MS-python-vscode-pylance"
+      "vscode-extension-ms-vscode-cpptools"
     ];
 }

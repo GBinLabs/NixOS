@@ -4,71 +4,70 @@
     enable = true;
     package = pkgs.languagetool;
     port = 8081;
-    public = false; # Solo acceso local (más seguro)
+    public = false;
 
-    # Java moderno con mejor rendimiento
-    jrePackage = pkgs.temurin-bin-21;
-
-    # Optimización de memoria para archivos grandes
-    # Ajustar según tu RAM disponible:
-    # - 8GB RAM sistema: usar "-Xmx2g"
-    # - 16GB RAM sistema: usar "-Xmx4g"
-    # - 32GB+ RAM sistema: usar "-Xmx8g"
+    # ═══════════════════════════════════════════════════════════════════════════
+    # OPCIONES DE JVM - Optimizadas para 8GB RAM
+    # ═══════════════════════════════════════════════════════════════════════════
+    # Con 8GB totales, reservamos ~1.5GB para LanguageTool
+    # Esto deja suficiente para VS Code (~1-2GB) y el sistema (~2-3GB)
     jvmOptions = [
-      "-Xms512m" # Memoria inicial
-      "-Xmx2g" # Memoria máxima (ajustar según tu sistema)
-      "-XX:+UseG1GC" # Garbage collector optimizado
-      "-XX:+UseStringDeduplication" # Reduce uso de memoria
-      "-XX:MaxGCPauseMillis=200" # Limita pausas del GC
+      # Memoria
+      "-Xms256m"          # Inicio conservador
+      "-Xmx1536m"         # Máximo 1.5GB (reducido de 2GB)
+      
+      # Garbage Collector - G1 con pausas cortas
+      "-XX:+UseG1GC"
+      "-XX:MaxGCPauseMillis=100"
+      "-XX:G1HeapRegionSize=4m"
+      
+      # Optimizaciones de memoria
+      "-XX:+UseStringDeduplication"
+      "-XX:StringDeduplicationAgeThreshold=3"
+      
+      # Reducir overhead de metadatos
+      "-XX:MaxMetaspaceSize=128m"
+      "-XX:CompressedClassSpaceSize=64m"
+      
+      # Deshabilitar JIT agresivo (reduce uso de CPU)
+      "-XX:TieredStopAtLevel=1"
+      "-XX:CICompilerCount=1"
     ];
 
-    # Permitir acceso desde extensiones de navegador (opcional)
-    # Usar null para máxima seguridad, o "" para permitir todo
     allowOrigin = null;
 
     settings = {
-      # ═══════════════════════════════════════════════════════════════
-      # CACHE - Crítico para archivos grandes
-      # ═══════════════════════════════════════════════════════════════
-      # Número de oraciones cacheadas (evita re-análisis)
-      # Para archivos grandes: usar 5000-10000
-      cacheSize = 5000;
+      # ═══════════════════════════════════════════════════════════════════════
+      # CACHE - Reducido para menor uso de RAM
+      # ═══════════════════════════════════════════════════════════════════════
+      cacheSize = 2000;  # Reducido de 5000
+      
+      # Precalentamiento deshabilitado para inicio más rápido
+      pipelinePrewarming = false;
 
-      # Pre-calentar el pipeline al iniciar (reduce latencia inicial)
-      pipelinePrewarming = true;
-
-      # ═══════════════════════════════════════════════════════════════
-      # N-GRAM DATA - Detecta errores contextuales
-      # ═══════════════════════════════════════════════════════════════
-      # Detecta confusiones como "their/there", "haber/a ver", etc.
-      # IMPORTANTE: Requiere ~3GB de espacio en disco para español
-      # Los datos se descargan automáticamente y se cachean en /nix/store
+      # ═══════════════════════════════════════════════════════════════════════
+      # N-GRAM DATA - Solo español para ahorrar espacio
+      # ═══════════════════════════════════════════════════════════════════════
+      # Los n-gramas mejoran detección de errores contextuales.
+      # Solo se incluye español (~3GB) para optimizar uso de disco.
       languageModel = pkgs.linkFarm "languageModel" (
         builtins.mapAttrs (_: v: pkgs.fetchzip v) {
-          # Español - 3.1GB (esencial para tu libro)
           es = {
             url = "https://languagetool.org/download/ngram-data/ngrams-es-20150915.zip";
             hash = "sha256-z+JJe8MeI9YXE2wUA2acK9SuQrMZ330QZCF9e234FCk=";
           };
-          # Inglés - 15GB (opcional, descomentar si lo necesitas)
-           en = {
+          # Inglés deshabilitado para ahorrar ~15GB de espacio en disco
+          # Descomentar si es necesario:
+          en = {
              url = "https://languagetool.org/download/ngram-data/ngrams-en-20150817.zip";
              hash = "sha256-v3Ym6CBJftQCY5FuY6s5ziFvHKAyYD3fTHr99i6N8sE=";
-           };
+          };
         }
       );
 
-      # ═══════════════════════════════════════════════════════════════
-      # NOTA SOBRE WORD2VEC
-      # ═══════════════════════════════════════════════════════════════
-      # Las opciones word2vec y neuralnetwork fueron DEPRECADAS y
-      # ELIMINADAS de LanguageTool. Ya no están disponibles.
-      # Los n-gramas proporcionan funcionalidad similar.
-
-      # ═══════════════════════════════════════════════════════════════
-      # FASTTEXT - Detección automática de idioma
-      # ═══════════════════════════════════════════════════════════════
-      # Detecta el idioma automáticamente (útil para documentos mixtos)
+      # ═══════════════════════════════════════════════════════════════════════
+      # FASTTEXT - Detección de idioma
+      # ═══════════════════════════════════════════════════════════════════════
       fasttextBinary = "${pkgs.fasttext}/bin/fasttext";
       fasttextModel = pkgs.fetchurl {
         name = "lid.176.bin";
@@ -76,38 +75,46 @@
         hash = "sha256-fmnsVFG8JhzHhE5J5HkqhdfwnAZ4nsgA/EpErsNidk4=";
       };
 
-      # ═══════════════════════════════════════════════════════════════
-      # LÍMITES Y RENDIMIENTO
-      # ═══════════════════════════════════════════════════════════════
-      # Tamaño máximo de texto por solicitud (en caracteres)
-      # Para archivos muy grandes, aumentar este valor
-      # Default: 50000, para libros usar 150000-500000
-      maxTextLength = 200000;
+      # ═══════════════════════════════════════════════════════════════════════
+      # LÍMITES - Ajustados para hardware limitado
+      # ═══════════════════════════════════════════════════════════════════════
+      # Tamaño máximo por solicitud (caracteres)
+      # 100K caracteres ≈ 50 páginas de texto denso
+      maxTextLength = 100000;  # Reducido de 200000
+      
+      # Timeout más largo para compensar CPU lento
+      maxCheckTimeMillis = 180000;  # 3 minutos
+      
+      # Solo 2 hilos (el N4020 tiene 2 núcleos)
+      maxCheckThreads = 2;
+      
+      # Limitar sugerencias
+      maxSpellingSuggestions = 3;  # Reducido de 5
 
-      # Tiempo máximo de verificación por solicitud (milisegundos)
-      # Para archivos grandes: 60000-120000 (1-2 minutos)
-      maxCheckTimeMillis = 120000;
-
-      # Hilos de trabajo paralelos
-      # Ajustar según núcleos de CPU disponibles
-      maxCheckThreads = 4;
-
-      # Límite de sugerencias ortográficas (mejora rendimiento)
-      maxSpellingSuggestions = 5;
-
-      # ═══════════════════════════════════════════════════════════════
-      # MONITOREO (opcional)
-      # ═══════════════════════════════════════════════════════════════
       prometheusMonitoring = false;
-      # prometheusPort = 9301;
     };
   };
 
-  # Asegurar que el servicio se reinicie automáticamente si falla
+  # ═══════════════════════════════════════════════════════════════════════════
+  # SYSTEMD - Configuración del servicio
+  # ═══════════════════════════════════════════════════════════════════════════
   systemd.services.languagetool = {
     serviceConfig = {
+      # Reinicio automático
       Restart = "on-failure";
-      RestartSec = "5s";
+      RestartSec = "10s";
+      
+      # Límites de recursos para evitar que monopolice el sistema
+      MemoryMax = "2G";
+      MemoryHigh = "1700M";
+      CPUQuota = "150%";  # Máximo 1.5 núcleos
+      
+      # Prioridad baja para no interferir con VS Code
+      Nice = 10;
+      IOSchedulingClass = "idle";
     };
+    
+    # Iniciar después del login para no ralentizar el arranque
+    wantedBy = lib.mkForce [ "default.target" ];
   };
 }
