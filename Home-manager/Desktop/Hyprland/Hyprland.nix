@@ -11,8 +11,14 @@ in
     settings = {
       general.locale = "es";
       
+      monitor = [
+      "HDMI-A-1, 1920x1080@75, 0x0, 1"	
+      ];
       input = {
         kb_layout = "latam";
+        sensitivity = 0;
+        accel_profile = "flat";
+        force_no_accel = true;
         touchpad.natural_scroll = true;
       };
       
