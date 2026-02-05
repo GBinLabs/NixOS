@@ -54,8 +54,12 @@
         enable = false;
         powerOnBoot = false;
       };
-
-      powerManagement.cpuFreqGovernor = "performance";
+      
+      networking = {
+  	networkmanager = {
+  		enable = true;
+  	};
+    };
     }
 
     (lib.mkIf config.hardware.pc.enable {

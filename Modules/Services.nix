@@ -28,8 +28,14 @@
       enable = true;
       package = pkgs.libratbag;
     };
+    tuned = {
+      enable = true;
+    };
+    upower = {
+      enable = true;
+    };
   };
-
+  
   environment.systemPackages = with pkgs; [ usbutils ];
 
   documentation = {
