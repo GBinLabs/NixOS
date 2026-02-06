@@ -366,7 +366,7 @@ in
 
       # === UBICACIÓN Y CLIMA ===
       location = {
-        name = "Buenos Aires";  # Cambia a tu ciudad
+        name = "Monteros,Tucuman,Argentina";  # Cambia a tu ciudad
         weatherEnabled = true;
         weatherShowEffects = true;
         useFahrenheit = false;
