@@ -4,19 +4,20 @@
   # PAQUETES DEL SISTEMA
   # ═══════════════════════════════════════════════════════════════════════════
   home.packages = with pkgs; [
-    # LaTeX
-    texliveFull
+    # ─────────────────────────────────────────────────────────────────────────
+    # ConTeXt LMTX - Sistema de composición tipográfica moderno
+    # ─────────────────────────────────────────────────────────────────────────
+    texliveConTeXt
     
     # Language servers y herramientas
-    texlab              # LSP para LaTeX (autocompletado, go-to-definition)
-    ltex-ls-plus        # LSP para gramática (conecta con LanguageTool local)
+    ltex-ls-plus        # LSP para gramática (soporta ConTeXt nativamente)
     
     # Nix
     nixd                # LSP para Nix
     nixfmt              # Formateador para Nix
 
-    # Typst
-    tinymist            # LSP para Typst (incluido en extensión, pero útil como fallback)
+    # Typst (mantenido para tu libro de Álgebra Lineal)
+    tinymist            # LSP para Typst
     typstyle            # Formateador para Typst
     typst               # Compilador Typst
 
@@ -41,38 +42,29 @@
     # ─────────────────────────────────────────────────────────────────────────
     profiles = {
       default = {
-        extensions = (with pkgs.vscode-marketplace; [
-  # LaTeX
-  james-yu.latex-workshop
+        extensions = with pkgs.vscode-marketplace; [
+          # ═══════════════════════════════════════════════════════════════════
+          # ConTeXt - Syntax highlighting
+          # ═══════════════════════════════════════════════════════════════════
+          juliangmp.context-syntax
 
-  # Nix
-  jnoortheen.nix-ide
+          # Nix
+          jnoortheen.nix-ide
 
-  # Typst
-  myriad-dreamin.tinymist
+          # Typst (mantenido para tu libro)
+          myriad-dreamin.tinymist
 
-  # Tema
-  jdinhlife.gruvbox
+          # Tema
+          jdinhlife.gruvbox
 
-  # Git
-  eamodio.gitlens
+          # Git
+          eamodio.gitlens
 
-  # Spell check
-  streetsidesoftware.code-spell-checker
-  streetsidesoftware.code-spell-checker-spanish
-]) ++  [
-  (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
-    mktplcRef = {
-      publisher = "ltex-plus";
-      name = "vscode-ltex-plus";
-      version = "15.7.0";
-    };
-    vsix = pkgs.fetchurl {
-  url = "https://github.com/ltex-plus/vscode-ltex-plus/releases/download/nightly/vscode-ltex-plus-15.7.0-alpha.nightly.2026-02-03-offline-linux-x64.vsix";
-  hash = "sha256-KgkzoQUqlzJL0W6K3pQHMPZ1X6lrrbsFOAq14nm0gCU=";
-};
-  })
-];
+          # Spell check
+          streetsidesoftware.code-spell-checker
+          streetsidesoftware.code-spell-checker-spanish
+          ltex-plus.vscode-ltex-plus
+        ];
 
         # ─────────────────────────────────────────────────────────────────────────
         # Configuración de usuario (settings.json)
@@ -94,22 +86,11 @@
             "**/.git/objects/**" = true;
             "**/.git/subtree-cache/**" = true;
             "**/node_modules/**" = true;
-            "**/*.aux" = true;
+            # Archivos auxiliares de ConTeXt
+            "**/*.tuc" = true;
             "**/*.log" = true;
             "**/*.synctex.gz" = true;
-            "**/*.fls" = true;
-            "**/*.fdb_latexmk" = true;
-            "**/*.bbl" = true;
-            "**/*.bcf" = true;
-            "**/*.blg" = true;
-            "**/*.run.xml" = true;
-            "**/*.out" = true;
-            "**/*.toc" = true;
-            "**/*.lof" = true;
-            "**/*.lot" = true;
-            "**/*.idx" = true;
-            "**/*.ind" = true;
-            "**/*.ilg" = true;
+            "**/*.pgf" = true;
             "**/result" = true;          # Nix build symlinks
           };
           
@@ -175,7 +156,7 @@
           };
           
           # ═══════════════════════════════════════════════════════════════════════
-          # TYPST - Configuración de tinymist
+          # TYPST - Configuración de tinymist (mantenido para tu libro)
           # ═══════════════════════════════════════════════════════════════════════
           
           # Exportar PDF al guardar
@@ -198,155 +179,19 @@
           };
           
           # ═══════════════════════════════════════════════════════════════════════
-          # LATEX WORKSHOP
+          # CONTEXT - Configuración para ConTeXt LMTX
           # ═══════════════════════════════════════════════════════════════════════
           
-          # Motor de compilación: LuaLaTeX para soporte Unicode completo
-          "latex-workshop.latex.recipe.default" = "latexmk (lualatex)";
-          
-          # Recetas de compilación
-          "latex-workshop.latex.recipes" = [
-            {
-              name = "latexmk (lualatex)";
-              tools = [ "lualatexmk" ];
-            }
-            {
-              name = "latexmk (pdflatex)";
-              tools = [ "pdflatexmk" ];
-            }
-            {
-              name = "lualatex simple";
-              tools = [ "lualatex" ];
-            }
-          ];
-          
-          # Herramientas de compilación
-          "latex-workshop.latex.tools" = [
-            {
-              name = "lualatexmk";
-              command = "latexmk";
-              args = [
-                "-synctex=1"
-                "-interaction=nonstopmode"
-                "-file-line-error"
-                "-lualatex"
-                "-outdir=%OUTDIR%"
-                "%DOC%"
-              ];
-              env = {};
-            }
-            {
-              name = "pdflatexmk";
-              command = "latexmk";
-              args = [
-                "-synctex=1"
-                "-interaction=nonstopmode"
-                "-file-line-error"
-                "-pdf"
-                "-outdir=%OUTDIR%"
-                "%DOC%"
-              ];
-              env = {};
-            }
-            {
-              name = "lualatex";
-              command = "lualatex";
-              args = [
-                "-synctex=1"
-                "-interaction=nonstopmode"
-                "-file-line-error"
-                "-output-directory=%OUTDIR%"
-                "%DOC%"
-              ];
-              env = {};
-            }
-          ];
-          
-          # Compilación automática al guardar
-          "latex-workshop.latex.autoBuild.run" = "onSave";
-          
-          # Limpieza de archivos auxiliares
-          "latex-workshop.latex.autoClean.run" = "onBuilt";
-          "latex-workshop.latex.clean.fileTypes" = [
-            "*.aux"
-            "*.bbl"
-            "*.bcf"
-            "*.blg"
-            "*.fdb_latexmk"
-            "*.fls"
-            "*.idx"
-            "*.ilg"
-            "*.ind"
-            "*.lof"
-            "*.log"
-            "*.lot"
-            "*.nav"
-            "*.out"
-            "*.run.xml"
-            "*.snm"
-            "*.synctex.gz"
-            "*.toc"
-            "*.vrb"
-          ];
-          
-          # Formateador de LaTeX con latexindent
-          "[latex]" = {
+          # Configuración específica de ConTeXt por lenguaje
+          "[context]" = {
             "editor.tabSize" = 2;
             "editor.insertSpaces" = true;
-            "editor.formatOnSave" = true;
-            "editor.defaultFormatter" = "james-yu.latex-workshop";
             "editor.wordWrap" = "on";
             "editor.wordWrapColumn" = 100;
           };
           
-          # Configuración de latexindent (formateador de LaTeX Workshop)
-          "latex-workshop.latexindent.path" = "latexindent";
-          "latex-workshop.latexindent.args" = [
-            "-c"
-            "%DIR%/"
-            "%TMPFILE%"
-            "-m"               # Modifica line breaks
-            "-l"               # Usa configuración local si existe
-          ];
-          
-          # ─────────────────────────────────────────────────────────────────────────
-          # Visor de PDF
-          # ─────────────────────────────────────────────────────────────────────────
-          "latex-workshop.view.pdf.viewer" = "tab";
-          "latex-workshop.view.pdf.zoom" = "page-width";
-          
-          # ─────────────────────────────────────────────────────────────────────────
-          # IntelliSense y autocompletado
-          # ─────────────────────────────────────────────────────────────────────────
-          "latex-workshop.intellisense.package.enabled" = true;
-          "latex-workshop.intellisense.citation.backend" = "bibtex";
-          "latex-workshop.intellisense.label.command" = [
-            "ref"
-            "eqref"
-            "cref"
-            "Cref"
-            "autoref"
-            "nameref"
-            "pageref"
-          ];
-          
-          # Hover para mostrar vista previa de matemáticas
-          "latex-workshop.hover.preview.enabled" = true;
-          "latex-workshop.hover.preview.mathjax.extensions" = [
-            "ams"
-            "physics"
-          ];
-          
-          # ─────────────────────────────────────────────────────────────────────────
-          # Diagnósticos y errores
-          # ─────────────────────────────────────────────────────────────────────────
-          "latex-workshop.message.error.show" = true;
-          "latex-workshop.message.warning.show" = true;
-          "latex-workshop.message.information.show" = false;
-          "latex-workshop.message.badbox.show" = false;
-          
           # ═══════════════════════════════════════════════════════════════════════
-          # LTEX-PLUS - Corrección gramatical con LanguageTool local
+          # LTEX-PLUS - Corrección gramatical con soporte para ConTeXt
           # ═══════════════════════════════════════════════════════════════════════
           
           "ltex.ltex-ls.path" = "${pkgs.ltex-ls-plus}";
@@ -368,9 +213,12 @@
           # Completado automático
           "ltex.completionEnabled" = true;
           
-          # Habilitar LTeX también para Typst
+          # ─────────────────────────────────────────────────────────────────────────
+          # Lenguajes habilitados para LTeX (incluyendo ConTeXt)
+          # ─────────────────────────────────────────────────────────────────────────
           "ltex.enabled" = [
-            "latex"
+            "context"       # ConTeXt - soporte nativo
+            "latex"         # LaTeX legacy si lo necesitas
             "bibtex"
             "markdown"
             "typst"
@@ -380,61 +228,30 @@
           # Diccionario personalizado - términos matemáticos
           # ─────────────────────────────────────────────────────────────────────────
           "ltex.dictionary" = {
-            "es-AR" = [ ];
-            "en-GB" = [ ];
+            "es-AR" = [
+              # Términos matemáticos comunes
+              # Términos de ConTeXt
+              "metapost"
+              "luametatex"
+              "mkxl"
+            ];
+            "en-GB" = [
+            ];
           };
           
           # ─────────────────────────────────────────────────────────────────────────
           # Reglas deshabilitadas
           # ─────────────────────────────────────────────────────────────────────────
           "ltex.disabledRules" = {
-            "es-AR" = [ "NOUN_PLURAL2" ];
+            "es-AR" = [ ];
             "en-GB" = [ ];
           };
           
           # ─────────────────────────────────────────────────────────────────────────
-          # Comandos LaTeX a ignorar
+          # Comandos ConTeXt a ignorar (LTeX tiene soporte nativo)
           # ─────────────────────────────────────────────────────────────────────────
-          "ltex.latex.commands" = {
-            "\\label{}" = "ignore";
-            "\\ref{}" = "ignore";
-            "\\cref{}" = "ignore";
-            "\\Cref{}" = "ignore";
-            "\\eqref{}" = "ignore";
-            "\\cite{}" = "ignore";
-            "\\cite[]{}" = "ignore";
-            "\\textcite{}" = "ignore";
-            "\\parencite{}" = "ignore";
-            "\\autocite{}" = "ignore";
-            "\\index{}" = "ignore";
-            "\\gls{}" = "ignore";
-            "\\Gls{}" = "ignore";
-            "\\glspl{}" = "ignore";
-            "\\newacronym{}{}{}" = "ignore";
-            "\\newglossaryentry{}{}" = "ignore";
-            "\\SI{}{}" = "ignore";
-            "\\si{}" = "ignore";
-            "\\num{}" = "ignore";
-            "\\tikz" = "ignore";
-            "\\pgfplotsset{}" = "ignore";
-          };
-          
-          # Entornos LaTeX a ignorar
-          "ltex.latex.environments" = {
-            "lstlisting" = "ignore";
-            "verbatim" = "ignore";
-            "equation" = "ignore";
-            "equation*" = "ignore";
-            "align" = "ignore";
-            "align*" = "ignore";
-            "gather" = "ignore";
-            "gather*" = "ignore";
-            "multline" = "ignore";
-            "multline*" = "ignore";
-            "tikzpicture" = "ignore";
-            "tikzcd" = "ignore";
-            "pgfplot" = "ignore";
-          };
+          # Nota: LTeX ya conoce la sintaxis de ConTeXt, pero puedes agregar
+          # comandos personalizados aquí si es necesario
           
           # Rendimiento de LTeX
           "ltex.sentenceCacheSize" = 5000;
@@ -443,18 +260,21 @@
           # SPELL CHECKER (backup/adicional)
           # ═══════════════════════════════════════════════════════════════════════
           "cSpell.language" = "es,en";
-          "cSpell.enableFiletypes" = [ "latex" "bibtex" "typst" "nix" ];
+          "cSpell.enableFiletypes" = [ "context" "typst" "nix" ];
           
           # ═══════════════════════════════════════════════════════════════════════
           # ARCHIVOS Y ASOCIACIONES
           # ═══════════════════════════════════════════════════════════════════════
           "files.associations" = {
-            "*.tex" = "latex";
-            "*.sty" = "latex";
-            "*.cls" = "latex";
-            "*.bib" = "bibtex";
-            "*.tikz" = "latex";
+            # ConTeXt
+            "*.tex" = "context";     # Asociar .tex a ConTeXt por defecto
+            "*.mkiv" = "context";    # ConTeXt Mark IV
+            "*.mkxl" = "context";    # ConTeXt Mark XL (LMTX)
+            "*.mkvi" = "context";
+            "*.mkii" = "context";    # ConTeXt Mark II (legacy)
+            # Typst
             "*.typ" = "typst";
+            # Nix
             "*.nix" = "nix";
             "flake.lock" = "json";
           };
@@ -467,8 +287,92 @@
           # ═══════════════════════════════════════════════════════════════════════
           "git.enableSmartCommit" = true;
           "git.confirmSync" = false;
+          
+          # ═══════════════════════════════════════════════════════════════════════
+          # TAREAS PERSONALIZADAS - Compilación de ConTeXt
+          # ═══════════════════════════════════════════════════════════════════════
+          # Nota: Las tareas se definen en .vscode/tasks.json del proyecto
+          # Aquí solo configuramos keybindings relacionados
         };
       };
     };
+  };
+  
+  # ═══════════════════════════════════════════════════════════════════════════
+  # ARCHIVO DE TAREAS - .vscode/tasks.json para compilar ConTeXt
+  # ═══════════════════════════════════════════════════════════════════════════
+  # Este archivo se puede colocar en tu directorio de proyecto
+  home.file.".config/Code/User/tasks-context-template.json".text = builtins.toJSON {
+    version = "2.0.0";
+    tasks = [
+      {
+        label = "ConTeXt: Compilar documento";
+        type = "shell";
+        command = "context";
+        args = [
+          "--synctex"
+          "--nonstopmode"
+          "\${file}"
+        ];
+        group = {
+          kind = "build";
+          isDefault = true;
+        };
+        presentation = {
+          reveal = "always";
+          panel = "shared";
+        };
+        problemMatcher = {
+          owner = "context";
+          fileLocation = [ "relative" "\${workspaceFolder}" ];
+          pattern = {
+            regexp = "^(.*):(\\d+):\\s+(.*)$";
+            file = 1;
+            line = 2;
+            message = 3;
+          };
+        };
+      }
+      {
+        label = "ConTeXt: Compilar con opciones";
+        type = "shell";
+        command = "context";
+        args = [
+          "--synctex"
+          "--nonstopmode"
+          "--mode=\${input:contextMode}"
+          "\${file}"
+        ];
+        presentation = {
+          reveal = "always";
+          panel = "shared";
+        };
+      }
+      {
+        label = "ConTeXt: Limpiar auxiliares";
+        type = "shell";
+        command = "context";
+        args = [
+          "--purgeall"
+        ];
+        presentation = {
+          reveal = "silent";
+          panel = "shared";
+        };
+      }
+    ];
+    inputs = [
+      {
+        id = "contextMode";
+        description = "Modo de ConTeXt";
+        default = "print";
+        type = "pickString";
+        options = [
+          "print"
+          "screen"
+          "draft"
+        ];
+      }
+    ];
   };
 }

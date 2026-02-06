@@ -36,11 +36,6 @@
     };	
     
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-    
-    nix4vscode = {
-      url = "github:nix-community/nix4vscode";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
 
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
@@ -62,7 +57,6 @@
       nixos-facter-modules,
       hyprland,
       nix-vscode-extensions,
-      nix4vscode,
       nix-gaming,
       nix-cachyos-kernel,
       hytale-launcher,
@@ -111,23 +105,8 @@
                 nixpkgs.overlays = [
                   inputs.nix-cachyos-kernel.overlays.pinned
                   inputs.nix-vscode-extensions.overlays.default
-                  inputs.nix4vscode.overlays.default
                   (final: prev: {
                     hytale-launcher = inputs.hytale-launcher.packages.${system}.default;
-                    ltex-ls-plus = prev.ltex-ls-plus.overrideAttrs (old: rec {
-    version = "18.7.0-alpha.nightly.2026-01-13";
-    src = final.fetchurl {
-      url = "https://github.com/ltex-plus/ltex-ls-plus/releases/download/nightly/ltex-ls-plus-${version}.tar.gz";
-      hash = "sha256-cKsRLbVl1JO4gWdNdvgXy4MyFe/A7q6s32Z9RGfMswI=";
-    };
-  });
-  languagetool = prev.languagetool.overrideAttrs (oldAttrs: {
-    version = "latest-snapshot";
-    src = final.fetchzip {
-      url = "https://languagetool.org/download/snapshots/LanguageTool-latest-snapshot.zip";
-      hash = "sha256-8uJqklcFw79dFwAbs/HwEvQl5s6Ld3fIqEHfCEjBDG4=";
-    };
-  });
                   })
                 ];
               }
