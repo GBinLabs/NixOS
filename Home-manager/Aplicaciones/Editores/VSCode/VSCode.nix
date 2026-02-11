@@ -1,4 +1,6 @@
-{  pkgs, ... }:
+{  pkgs, ... }:let
+  quarkdown = pkgs.callPackage ./quarkdown.nix { };
+in
 {
   # ═══════════════════════════════════════════════════════════════════════════
   # PAQUETES DEL SISTEMA
@@ -15,6 +17,8 @@
     # Nix
     nixd                # LSP para Nix
     nixfmt              # Formateador para Nix
+    
+    quarkdown
 
     # Typst (mantenido para tu libro de Álgebra Lineal)
     tinymist            # LSP para Typst
@@ -64,6 +68,16 @@
           streetsidesoftware.code-spell-checker
           streetsidesoftware.code-spell-checker-spanish
           ltex-plus.vscode-ltex-plus
+          
+        ] ++ [
+        (pkgs.vscode-utils.buildVscodeMarketplaceExtension {
+    mktplcRef = {
+      name = "quarkdown-vscode";
+      publisher = "quarkdown";
+      version = "1.0.4";
+      hash = "sha256-Nwt8/wdb8SgD7zVZStygKA3xHeGmGOjfrZwsvoRVcdc=";
+    };
+  })
         ];
 
         # ─────────────────────────────────────────────────────────────────────────
