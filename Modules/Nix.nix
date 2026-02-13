@@ -21,9 +21,6 @@
       "steam-run"
       "discord"
       "obsidian"
-      # VS Code y extensiones
       "vscode"
-      "vscode-extension-MS-python-vscode-pylance"
-      "vscode-extension-ms-vscode-cpptools"
     ];
 }

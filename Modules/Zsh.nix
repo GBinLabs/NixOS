@@ -32,32 +32,6 @@
       "SHARE_HISTORY"
       "INC_APPEND_HISTORY"
     ];
-
-    # Aliases útiles
-    shellAliases = {
-      # Sistema
-      rebuild = "sudo nixos-rebuild switch --flake ~/.config/nixos";
-      update = "nix flake update ~/.config/nixos && rebuild";
-      clean = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
-      optimise = "nix-store --optimise";
-
-      # Utils
-      ls = "ls --color=auto";
-      ll = "ls -lah";
-      grep = "grep --color=auto";
-
-      # Git shortcuts
-      gs = "git status";
-      ga = "git add";
-      gc = "git commit";
-      gp = "git push";
-      gl = "git pull";
-
-      # Performance
-      mem = "free -h";
-      cpu = "htop";
-      temps = "watch -n1 sensors";
-    };
   };
 
   environment.shells = with pkgs; [zsh];
