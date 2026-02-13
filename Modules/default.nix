@@ -7,7 +7,6 @@ _: {
     ./Desktop/default.nix
     ./Impermanence.nix
     ./Keyboard.nix
-    ./LanguageTool.nix
     ./Nix.nix
     ./Programs.nix
     ./Red.nix

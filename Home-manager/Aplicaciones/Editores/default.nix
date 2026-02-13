@@ -1,5 +1,5 @@
 _: {
   imports = [
-    ./VSCode/default.nix
+    ./VSCode/VSCode.nix
   ];
 }
