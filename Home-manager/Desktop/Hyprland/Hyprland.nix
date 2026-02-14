@@ -106,151 +106,7 @@
       variables = [ "--all" ];
     };
   };
-
-  # ════════════════════════════════════════════════════════════════════
-  # NOCTALIA SHELL
-  # ════════════════════════════════════════════════════════════════════
-  programs.noctalia-shell = {
-    enable = true;
-    systemd.enable = true;
-    
-    settings = {
-      bar = {
-        barType = "compact";
-        position = "top";
-        floating = true;
-        showCapsule = false;
-        
-        widgets = {
-          left = [
-            { id = "Launcher"; }
-            { id = "Clock"; formatHorizontal = "HH:mm"; useMonospacedFont = true; usePrimaryColor = true; }
-            { id = "SystemMonitor"; }
-            { id = "ActiveWindow"; }
-            { id = "MediaMini"; }
-          ];
-          center = [
-            { id = "Workspace"; hideUnoccupied = false; labelMode = "none"; }
-          ];
-          right = [
-            { id = "Tray"; }
-            { id = "NotificationHistory"; }
-            { id = "Battery"; warningThreshold = 30; alwaysShowPercentage = false; }
-            { id = "Volume"; }
-            { id = "Brightness"; }
-            { id = "Network"; }
-            { id = "Bluetooth"; }
-            { id = "ControlCenter"; useDistroLogo = true; }
-          ];
-        };
-      };
-
-      appLauncher = {
-        position = "center";
-        viewMode = "list";
-        sortByMostUsed = false;
-        showCategories = false;
-        clipboardWatchTextCommand = "wl-paste --type text --watch cliphist store";
-        clipboardWatchImageCommand = "wl-paste --type image --watch cliphist store";
-        terminalCommand = "kitty -e";
-      };
-
-      notifications = {
-        enabled = true;
-        location = "top_right";
-        enableMediaToast = true;
-        sounds = { enabled = false; volume = 0.5; separateSounds = false; excludedApps = "discord,firefox,chrome"; };
-      };
-
-      osd = {
-        enabled = true;
-        location = "top_right";
-      };
-
-      controlCenter = {
-        position = "close_to_bar_button";
-        diskPath = "/";
-        shortcuts = {
-          left = [ { id = "Network"; } { id = "Bluetooth"; } { id = "WallpaperSelector"; } { id = "NoctaliaPerformance"; } ];
-          right = [ { id = "Notifications"; } { id = "PowerProfile"; } { id = "KeepAwake"; } { id = "NightLight"; } ];
-        };
-        cards = [
-          { enabled = true; id = "profile-card"; }
-          { enabled = true; id = "shortcuts-card"; }
-          { enabled = true; id = "audio-card"; }
-          { enabled = true; id = "brightness-card"; }
-          { enabled = true; id = "weather-card"; }
-          { enabled = true; id = "media-sysmon-card"; }
-        ];
-      };
-
-      dock = {
-        enabled = false;
-      };
-
-      sessionMenu = {
-        position = "center";
-        enableCountdown = true;
-        powerOptions = [
-          { action = "lock"; enabled = true; }
-          { action = "suspend"; enabled = true; }
-          { action = "hibernate"; enabled = true; }
-          { action = "reboot"; enabled = true; }
-          { action = "logout"; enabled = true; }
-          { action = "shutdown"; enabled = true; }
-        ];
-      };
-
-      systemMonitor = {
-        externalMonitor = "btop";
-      };
-
-      audio = { volumeStep = 5; volumeOverdrive = false; volumeFeedback = false; cavaFrameRate = 30; visualizerType = "linear"; };
-      brightness = { brightnessStep = 5; enforceMinimum = true; enableDdcSupport = false; };
-
-      wallpaper = {
-        enabled = true;
-        directory = "${config.xdg.userDirs.pictures}/Wallpapers";
-        panelPosition = "follow_bar";
-      };
-
-      general = {
-        avatarImage = "${config.home.homeDirectory}/.face";
-        language = "es";
-      };
-
-      location = {
-        name = "Monteros,Tucuman,Argentina";
-        firstDayOfWeek = -1;
-      };
-
-      network = {
-        wifiEnabled = true;
-      };
-
-      colorSchemes = {
-        useWallpaperColors = true;
-       generationMethod = "faithful";
-      };
-
-      templates = {
-        gtk = true;
-        qt = true;
-        kitty = true;
-        firefox = true;
-        zenbrowser = false;
-        vscode = true;
-        discord = true;
-        cava = true;
-        hyprland = true;
-        enableUserTemplates = false;
-      };
-    };
-  };
-
-  # ════════════════════════════════════════════════════════════════════
-  # GTK - Estilo similar a tu config de GNOME
-  # ════════════════════════════════════════════════════════════════════
+  
   gtk = {
     enable = true;
     theme = {
@@ -282,28 +138,20 @@
     };
   };
 
-  # ════════════════════════════════════════════════════════════════════
-  # PAQUETES
-  # ════════════════════════════════════════════════════════════════════
   home.packages = with pkgs; [
     wl-clipboard
     cliphist
-    matugen
     adw-gtk3
     tela-icon-theme
     bibata-cursors
-    pywalfox-native
   ];
-
-  # ════════════════════════════════════════════════════════════════════
-  # PYWALFOX - Registrar native messenger al activar home-manager
-  # ════════════════════════════════════════════════════════════════════
-  home.activation.pywalfoxInstall = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${pkgs.pywalfox-native}/bin/pywalfox install 2>/dev/null || true
-  '';
   
   home.file = {
+  "Imágenes/Wallpapers/Astronaut.png".source = ./Wallpapers/Astronaut.png;
+  "Imágenes/Wallpapers/Black-Hole.png".source = ./Wallpapers/Black-Hole.png;
+  "Imágenes/Wallpapers/Nebula.png".source = ./Wallpapers/Nebula.png;
   "Imágenes/Wallpapers/NixOS.png".source = ./Wallpapers/NixOS.png;
+  "Imágenes/Wallpapers/NixOS-1.png".source = ./Wallpapers/NixOS-1.png;
 };
 
 xdg.userDirs = {
