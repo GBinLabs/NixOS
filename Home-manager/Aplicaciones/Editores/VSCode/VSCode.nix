@@ -26,7 +26,7 @@
         # LaTeX
         james-yu.latex-workshop
 
-        # Tema
+        # Tema base (Gruvbox como fallback)
         jdinhlife.gruvbox
 
         # Git
@@ -36,6 +36,8 @@
         streetsidesoftware.code-spell-checker
         streetsidesoftware.code-spell-checker-spanish
         ltex-plus.vscode-ltex-plus
+        
+        noctalia.noctaliatheme
       ];
 
       userSettings = {
@@ -85,8 +87,20 @@
         "files.autoSaveDelay" = 5000;
         "files.encoding" = "utf8";
 
-        # Tema
-        "workbench.colorTheme" = "Gruvbox Dark Hard";
+        # ════════════════════════════════════════════════════════════════
+        # TEMA - Noctalia Theme (generado dinámicamente desde wallpaper)
+        # ════════════════════════════════════════════════════════════════
+        # El tema "Noctalia" será generado automáticamente por Noctalia Shell
+        # cuando cambies el wallpaper o el esquema de colores.
+        # 
+        # NOTA: Debes instalar la extensión "NoctaliaTheme" manualmente desde:
+        # https://marketplace.visualstudio.com/items?itemName=NoctaliaTheme.noctalia
+        # O busca "Noctalia" en el marketplace de extensiones de VS Code.
+        #
+        # Una vez instalada, el tema se actualizará automáticamente cuando
+        # Noctalia genere nuevos colores desde tu wallpaper.
+        # ════════════════════════════════════════════════════════════════
+        "workbench.colorTheme" = "Noctalia";
         "workbench.iconTheme" = "vs-minimal";
         "window.titleBarStyle" = "custom";
         "workbench.activityBar.location" = "top";

@@ -54,32 +54,32 @@
         enable = false;
         powerOnBoot = false;
       };
-      
+
       networking = {
-  	networkmanager = {
-  		enable = true;
-  	};
-    };
+        networkmanager = {
+          enable = true;
+        };
+      };
     }
 
     (lib.mkIf config.hardware.pc.enable {
       boot = {
         kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v3;
         kernelParams = [
-          # Video
           "video=HDMI-A-1:1920x1080@75"
-          # AMD GPU
           "amdgpu.ppfeaturemask=0xffffffff"
           "amdgpu.dpm=1"
-          # Rendimiento CPU
           "processor.max_cstate=1"
           "intel_idle.max_cstate=0"
-          "amd_pstate=active"
-          # Optimizaciones generales
           "nowatchdog"
           "nmi_watchdog=0"
           "split_lock_detect=off"
           "threadirqs"
+          "preempt=full"
+          "clocksource=tsc"
+          "tsc=reliable"
+          "amd_pstate=guided"
+          "amdgpu.runpm=0"
         ];
         kernelModules = [ "amdgpu" ];
       };
@@ -87,17 +87,18 @@
 
     (lib.mkIf config.hardware.netbook.enable {
       boot = {
-      	kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v2;
+        kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-latest-lto-x86_64-v2;
         kernelParams = [
-          # Intel GPU
           "i915.enable_fbc=1"
           "i915.enable_psr=1"
-          # Optimizaciones generales
           "nowatchdog"
           "nmi_watchdog=0"
           "threadirqs"
           "acpi_osi=Linux"
-      "acpi_backlight=native"
+          "acpi_backlight=native"
+          "preempt=full"
+          "clocksource=tsc"
+          "tsc=reliable"
         ];
         kernelModules = [ "i915" ];
       };

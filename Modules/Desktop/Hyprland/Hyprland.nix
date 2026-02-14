@@ -1,17 +1,15 @@
-{ pkgs, ... }: {
-
+_: {
   programs = {
-  	hyprland = {
-  		enable = true;
-  		withUWSM = true;
-  		xwayland = {
-  			enable = true;
-  		};
-  	};
-  	silentSDDM = {
-  		enable = true;
-  		theme = "default";
-  	};
+    hyprland = {
+      enable = true;
+      withUWSM = true;
+      xwayland = {
+        enable = true;
+      };
+    };
+    silentSDDM = {
+      enable = true;
+      theme = "default";
+    };
   };
-
 }

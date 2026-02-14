@@ -1,5 +1,5 @@
-# Modules/Zsh.nix
-{pkgs, ...}: {
+{ pkgs, ... }:
+{
   programs.zsh = {
     enable = true;
     enableCompletion = true;
@@ -34,7 +34,7 @@
     ];
   };
 
-  environment.shells = with pkgs; [zsh];
+  environment.shells = with pkgs; [ zsh ];
   users.defaultUserShell = pkgs.zsh;
 
   environment.systemPackages = with pkgs; [
@@ -42,9 +42,4 @@
     zsh-powerlevel10k
     oh-my-zsh
   ];
-
-  # Optimización de compinit
-  environment.etc."zshenv".text = ''
-    skip_global_compinit=1
-  '';
 }

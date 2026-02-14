@@ -170,6 +170,10 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/duckduckgo-for-firefox/latest.xpi";
           installation_mode = "force_installed";
         };
+        "pywalfox@frewacom.org" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/pywalfox/latest.xpi";
+          installation_mode = "force_installed";
+        };
       };
 
       DisableTelemetry = true;

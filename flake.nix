@@ -15,26 +15,26 @@
     };
 
     nixos-facter-modules.url = "github:nix-community/nixos-facter-modules";
-    
+
     impermanence.url = "github:nix-community/impermanence";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     hyprland.url = "github:hyprwm/Hyprland";
-    
+
     silentSDDM = {
       url = "github:uiriansan/SilentSDDM";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
-    };	
-    
+    };
+
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     nix-gaming = {
@@ -81,8 +81,8 @@
             useUserPackages = true;
             backupFileExtension = "backup";
             extraSpecialArgs = {
-      inherit inputs;
-    };
+              inherit inputs;
+            };
             sharedModules = [
               inputs.hyprland.homeManagerModules.default
               inputs.noctalia.homeModules.default
@@ -105,9 +105,6 @@
                 nixpkgs.overlays = [
                   inputs.nix-cachyos-kernel.overlays.pinned
                   inputs.nix-vscode-extensions.overlays.default
-                  (final: prev: {
-                    hytale-launcher = inputs.hytale-launcher.packages.${system}.default;
-                  })
                 ];
               }
             )

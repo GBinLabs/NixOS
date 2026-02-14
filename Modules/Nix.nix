@@ -1,20 +1,27 @@
-# Modules/Nix.nix
-{lib, ...}: {
+{ lib, ... }:
+{
   nix = {
     settings = {
-      experimental-features = ["nix-command" "flakes"];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       max-jobs = "auto";
       cores = 0;
       auto-optimise-store = true;
-      allowed-users = ["german"];
-      trusted-users = ["root" "german"];
+      allowed-users = [ "german" ];
+      trusted-users = [
+        "root"
+        "german"
+      ];
       warn-dirty = false;
     };
     optimise.automatic = true;
   };
 
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [ 
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
+    builtins.elem (lib.getName pkg) [
       "steam"
       "steam-original"
       "steam-unwrapped"

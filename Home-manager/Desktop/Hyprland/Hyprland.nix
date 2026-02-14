@@ -1,7 +1,4 @@
-{ pkgs, config, ... }: 
-let
-  noctalia = cmd: [ "noctalia-shell" "ipc" "call" ] ++ (pkgs.lib.splitString " " cmd);
-in
+{ pkgs, config, lib, ... }: 
 {
   wayland.windowManager.hyprland = {
     enable = true;
@@ -11,9 +8,8 @@ in
     settings = {
       general.locale = "es";
       
-      monitor = [
-      "HDMI-A-1, 1920x1080@75, 0x0, 1"	
-      ];
+      monitor = [ "HDMI-A-1, 1920x1080@75, 0x0, 1" ];
+      
       input = {
         kb_layout = "latam";
         sensitivity = 0;
@@ -25,23 +21,15 @@ in
       "$mod" = "SUPER";
       "$terminal" = "kitty";
       
-      # Ejecutar Noctalia al inicio (si no usas systemd service)
-      # exec-once = [ "noctalia-shell" ];
-      
       bind = [
-        # Aplicaciones
         "$mod, Return, exec, $terminal"
         "$mod SHIFT, Q, killactive"
         "$mod, M, exit"
         "$mod CTRL SHIFT, left, movewindow, l"
-        
-        # Ventanas
         "$mod, V, togglefloating"
         "$mod, F, fullscreen"
         "$mod, P, pseudo"
         "$mod, J, togglesplit"
-        
-        # Workspaces
         "$mod, 1, workspace, 1"
         "$mod, 2, workspace, 2"
         "$mod, 3, workspace, 3"
@@ -52,8 +40,6 @@ in
         "$mod, 8, workspace, 8"
         "$mod, 9, workspace, 9"
         "$mod, 0, workspace, 10"
-        
-        # Mover ventana a workspace
         "$mod SHIFT, 1, movetoworkspace, 1"
         "$mod SHIFT, 2, movetoworkspace, 2"
         "$mod SHIFT, 3, movetoworkspace, 3"
@@ -64,13 +50,10 @@ in
         "$mod SHIFT, 8, movetoworkspace, 8"
         "$mod SHIFT, 9, movetoworkspace, 9"
         "$mod SHIFT, 0, movetoworkspace, 10"
-        
-        # Scroll entre workspaces
         "$mod, mouse_down, workspace, e+1"
         "$mod, mouse_up, workspace, e-1"
       ];
       
-      # Keybinds de Noctalia (usando spawn con lista)
       bindd = [
         "$mod, D, Lanzador de aplicaciones, exec, noctalia-shell ipc call launcher toggle"
         "$mod, Escape, Menú de sesión, exec, noctalia-shell ipc call sessionMenu toggle"
@@ -80,7 +63,6 @@ in
         "$mod, W, Selector de wallpaper, exec, noctalia-shell ipc call wallpaperSelector toggle"
       ];
       
-      # Teclas multimedia
       bindel = [
         ", XF86AudioRaiseVolume, exec, noctalia-shell ipc call volume increase"
         ", XF86AudioLowerVolume, exec, noctalia-shell ipc call volume decrease"
@@ -104,17 +86,18 @@ in
     };
   };
 
-  # Configuración de Noctalia Shell
+  # ════════════════════════════════════════════════════════════════════
+  # NOCTALIA SHELL
+  # ════════════════════════════════════════════════════════════════════
   programs.noctalia-shell = {
     enable = true;
-    systemd.enable = true;  # Inicia automáticamente con la sesión
+    systemd.enable = true;
     
     settings = {
-      # === BARRA PRINCIPAL ===
       bar = {
         barType = "simple";
-        position = "top";  # top, bottom, left, right
-        density = "default";  # default, compact
+        position = "top";
+        density = "default";
         floating = false;
         showCapsule = true;
         capsuleOpacity = 1;
@@ -125,7 +108,7 @@ in
         frameThickness = 8;
         frameRadius = 12;
         outerCorners = true;
-        displayMode = "always_visible";  # always_visible, auto_hide
+        displayMode = "always_visible";
         autoHideDelay = 500;
         autoShowDelay = 150;
         
@@ -153,10 +136,9 @@ in
         };
       };
 
-      # === LANZADOR DE APLICACIONES ===
       appLauncher = {
         position = "center";
-        viewMode = "list";  # list, grid
+        viewMode = "list";
         sortByMostUsed = true;
         showCategories = true;
         enableClipboardHistory = true;
@@ -177,10 +159,9 @@ in
         ];
       };
 
-      # === NOTIFICACIONES ===
       notifications = {
         enabled = true;
-        location = "top_right";  # top_right, top_left, bottom_right, bottom_left
+        location = "top_right";
         overlayLayer = true;
         backgroundOpacity = 1;
         respectExpireTimeout = false;
@@ -189,46 +170,25 @@ in
         criticalUrgencyDuration = 15;
         enableKeyboardLayoutToast = true;
         enableMediaToast = false;
-        saveToHistory = {
-          low = true;
-          normal = true;
-          critical = true;
-        };
-        sounds = {
-          enabled = false;
-          volume = 0.5;
-          separateSounds = false;
-          excludedApps = "discord,firefox,chrome";
-        };
+        saveToHistory = { low = true; normal = true; critical = true; };
+        sounds = { enabled = false; volume = 0.5; separateSounds = false; excludedApps = "discord,firefox,chrome"; };
       };
 
-      # === OSD (Volumen, Brillo, etc.) ===
       osd = {
         enabled = true;
         location = "top_right";
         autoHideMs = 2000;
         overlayLayer = true;
         backgroundOpacity = 1;
-        enabledTypes = [ 0 1 2 ];  # Todos los tipos de OSD
+        enabledTypes = [ 0 1 2 ];
       };
 
-      # === CENTRO DE CONTROL ===
       controlCenter = {
         position = "close_to_bar_button";
         diskPath = "/";
         shortcuts = {
-          left = [
-            { id = "Network"; }
-            { id = "Bluetooth"; }
-            { id = "WallpaperSelector"; }
-            { id = "NoctaliaPerformance"; }
-          ];
-          right = [
-            { id = "Notifications"; }
-            { id = "PowerProfile"; }
-            { id = "KeepAwake"; }
-            { id = "NightLight"; }
-          ];
+          left = [ { id = "Network"; } { id = "Bluetooth"; } { id = "WallpaperSelector"; } { id = "NoctaliaPerformance"; } ];
+          right = [ { id = "Notifications"; } { id = "PowerProfile"; } { id = "KeepAwake"; } { id = "NightLight"; } ];
         };
         cards = [
           { enabled = true; id = "profile-card"; }
@@ -240,11 +200,10 @@ in
         ];
       };
 
-      # === DOCK ===
       dock = {
         enabled = true;
         position = "bottom";
-        displayMode = "auto_hide";  # auto_hide, always_visible
+        displayMode = "auto_hide";
         backgroundOpacity = 1;
         floatingRatio = 1;
         size = 1;
@@ -254,15 +213,9 @@ in
         inactiveIndicators = false;
         deadOpacity = 0.6;
         animationSpeed = 1;
-        pinnedApps = [
-          "firefox.desktop"
-          "kitty.desktop"
-          "org.gnome.Nautilus.desktop"
-          "discord.desktop"
-        ];
+        pinnedApps = [ "firefox.desktop" "kitty.desktop" "org.gnome.Nautilus.desktop" "discord.desktop" ];
       };
 
-      # === MENÚ DE SESIÓN ===
       sessionMenu = {
         position = "center";
         enableCountdown = true;
@@ -281,7 +234,6 @@ in
         ];
       };
 
-      # === MONITOR DE SISTEMA ===
       systemMonitor = {
         cpuWarningThreshold = 80;
         cpuCriticalThreshold = 90;
@@ -297,27 +249,13 @@ in
         enableDgpuMonitoring = false;
       };
 
-      # === AUDIO ===
-      audio = {
-        volumeStep = 5;
-        volumeOverdrive = false;
-        volumeFeedback = false;
-        cavaFrameRate = 30;
-        visualizerType = "linear";
-      };
+      audio = { volumeStep = 5; volumeOverdrive = false; volumeFeedback = false; cavaFrameRate = 30; visualizerType = "linear"; };
+      brightness = { brightnessStep = 5; enforceMinimum = true; enableDdcSupport = false; };
 
-      # === BRILLO ===
-      brightness = {
-        brightnessStep = 5;
-        enforceMinimum = true;
-        enableDdcSupport = false;
-      };
-
-      # === WALLPAPER ===
       wallpaper = {
         enabled = true;
         overviewEnabled = false;
-        directory = "${config.home.homeDirectory}/Wallpapers";
+        directory = "${config.xdg.userDirs.pictures}/Wallpapers";
         showHiddenFiles = false;
         viewMode = "single";
         setWallpaperOnAllMonitors = true;
@@ -331,7 +269,6 @@ in
         sortOrder = "name";
       };
 
-      # === CONFIGURACIÓN GENERAL ===
       general = {
         avatarImage = "${config.home.homeDirectory}/.face";
         dimmerOpacity = 0.2;
@@ -350,7 +287,6 @@ in
         lockScreenCountdownDuration = 10000;
       };
 
-      # === INTERFAZ ===
       ui = {
         fontDefaultScale = 1;
         fontFixedScale = 1;
@@ -364,9 +300,8 @@ in
         boxBorderEnabled = false;
       };
 
-      # === UBICACIÓN Y CLIMA ===
       location = {
-        name = "Monteros,Tucuman,Argentina";  # Cambia a tu ciudad
+        name = "Monteros,Tucuman,Argentina";
         weatherEnabled = true;
         weatherShowEffects = true;
         useFahrenheit = false;
@@ -375,10 +310,9 @@ in
         showCalendarEvents = true;
         showCalendarWeather = true;
         analogClockInCalendar = false;
-        firstDayOfWeek = 1;  # Lunes
+        firstDayOfWeek = 1;
       };
 
-      # === RED ===
       network = {
         wifiEnabled = true;
         bluetoothRssiPollingEnabled = false;
@@ -387,7 +321,6 @@ in
         bluetoothHideUnnamedDevices = false;
       };
 
-      # === LUZ NOCTURNA ===
       nightLight = {
         enabled = false;
         forced = false;
@@ -398,44 +331,138 @@ in
         manualSunset = "18:30";
       };
 
-      # === ESQUEMA DE COLORES ===
+      # ══════════════════════════════════════════════════════════════
+      # COLORES DESDE WALLPAPER
+      # ══════════════════════════════════════════════════════════════
       colorSchemes = {
-        predefinedScheme = "Noctalia (default)";  # Noctalia (default), Monochrome, etc.
+        useWallpaperColors = true;
+        predefinedScheme = "Gruvbox";
         darkMode = true;
-        useWallpaperColors = false;
         schedulingMode = "off";
+        generateTemplatesForPredefined = true;
+      };
+
+      # ══════════════════════════════════════════════════════════════
+      # TEMPLATES
+      # ══════════════════════════════════════════════════════════════
+      templates = {
+        gtk = true;
+        qt = true;
+        kcolorscheme = false;
+        kitty = true;
+        foot = false;
+        alacritty = false;
+        firefox = true;
+        zenbrowser = false;
+        vscode = true;
+        neovim = false;
+        emacs = false;
+        zed = false;
+        discord = true;
+        spotify = false;
+        cava = false;
+        hyprland = true;
+        enableUserTemplates = false;
       };
     };
-
-    # Colores personalizados Material 3 (opcional, para tema oscuro minimalista)
-    # colors = {
-    #   mPrimary = "#aaaaaa";
-    #   mSecondary = "#a7a7a7";
-    #   mTertiary = "#cccccc";
-    #   mError = "#dddddd";
-    #   mSurface = "#111111";
-    #   mSurfaceVariant = "#191919";
-    #   mHover = "#1f1f1f";
-    #   mOnPrimary = "#111111";
-    #   mOnSecondary = "#111111";
-    #   mOnTertiary = "#111111";
-    #   mOnSurface = "#828282";
-    #   mOnSurfaceVariant = "#5d5d5d";
-    #   mOnError = "#111111";
-    #   mOnHover = "#ffffff";
-    #   mOutline = "#3c3c3c";
-    #   mShadow = "#000000";
-    # };
   };
 
-  # Wallpapers declarativos (opcional)
- # home.file.".cache/noctalia/wallpapers.json".text = builtins.toJSON {
-  #  defaultWallpaper = "${config.home.homeDirectory}/Wallpapers/default.png";
-  #};
+  # ════════════════════════════════════════════════════════════════════
+  # GTK - Estilo similar a tu config de GNOME
+  # ════════════════════════════════════════════════════════════════════
+  gtk = {
+    enable = true;
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
+    };
+    iconTheme = {
+      name = "Tela-black-dark";
+      package = pkgs.tela-icon-theme;
+    };
+    cursorTheme = {
+      name = "Bibata-Modern-Ice";
+      package = pkgs.bibata-cursors;
+      size = 20;
+    };
+    font = {
+      name = "Inter";
+      size = 11;
+    };
+  };
 
-  # Paquetes necesarios para clipboard
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      color-scheme = "prefer-dark";
+      gtk-theme = "adw-gtk3-dark";
+      icon-theme = "Tela-black-dark";
+      cursor-theme = "Bibata-Modern-Ice";
+      cursor-size = 20;
+      font-name = "Inter 11";
+      document-font-name = "Inter 11";
+      monospace-font-name = "JetBrains Mono 10";
+      font-antialiasing = "rgba";
+      font-hinting = "slight";
+      enable-animations = false;
+    };
+    "org/gnome/desktop/privacy" = {
+      remember-recent-files = false;
+      remove-old-trash-files = true;
+      old-files-age = 1;
+      remove-old-temp-files = true;
+      report-technical-problems = false;
+    };
+  };
+
+  # ════════════════════════════════════════════════════════════════════
+  # QT - Configuración minimalista usando home-manager
+  # ════════════════════════════════════════════════════════════════════
+  qt = {
+    enable = true;
+    platformTheme.name = "qtct";
+    style.name = "kvantum";
+  };
+
+  # ════════════════════════════════════════════════════════════════════
+  # PAQUETES
+  # ════════════════════════════════════════════════════════════════════
   home.packages = with pkgs; [
     wl-clipboard
     cliphist
+    matugen
+    adw-gtk3
+    tela-icon-theme
+    bibata-cursors
+    qt6Packages.qt6ct
+    libsForQt5.qt5ct
+    libsForQt5.qtstyleplugin-kvantum
+    qt6Packages.qtstyleplugin-kvantum
+    pywalfox-native
   ];
+
+  # ════════════════════════════════════════════════════════════════════
+  # PYWALFOX - Registrar native messenger al activar home-manager
+  # ════════════════════════════════════════════════════════════════════
+  home.activation.pywalfoxInstall = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.pywalfox-native}/bin/pywalfox install 2>/dev/null || true
+  '';
+  
+  home.file = {
+  "Imágenes/Wallpapers/NixOS.png".source = ./Wallpapers/NixOS.png;
+  #"Wallpapers/Mountains.jpg".source = ./Wallpapers/Mountains.jpg;
+  #"Wallpapers/Forest.png".source = ./Wallpapers/Forest.png;
+};
+
+xdg.userDirs = {
+    enable = true;
+    createDirectories = true;
+    desktop = "${config.home.homeDirectory}/Escritorio";
+    documents = "${config.home.homeDirectory}/Documentos";
+    download = "${config.home.homeDirectory}/Descargas";
+    music = "${config.home.homeDirectory}/Música";
+    pictures = "${config.home.homeDirectory}/Imágenes";
+    publicShare = "${config.home.homeDirectory}/Público";
+    templates = "${config.home.homeDirectory}/Plantillas";
+    videos = "${config.home.homeDirectory}/Vídeos";
+  };
 }
