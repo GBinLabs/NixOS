@@ -18,6 +18,27 @@
         touchpad.natural_scroll = true;
       };
       
+      decoration = {
+      	blur = {
+      	  enabled = false;
+      	};
+      	shadow = {
+      	  enabled = false;
+      	};
+      };
+      
+      misc = {
+        disable_hyprland_logo = true;
+        disable_splash_rendering = true;
+        vfr = false;
+      };
+      
+      ecosystem = {
+        no_update_news = true;
+        no_donation_nag = true;
+      };
+      
+      
       "$mod" = "SUPER";
       "$terminal" = "kitty";
       
@@ -95,22 +116,10 @@
     
     settings = {
       bar = {
-        barType = "simple";
+        barType = "compact";
         position = "top";
-        density = "default";
-        floating = false;
-        showCapsule = true;
-        capsuleOpacity = 1;
-        backgroundOpacity = 0.93;
-        showOutline = false;
-        marginVertical = 4;
-        marginHorizontal = 4;
-        frameThickness = 8;
-        frameRadius = 12;
-        outerCorners = true;
-        displayMode = "always_visible";
-        autoHideDelay = 500;
-        autoShowDelay = 150;
+        floating = true;
+        showCapsule = false;
         
         widgets = {
           left = [
@@ -139,48 +148,23 @@
       appLauncher = {
         position = "center";
         viewMode = "list";
-        sortByMostUsed = true;
-        showCategories = true;
-        enableClipboardHistory = true;
-        autoPasteClipboard = false;
-        enableClipPreview = true;
-        clipboardWrapText = true;
+        sortByMostUsed = false;
+        showCategories = false;
         clipboardWatchTextCommand = "wl-paste --type text --watch cliphist store";
         clipboardWatchImageCommand = "wl-paste --type image --watch cliphist store";
-        enableSettingsSearch = true;
-        enableWindowsSearch = true;
         terminalCommand = "kitty -e";
-        iconMode = "tabler";
-        showIconBackground = false;
-        pinnedApps = [
-          "firefox.desktop"
-          "kitty.desktop"
-          "org.gnome.Nautilus.desktop"
-        ];
       };
 
       notifications = {
         enabled = true;
         location = "top_right";
-        overlayLayer = true;
-        backgroundOpacity = 1;
-        respectExpireTimeout = false;
-        lowUrgencyDuration = 3;
-        normalUrgencyDuration = 8;
-        criticalUrgencyDuration = 15;
-        enableKeyboardLayoutToast = true;
-        enableMediaToast = false;
-        saveToHistory = { low = true; normal = true; critical = true; };
+        enableMediaToast = true;
         sounds = { enabled = false; volume = 0.5; separateSounds = false; excludedApps = "discord,firefox,chrome"; };
       };
 
       osd = {
         enabled = true;
         location = "top_right";
-        autoHideMs = 2000;
-        overlayLayer = true;
-        backgroundOpacity = 1;
-        enabledTypes = [ 0 1 2 ];
       };
 
       controlCenter = {
@@ -201,29 +185,12 @@
       };
 
       dock = {
-        enabled = true;
-        position = "bottom";
-        displayMode = "auto_hide";
-        backgroundOpacity = 1;
-        floatingRatio = 1;
-        size = 1;
-        onlySameOutput = true;
-        colorizeIcons = false;
-        pinnedStatic = false;
-        inactiveIndicators = false;
-        deadOpacity = 0.6;
-        animationSpeed = 1;
-        pinnedApps = [ "firefox.desktop" "kitty.desktop" "org.gnome.Nautilus.desktop" "discord.desktop" ];
+        enabled = false;
       };
 
       sessionMenu = {
         position = "center";
         enableCountdown = true;
-        countdownDuration = 10000;
-        showHeader = true;
-        largeButtonsStyle = true;
-        largeButtonsLayout = "single-row";
-        showNumberLabels = true;
         powerOptions = [
           { action = "lock"; enabled = true; }
           { action = "suspend"; enabled = true; }
@@ -235,18 +202,7 @@
       };
 
       systemMonitor = {
-        cpuWarningThreshold = 80;
-        cpuCriticalThreshold = 90;
-        memWarningThreshold = 80;
-        memCriticalThreshold = 90;
-        gpuWarningThreshold = 80;
-        gpuCriticalThreshold = 90;
-        cpuPollingInterval = 1000;
-        gpuPollingInterval = 3000;
-        memPollingInterval = 1000;
-        diskPollingInterval = 30000;
-        networkPollingInterval = 1000;
-        enableDgpuMonitoring = false;
+        externalMonitor = "btop";
       };
 
       audio = { volumeStep = 5; volumeOverdrive = false; volumeFeedback = false; cavaFrameRate = 30; visualizerType = "linear"; };
@@ -254,113 +210,38 @@
 
       wallpaper = {
         enabled = true;
-        overviewEnabled = false;
         directory = "${config.xdg.userDirs.pictures}/Wallpapers";
-        showHiddenFiles = false;
-        viewMode = "single";
-        setWallpaperOnAllMonitors = true;
-        fillMode = "crop";
-        automationEnabled = false;
-        wallpaperChangeMode = "random";
-        randomIntervalSec = 300;
-        transitionDuration = 1500;
-        transitionType = "random";
         panelPosition = "follow_bar";
-        sortOrder = "name";
       };
 
       general = {
         avatarImage = "${config.home.homeDirectory}/.face";
-        dimmerOpacity = 0.2;
-        showScreenCorners = false;
-        scaleRatio = 1;
-        radiusRatio = 1;
-        animationSpeed = 1;
-        animationDisabled = false;
-        compactLockScreen = false;
-        lockOnSuspend = true;
-        showSessionButtonsOnLockScreen = true;
-        enableShadows = true;
-        shadowDirection = "bottom_right";
         language = "es";
-        enableLockScreenCountdown = true;
-        lockScreenCountdownDuration = 10000;
-      };
-
-      ui = {
-        fontDefaultScale = 1;
-        fontFixedScale = 1;
-        tooltipsEnabled = true;
-        panelBackgroundOpacity = 0.93;
-        panelsAttachedToBar = true;
-        settingsPanelMode = "attached";
-        wifiDetailsViewMode = "grid";
-        bluetoothDetailsViewMode = "grid";
-        bluetoothHideUnnamedDevices = false;
-        boxBorderEnabled = false;
       };
 
       location = {
         name = "Monteros,Tucuman,Argentina";
-        weatherEnabled = true;
-        weatherShowEffects = true;
-        useFahrenheit = false;
-        use12hourFormat = false;
-        showWeekNumberInCalendar = false;
-        showCalendarEvents = true;
-        showCalendarWeather = true;
-        analogClockInCalendar = false;
-        firstDayOfWeek = 1;
+        firstDayOfWeek = -1;
       };
 
       network = {
         wifiEnabled = true;
-        bluetoothRssiPollingEnabled = false;
-        wifiDetailsViewMode = "grid";
-        bluetoothDetailsViewMode = "grid";
-        bluetoothHideUnnamedDevices = false;
       };
 
-      nightLight = {
-        enabled = false;
-        forced = false;
-        autoSchedule = true;
-        nightTemp = "4000";
-        dayTemp = "6500";
-        manualSunrise = "06:30";
-        manualSunset = "18:30";
-      };
-
-      # ══════════════════════════════════════════════════════════════
-      # COLORES DESDE WALLPAPER
-      # ══════════════════════════════════════════════════════════════
       colorSchemes = {
         useWallpaperColors = true;
-        predefinedScheme = "Gruvbox";
-        darkMode = true;
-        schedulingMode = "off";
-        generateTemplatesForPredefined = true;
+       generationMethod = "faithful";
       };
 
-      # ══════════════════════════════════════════════════════════════
-      # TEMPLATES
-      # ══════════════════════════════════════════════════════════════
       templates = {
         gtk = true;
         qt = true;
-        kcolorscheme = false;
         kitty = true;
-        foot = false;
-        alacritty = false;
         firefox = true;
         zenbrowser = false;
         vscode = true;
-        neovim = false;
-        emacs = false;
-        zed = false;
         discord = true;
-        spotify = false;
-        cava = false;
+        cava = true;
         hyprland = true;
         enableUserTemplates = false;
       };
@@ -381,7 +262,7 @@
       package = pkgs.tela-icon-theme;
     };
     cursorTheme = {
-      name = "Bibata-Modern-Ice";
+      name = "Bibata-Modern";
       package = pkgs.bibata-cursors;
       size = 20;
     };
@@ -392,35 +273,13 @@
   };
 
   dconf.settings = {
-    "org/gnome/desktop/interface" = {
-      color-scheme = "prefer-dark";
-      gtk-theme = "adw-gtk3-dark";
-      icon-theme = "Tela-black-dark";
-      cursor-theme = "Bibata-Modern-Ice";
-      cursor-size = 20;
-      font-name = "Inter 11";
-      document-font-name = "Inter 11";
-      monospace-font-name = "JetBrains Mono 10";
-      font-antialiasing = "rgba";
-      font-hinting = "slight";
-      enable-animations = false;
-    };
     "org/gnome/desktop/privacy" = {
       remember-recent-files = false;
       remove-old-trash-files = true;
-      old-files-age = 1;
+      old-files-age = 2;
       remove-old-temp-files = true;
       report-technical-problems = false;
     };
-  };
-
-  # ════════════════════════════════════════════════════════════════════
-  # QT - Configuración minimalista usando home-manager
-  # ════════════════════════════════════════════════════════════════════
-  qt = {
-    enable = true;
-    platformTheme.name = "qtct";
-    style.name = "kvantum";
   };
 
   # ════════════════════════════════════════════════════════════════════
@@ -433,10 +292,6 @@
     adw-gtk3
     tela-icon-theme
     bibata-cursors
-    qt6Packages.qt6ct
-    libsForQt5.qt5ct
-    libsForQt5.qtstyleplugin-kvantum
-    qt6Packages.qtstyleplugin-kvantum
     pywalfox-native
   ];
 
@@ -449,8 +304,6 @@
   
   home.file = {
   "Imágenes/Wallpapers/NixOS.png".source = ./Wallpapers/NixOS.png;
-  #"Wallpapers/Mountains.jpg".source = ./Wallpapers/Mountains.jpg;
-  #"Wallpapers/Forest.png".source = ./Wallpapers/Forest.png;
 };
 
 xdg.userDirs = {
