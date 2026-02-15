@@ -13,5 +13,8 @@
       };
       flake = "/home/german/.GitHub/NixOS";
     };
+    nix-ld = {
+      enable = true;
+    };
   };
 }

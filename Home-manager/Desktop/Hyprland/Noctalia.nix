@@ -1,7 +1,12 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 {
 
-programs.noctalia-shell = {
+  programs.noctalia-shell = {
     enable = true;
     systemd.enable = true;
     settings = {
@@ -10,27 +15,43 @@ programs.noctalia-shell = {
         position = "top";
         floating = true;
         showCapsule = false;
-        
+
         widgets = {
           left = [
             { id = "Launcher"; }
-            { id = "Clock"; formatHorizontal = "HH:mm"; useMonospacedFont = true; usePrimaryColor = true; }
+            {
+              id = "Clock";
+              formatHorizontal = "HH:mm";
+              useMonospacedFont = true;
+              usePrimaryColor = true;
+            }
             { id = "SystemMonitor"; }
             { id = "ActiveWindow"; }
             { id = "MediaMini"; }
           ];
           center = [
-            { id = "Workspace"; hideUnoccupied = false; labelMode = "none"; }
+            {
+              id = "Workspace";
+              hideUnoccupied = false;
+              labelMode = "none";
+            }
           ];
           right = [
             { id = "Tray"; }
             { id = "NotificationHistory"; }
-            { id = "Battery"; warningThreshold = 30; alwaysShowPercentage = false; }
+            {
+              id = "Battery";
+              warningThreshold = 30;
+              alwaysShowPercentage = false;
+            }
             { id = "Volume"; }
             { id = "Brightness"; }
             { id = "Network"; }
             { id = "Bluetooth"; }
-            { id = "ControlCenter"; useDistroLogo = true; }
+            {
+              id = "ControlCenter";
+              useDistroLogo = true;
+            }
           ];
         };
       };
@@ -49,7 +70,12 @@ programs.noctalia-shell = {
         enabled = true;
         location = "top_right";
         enableMediaToast = true;
-        sounds = { enabled = false; volume = 0.5; separateSounds = false; excludedApps = "discord,firefox,chrome"; };
+        sounds = {
+          enabled = false;
+          volume = 0.5;
+          separateSounds = false;
+          excludedApps = "discord,firefox,chrome";
+        };
       };
 
       osd = {
@@ -61,16 +87,44 @@ programs.noctalia-shell = {
         position = "close_to_bar_button";
         diskPath = "/";
         shortcuts = {
-          left = [ { id = "Network"; } { id = "Bluetooth"; } { id = "WallpaperSelector"; } { id = "NoctaliaPerformance"; } ];
-          right = [ { id = "Notifications"; } { id = "PowerProfile"; } { id = "KeepAwake"; } { id = "NightLight"; } ];
+          left = [
+            { id = "Network"; }
+            { id = "Bluetooth"; }
+            { id = "WallpaperSelector"; }
+            { id = "NoctaliaPerformance"; }
+          ];
+          right = [
+            { id = "Notifications"; }
+            { id = "PowerProfile"; }
+            { id = "KeepAwake"; }
+            { id = "NightLight"; }
+          ];
         };
         cards = [
-          { enabled = true; id = "profile-card"; }
-          { enabled = true; id = "shortcuts-card"; }
-          { enabled = true; id = "audio-card"; }
-          { enabled = true; id = "brightness-card"; }
-          { enabled = true; id = "weather-card"; }
-          { enabled = true; id = "media-sysmon-card"; }
+          {
+            enabled = true;
+            id = "profile-card";
+          }
+          {
+            enabled = true;
+            id = "shortcuts-card";
+          }
+          {
+            enabled = true;
+            id = "audio-card";
+          }
+          {
+            enabled = true;
+            id = "brightness-card";
+          }
+          {
+            enabled = true;
+            id = "weather-card";
+          }
+          {
+            enabled = true;
+            id = "media-sysmon-card";
+          }
         ];
       };
 
@@ -82,12 +136,30 @@ programs.noctalia-shell = {
         position = "center";
         enableCountdown = true;
         powerOptions = [
-          { action = "lock"; enabled = true; }
-          { action = "suspend"; enabled = true; }
-          { action = "hibernate"; enabled = true; }
-          { action = "reboot"; enabled = true; }
-          { action = "logout"; enabled = true; }
-          { action = "shutdown"; enabled = true; }
+          {
+            action = "lock";
+            enabled = true;
+          }
+          {
+            action = "suspend";
+            enabled = true;
+          }
+          {
+            action = "hibernate";
+            enabled = true;
+          }
+          {
+            action = "reboot";
+            enabled = true;
+          }
+          {
+            action = "logout";
+            enabled = true;
+          }
+          {
+            action = "shutdown";
+            enabled = true;
+          }
         ];
       };
 
@@ -95,8 +167,18 @@ programs.noctalia-shell = {
         externalMonitor = "btop";
       };
 
-      audio = { volumeStep = 5; volumeOverdrive = false; volumeFeedback = false; cavaFrameRate = 30; visualizerType = "linear"; };
-      brightness = { brightnessStep = 5; enforceMinimum = true; enableDdcSupport = false; };
+      audio = {
+        volumeStep = 5;
+        volumeOverdrive = false;
+        volumeFeedback = false;
+        cavaFrameRate = 30;
+        visualizerType = "linear";
+      };
+      brightness = {
+        brightnessStep = 5;
+        enforceMinimum = true;
+        enableDdcSupport = false;
+      };
 
       wallpaper = {
         enabled = true;
@@ -120,28 +202,27 @@ programs.noctalia-shell = {
 
       colorSchemes = {
         useWallpaperColors = true;
-       generationMethod = "faithful";
+        generationMethod = "faithful";
       };
 
       templates = {
         gtk = true;
         qt = true;
         kitty = true;
-        firefox = true;
-        zenbrowser = false;
-        vscode = true;
+        pywalfox = true;
+        zed = true;
+        btop = true;
         discord = true;
         cava = true;
         hyprland = true;
-        enableUserTemplates = false;
       };
     };
   };
-  
-  home.packages = with pkgs; [ 
-  	pywalfox-native
+
+  home.packages = with pkgs; [
+    pywalfox-native
   ];
-  
+
   home.activation.pywalfoxInstall = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.pywalfox-native}/bin/pywalfox install 2>/dev/null || true
   '';

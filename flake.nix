@@ -35,8 +35,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,7 +54,6 @@
       home-manager,
       nixos-facter-modules,
       hyprland,
-      nix-vscode-extensions,
       nix-gaming,
       nix-cachyos-kernel,
       hytale-launcher,
@@ -104,7 +101,6 @@
               {
                 nixpkgs.overlays = [
                   inputs.nix-cachyos-kernel.overlays.pinned
-                  inputs.nix-vscode-extensions.overlays.default
                 ];
               }
             )
