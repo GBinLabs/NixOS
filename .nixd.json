@@ -1,0 +1,13 @@
+{
+  "nixpkgs": {
+    "expr": "import <nixpkgs> { }"
+  },
+  "options": {
+    "nixos": {
+      "expr": "(builtins.getFlake (toString ./.)).nixosConfigurations.PC.options"
+    },
+    "home-manager": {
+      "expr": "(builtins.getFlake (toString ./.)).homeConfigurations.german.options"
+    }
+  }
+}
