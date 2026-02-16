@@ -182,7 +182,7 @@
 
       wallpaper = {
         enabled = true;
-        directory = "${config.xdg.userDirs.pictures}/Wallpapers";
+        directory = "${config.home.homeDirectory}/Imágenes/Wallpapers";
         panelPosition = "follow_bar";
       };
 

@@ -1,15 +1,20 @@
-{ pkgs, config, lib, ... }: 
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 {
   wayland.windowManager.hyprland = {
     enable = true;
     package = null;
     portalPackage = null;
-    
+
     settings = {
       general.locale = "es";
-      
+
       monitor = [ "HDMI-A-1, 1920x1080@75, 0x0, 1" ];
-      
+
       input = {
         kb_layout = "latam";
         sensitivity = 0;
@@ -17,31 +22,34 @@
         force_no_accel = true;
         touchpad.natural_scroll = true;
       };
-      
+
+      env = [
+        "QT_QPA_PLATFORMTHEME,qt6ct"
+      ];
+
       decoration = {
-      	blur = {
-      	  enabled = false;
-      	};
-      	shadow = {
-      	  enabled = false;
-      	};
+        blur = {
+          enabled = false;
+        };
+        shadow = {
+          enabled = false;
+        };
       };
-      
+
       misc = {
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
         vfr = false;
       };
-      
+
       ecosystem = {
         no_update_news = true;
         no_donation_nag = true;
       };
-      
-      
+
       "$mod" = "SUPER";
       "$terminal" = "kitty";
-      
+
       bind = [
         "$mod, Return, exec, $terminal"
         "$mod SHIFT, Q, killactive"
@@ -74,7 +82,7 @@
         "$mod, mouse_down, workspace, e+1"
         "$mod, mouse_up, workspace, e-1"
       ];
-      
+
       bindd = [
         "$mod, D, Lanzador de aplicaciones, exec, noctalia-shell ipc call launcher toggle"
         "$mod, Escape, Menú de sesión, exec, noctalia-shell ipc call sessionMenu toggle"
@@ -83,14 +91,14 @@
         "$mod, C, Centro de control, exec, noctalia-shell ipc call controlCenter toggle"
         "$mod, W, Selector de wallpaper, exec, noctalia-shell ipc call wallpaperSelector toggle"
       ];
-      
+
       bindel = [
         ", XF86AudioRaiseVolume, exec, noctalia-shell ipc call volume increase"
         ", XF86AudioLowerVolume, exec, noctalia-shell ipc call volume decrease"
         ", XF86MonBrightnessUp, exec, noctalia-shell ipc call brightness increase"
         ", XF86MonBrightnessDown, exec, noctalia-shell ipc call brightness decrease"
       ];
-      
+
       bindl = [
         ", XF86AudioMute, exec, noctalia-shell ipc call volume muteOutput"
         ", XF86AudioMicMute, exec, noctalia-shell ipc call volume muteInput"
@@ -99,28 +107,19 @@
         ", XF86AudioPrev, exec, noctalia-shell ipc call media previous"
       ];
     };
-    
+
     systemd = {
       enable = true;
       enableXdgAutostart = true;
       variables = [ "--all" ];
     };
   };
-  
+
   gtk = {
     enable = true;
-    theme = {
-      name = "adw-gtk3-dark";
-      package = pkgs.adw-gtk3;
-    };
     iconTheme = {
       name = "Tela-black-dark";
       package = pkgs.tela-icon-theme;
-    };
-    cursorTheme = {
-      name = "Bibata-Modern";
-      package = pkgs.bibata-cursors;
-      size = 20;
     };
     font = {
       name = "Inter";
@@ -128,14 +127,16 @@
     };
   };
 
-  dconf.settings = {
-    "org/gnome/desktop/privacy" = {
-      remember-recent-files = false;
-      remove-old-trash-files = true;
-      old-files-age = 2;
-      remove-old-temp-files = true;
-      report-technical-problems = false;
-    };
+  home.pointerCursor = {
+    gtk.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Ice";
+    size = 16;
+  };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "gtk4";
   };
 
   home.packages = with pkgs; [
@@ -145,16 +146,16 @@
     tela-icon-theme
     bibata-cursors
   ];
-  
-  home.file = {
-  "Imágenes/Wallpapers/Astronaut.png".source = ./Wallpapers/Astronaut.png;
-  "Imágenes/Wallpapers/Black-Hole.png".source = ./Wallpapers/Black-Hole.png;
-  "Imágenes/Wallpapers/Nebula.png".source = ./Wallpapers/Nebula.png;
-  "Imágenes/Wallpapers/NixOS.png".source = ./Wallpapers/NixOS.png;
-  "Imágenes/Wallpapers/NixOS-1.png".source = ./Wallpapers/NixOS-1.png;
-};
 
-xdg.userDirs = {
+  home.file = {
+    "Imágenes/Wallpapers/Astronaut.png".source = ./Wallpapers/Astronaut.png;
+    "Imágenes/Wallpapers/Black-Hole.png".source = ./Wallpapers/Black-Hole.png;
+    "Imágenes/Wallpapers/Nebula.png".source = ./Wallpapers/Nebula.png;
+    "Imágenes/Wallpapers/NixOS.png".source = ./Wallpapers/NixOS.png;
+    "Imágenes/Wallpapers/NixOS-1.png".source = ./Wallpapers/NixOS-1.png;
+  };
+
+  xdg.userDirs = {
     enable = true;
     createDirectories = true;
     desktop = "${config.home.homeDirectory}/Escritorio";
