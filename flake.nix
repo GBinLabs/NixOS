@@ -44,7 +44,10 @@
 
     hytale-launcher.url = "github:JPyke3/hytale-launcher-nix";
 
-    nixcord.url = "github:FlameFlag/nixcord";
+    nixcord = {
+      url = "github:FlameFlag/nixcord";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

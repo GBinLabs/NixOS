@@ -23,10 +23,6 @@
         touchpad.natural_scroll = true;
       };
 
-      env = [
-        "QT_QPA_PLATFORMTHEME,qt6ct"
-      ];
-
       decoration = {
         blur = {
           enabled = false;
@@ -40,6 +36,15 @@
         disable_hyprland_logo = true;
         disable_splash_rendering = true;
         vfr = false;
+      };
+
+      render = {
+        direct_scanout = 1;
+        new_render_scheduling = true;
+      };
+
+      cursor = {
+        no_hardware_cursors = false;
       };
 
       ecosystem = {

@@ -28,6 +28,5 @@
       "steam-run"
       "discord"
       "obsidian"
-      "vscode"
     ];
 }

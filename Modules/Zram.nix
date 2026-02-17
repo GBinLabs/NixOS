@@ -1,4 +1,4 @@
-_: {
+{ lib, ... }: {
   zramSwap = {
     enable = true;
     algorithm = "zstd";
@@ -11,6 +11,6 @@ _: {
     "vm.page-cluster" = 0;
     "vm.vfs_cache_pressure" = 50;
     "vm.compaction_proactiveness" = 0;
-    "kernel.sched_cfs_bandwidth_slice_us" = 500;
+    "kernel.sched_cfs_bandwidth_slice_us" = lib.mkForce 500;
   };
 }

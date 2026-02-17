@@ -58,7 +58,7 @@
           temurin-bin-25
         ];
       })
-      hytale-launcher
+      #hytale-launcher
     ];
   };
 }
