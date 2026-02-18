@@ -103,7 +103,7 @@ in
             ".config/sops"
             ".config/git"
             ".config/obsidian"
-            #".mozilla/firefox/default/storage"
+            ".config/zed/themes"
           ]
           ++ config.Persistencia.extraUserDirectories;
           files = [

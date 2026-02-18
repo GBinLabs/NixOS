@@ -27,6 +27,8 @@
       };
       features.edit_prediction_provider = "none";
       agent.enabled = false;
+      show_welcome_view = false;
+      restore_on_startup = "none";
 
       theme = {
         mode = "dark";
@@ -42,6 +44,9 @@
         "panel.background" = "#00000000";
         "status_bar.background" = "#00000000";
         "title_bar.background" = "#00000000";
+      };
+
+      "experimental.theme_overrides" = {
         "background.appearance" = "transparent";
       };
 

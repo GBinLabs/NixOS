@@ -202,7 +202,7 @@
 
       colorSchemes = {
         useWallpaperColors = true;
-        generationMethod = "faithful";
+        generationMethod = "tonal-spot";
       };
 
       templates = {
