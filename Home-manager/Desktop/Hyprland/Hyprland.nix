@@ -132,6 +132,13 @@
     };
   };
 
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      icon-theme = "Tela-black-dark";
+      color-scheme = "prefer-dark";
+    };
+  };
+
   home.pointerCursor = {
     gtk.enable = true;
     package = pkgs.bibata-cursors;
@@ -141,7 +148,7 @@
 
   qt = {
     enable = true;
-    platformTheme.name = "gtk4";
+    platformTheme.name = "gtk3";
   };
 
   home.packages = with pkgs; [

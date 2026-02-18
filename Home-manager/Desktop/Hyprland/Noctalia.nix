@@ -202,7 +202,7 @@
 
       colorSchemes = {
         useWallpaperColors = true;
-        generationMethod = "faithful";
+        generationMethod = "fidelity";
       };
 
       templates = {
@@ -220,6 +220,7 @@
   };
 
   home.packages = with pkgs; [
+    matugen
     pywalfox-native
   ];
 
@@ -227,4 +228,46 @@
     ${pkgs.pywalfox-native}/bin/pywalfox install 2>/dev/null || true
   '';
 
+  systemd.user.timers.noctalia-colors-init = {
+    Unit = {
+      Description = "Timer para inicializar colores de Noctalia";
+    };
+    Timer = {
+      OnStartupSec = "10s";
+      Unit = "noctalia-colors-init.service";
+    };
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
+  };
+
+  systemd.user.services.noctalia-colors-init = {
+    Unit = {
+      Description = "Inicializar colores de Noctalia";
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "noctalia-init-colors" ''
+        NOCTALIA="/etc/profiles/per-user/german/bin/noctalia-shell"
+        WALLPAPER="${config.home.homeDirectory}/Imágenes/Wallpapers/Astronaut.png"
+        WALLPAPER_TMP="${config.home.homeDirectory}/Imágenes/Wallpapers/NixOS.png"
+
+        # Esperar a que el socket IPC esté disponible
+        for i in $(seq 1 30); do
+          if "$NOCTALIA" ipc call state all &>/dev/null; then
+            break
+          fi
+          sleep 1
+        done
+
+        # Aplicar wallpaper temporal para forzar cambio
+        "$NOCTALIA" ipc call wallpaper set "$WALLPAPER_TMP" ""
+
+        sleep 2
+
+        # Re-aplicar el wallpaper deseado
+        "$NOCTALIA" ipc call wallpaper set "$WALLPAPER" ""
+      '';
+    };
+  };
 }
