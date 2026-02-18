@@ -202,7 +202,7 @@
 
       colorSchemes = {
         useWallpaperColors = true;
-        generationMethod = "fidelity";
+        generationMethod = "faithful";
       };
 
       templates = {
@@ -267,6 +267,48 @@
 
         # Re-aplicar el wallpaper deseado
         "$NOCTALIA" ipc call wallpaper set "$WALLPAPER" ""
+      '';
+    };
+  };
+
+  # Daemon que crea el socket (se inicia con la sesión gráfica)
+  systemd.user.services.pywalfox-daemon = {
+    Unit = {
+      Description = "Pywalfox Daemon";
+      After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = "${pkgs.pywalfox-native}/bin/pywalfox start";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  # Path unit que detecta cuando el socket existe
+  systemd.user.paths.pywalfox-socket = {
+    Unit.Description = "Monitor pywalfox socket";
+    Path = {
+      PathExists = "/tmp/pywalfox_socket";
+      Unit = "pywalfox-update.service";
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
+
+  # Servicio que ejecuta update cuando el socket aparece
+  systemd.user.services.pywalfox-update = {
+    Unit = {
+      Description = "Update Pywalfox theme";
+      After = [ "pywalfox-daemon.service" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "pywalfox-update" ''
+        # Esperar a que Firefox esté listo
+        sleep 3
+        ${pkgs.pywalfox-native}/bin/pywalfox update
       '';
     };
   };

@@ -103,11 +103,13 @@ in
             ".config/sops"
             ".config/git"
             ".config/obsidian"
+            #".mozilla/firefox/default/storage"
           ]
           ++ config.Persistencia.extraUserDirectories;
           files = [
             ".p10k.zsh"
             ".zshrc"
+            ".mozilla/firefox/default/favicons.sqlite"
           ];
         };
       };

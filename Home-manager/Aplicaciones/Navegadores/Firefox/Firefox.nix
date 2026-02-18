@@ -2,7 +2,8 @@
   pkgs,
   lib,
   ...
-}: {
+}:
+{
   programs.firefox = {
     enable = true;
     package = pkgs.firefox;
@@ -148,7 +149,7 @@
         "privacy.userContext.enabled" = true;
         "privacy.userContext.ui.enabled" = true;
         "privacy.userContext.extension.enabled" = true;
-    };
+      };
       bookmarks = {
         force = true;
         settings = lib.importJSON ./Bookmarks.json;
@@ -161,18 +162,22 @@
         "uBlock0@raymondhill.net" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
           installation_mode = "force_installed";
+          private_browsing = true;
         };
         "jid1-MnnxcxisBPnSXQ@jetpack" = {
           install_url = "https://addons.mozilla.org/en-US/firefox/downloads/latest/privacy-badger17/latest.xpi";
           installation_mode = "force_installed";
+          private_browsing = true;
         };
         "jid1-ZAdIEUB7XOzOJw@jetpack" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/duckduckgo-for-firefox/latest.xpi";
           installation_mode = "force_installed";
+          private_browsing = true;
         };
         "pywalfox@frewacom.org" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/pywalfox/latest.xpi";
           installation_mode = "force_installed";
+          private_browsing = true;
         };
       };
 
