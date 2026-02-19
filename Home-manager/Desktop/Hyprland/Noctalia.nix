@@ -283,45 +283,32 @@
     };
   };
 
-  systemd.user.services.noctalia-performance-init = {
+  systemd.user.services.gtk-colors-watch = {
     Unit = {
-      Description = "Establecer modo rendimiento de Noctalia";
-      After = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "oneshot";
-      ExecStart = pkgs.writeShellScript "noctalia-performance" ''
-        NOCTALIA="/etc/profiles/per-user/german/bin/noctalia-shell"
-
-        # Esperar al socket
-        for i in $(seq 1 30); do
-          if "$NOCTALIA" ipc call state all &>/dev/null; then
-            break
-          fi
-          sleep 1
-        done
-
-        # Establecer perfil de rendimiento
-        "$NOCTALIA" ipc call performance set "performance" || true
-      '';
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
-
-  systemd.user.services.gtk-reload-on-colors = {
-    Unit = {
-      Description = "Recargar GTK cuando cambien los colores";
+      Description = "Recargar GTK cuando Noctalia cambie los colores";
       After = [ "graphical-session.target" ];
       PartOf = [ "graphical-session.target" ];
     };
     Service = {
       Type = "simple";
-      ExecStart = pkgs.writeShellScript "gtk-reload-watcher" ''
-        COLORS_DIR="${config.home.homeDirectory}/.cache/noctalia/colors"
+      ExecStart = pkgs.writeShellScript "gtk-watch" ''
+        WATCH_DIR="''${HOME}/.config/gtk-4.0"
 
-        ${pkgs.inotify-tools}/bin/inotifywait -m -e close_write "$COLORS_DIR" 2>/dev/null | while read -r; do
-          sleep 1
-          ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
+        # Apps GTK a reiniciar
+        GTK_APPS="nautilus gnome-text-editor evince file-roller eog totem gnome-calculator gnome-calendar gnome-clocks gnome-contacts gnome-maps gnome-weather loupe papers"
+
+        ${pkgs.inotify-tools}/bin/inotifywait -m -e close_write,create "$WATCH_DIR" 2>/dev/null | while read -r; do
+          sleep 0.3
+
+          # Toggle GTK theme
+          CURRENT=$(${pkgs.glib}/bin/gsettings get org.gnome.desktop.interface gtk-theme)
+          ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme ""
+          ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "$CURRENT"
+
+          # Reiniciar apps GTK que estén corriendo
+          for app in $GTK_APPS; do
+            ${pkgs.procps}/bin/pkill -HUP "$app" 2>/dev/null || true
+          done
         done
       '';
       Restart = "on-failure";

@@ -1,4 +1,5 @@
-_: {
+{ pkgs, ... }:
+{
   programs = {
     hyprland = {
       enable = true;
@@ -6,11 +7,21 @@ _: {
       xwayland = {
         enable = true;
       };
+      portalPackage = pkgs.xdg-desktop-portal-hyprland;
     };
     silentSDDM = {
       enable = true;
       theme = "default";
     };
+  };
+
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    config.common.default = [
+      "hyprland"
+      "gtk"
+    ];
   };
 
   environment.sessionVariables = {
