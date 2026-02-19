@@ -222,6 +222,7 @@
   home.packages = with pkgs; [
     matugen
     pywalfox-native
+    inotify-tools
   ];
 
   home.activation.pywalfoxInstall = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
@@ -267,11 +268,68 @@
 
         # Re-aplicar el wallpaper deseado
         "$NOCTALIA" ipc call wallpaper set "$WALLPAPER" ""
+
+        # Esperar a que matugen genere los colores
+        sleep 3
+
+        # Forzar recarga de GTK
+        ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
+        sleep 0.5
+        ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
+
+        # Recargar portal para aplicaciones que lo usen
+        ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal-hyprland.service || true
       '';
     };
   };
 
-  # Daemon que crea el socket (se inicia con la sesión gráfica)
+  systemd.user.services.noctalia-performance-init = {
+    Unit = {
+      Description = "Establecer modo rendimiento de Noctalia";
+      After = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "noctalia-performance" ''
+        NOCTALIA="/etc/profiles/per-user/german/bin/noctalia-shell"
+
+        # Esperar al socket
+        for i in $(seq 1 30); do
+          if "$NOCTALIA" ipc call state all &>/dev/null; then
+            break
+          fi
+          sleep 1
+        done
+
+        # Establecer perfil de rendimiento
+        "$NOCTALIA" ipc call performance set "performance" || true
+      '';
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
+  systemd.user.services.gtk-reload-on-colors = {
+    Unit = {
+      Description = "Recargar GTK cuando cambien los colores";
+      After = [ "graphical-session.target" ];
+      PartOf = [ "graphical-session.target" ];
+    };
+    Service = {
+      Type = "simple";
+      ExecStart = pkgs.writeShellScript "gtk-reload-watcher" ''
+        COLORS_DIR="${config.home.homeDirectory}/.cache/noctalia/colors"
+
+        ${pkgs.inotify-tools}/bin/inotifywait -m -e close_write "$COLORS_DIR" 2>/dev/null | while read -r; do
+          sleep 1
+          ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
+        done
+      '';
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
   systemd.user.services.pywalfox-daemon = {
     Unit = {
       Description = "Pywalfox Daemon";

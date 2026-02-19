@@ -20,6 +20,15 @@
     };
     tuned = {
       enable = true;
+      ppdSettings = {
+        main = {
+          default = "performance";
+          battery_detection = false;
+        };
+        profiles = {
+          performance = "latency-performance";
+        };
+      };
     };
     upower = {
       enable = true;
