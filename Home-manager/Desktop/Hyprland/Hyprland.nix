@@ -122,6 +122,10 @@
 
   gtk = {
     enable = true;
+    theme = {
+      name = "adw-gtk3-dark";
+      package = pkgs.adw-gtk3;
+    };
     iconTheme = {
       name = "Tela-black-dark";
       package = pkgs.tela-icon-theme;
@@ -134,6 +138,7 @@
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
+      gtk-theme = "adw-gtk3-dark";
       icon-theme = "Tela-black-dark";
       color-scheme = "prefer-dark";
     };

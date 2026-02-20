@@ -229,23 +229,18 @@
     ${pkgs.pywalfox-native}/bin/pywalfox install 2>/dev/null || true
   '';
 
+  # ── Inicialización de colores en arranque (impermanence) ──────────────
   systemd.user.timers.noctalia-colors-init = {
-    Unit = {
-      Description = "Timer para inicializar colores de Noctalia";
-    };
+    Unit.Description = "Timer para inicializar colores de Noctalia";
     Timer = {
       OnStartupSec = "10s";
       Unit = "noctalia-colors-init.service";
     };
-    Install = {
-      WantedBy = [ "timers.target" ];
-    };
+    Install.WantedBy = [ "timers.target" ];
   };
 
   systemd.user.services.noctalia-colors-init = {
-    Unit = {
-      Description = "Inicializar colores de Noctalia";
-    };
+    Unit.Description = "Inicializar colores de Noctalia";
     Service = {
       Type = "oneshot";
       ExecStart = pkgs.writeShellScript "noctalia-init-colors" ''
@@ -253,7 +248,6 @@
         WALLPAPER="${config.home.homeDirectory}/Imágenes/Wallpapers/Astronaut.png"
         WALLPAPER_TMP="${config.home.homeDirectory}/Imágenes/Wallpapers/NixOS.png"
 
-        # Esperar a que el socket IPC esté disponible
         for i in $(seq 1 30); do
           if "$NOCTALIA" ipc call state all &>/dev/null; then
             break
@@ -261,54 +255,41 @@
           sleep 1
         done
 
-        # Aplicar wallpaper temporal para forzar cambio
         "$NOCTALIA" ipc call wallpaper set "$WALLPAPER_TMP" ""
-
         sleep 2
-
-        # Re-aplicar el wallpaper deseado
         "$NOCTALIA" ipc call wallpaper set "$WALLPAPER" ""
-
-        # Esperar a que matugen genere los colores
-        sleep 3
-
-        # Forzar recarga de GTK
-        ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
-        sleep 0.5
-        ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
-
-        # Recargar portal para aplicaciones que lo usen
-        ${pkgs.systemd}/bin/systemctl --user restart xdg-desktop-portal-hyprland.service || true
       '';
     };
   };
 
-  systemd.user.services.gtk-colors-watch = {
+  # ── Recarga en vivo de GTK3 ───────────────────────────────────────────
+  # Nota: las apps GTK4/libadwaita (Nautilus, Text Editor, eog, etc.)
+  # NO soportan recarga dinámica de CSS de usuario. Esto es una
+  # limitación de diseño de libadwaita — los colores se aplican al
+  # abrir la app. Este watcher solo recarga apps GTK3 via adw-gtk3.
+  systemd.user.services.gtk3-colors-watch = {
     Unit = {
-      Description = "Recargar GTK cuando Noctalia cambie los colores";
+      Description = "Recargar tema GTK3 cuando Noctalia cambie los colores";
       After = [ "graphical-session.target" ];
       PartOf = [ "graphical-session.target" ];
     };
     Service = {
       Type = "simple";
-      ExecStart = pkgs.writeShellScript "gtk-watch" ''
-        WATCH_DIR="''${HOME}/.config/gtk-4.0"
-
-        # Apps GTK a reiniciar
-        GTK_APPS="nautilus gnome-text-editor evince file-roller eog totem gnome-calculator gnome-calendar gnome-clocks gnome-contacts gnome-maps gnome-weather loupe papers"
+      ExecStart = pkgs.writeShellScript "gtk3-watch" ''
+        WATCH_DIR="''${HOME}/.config/gtk-3.0"
+        LAST_RUN=0
 
         ${pkgs.inotify-tools}/bin/inotifywait -m -e close_write,create "$WATCH_DIR" 2>/dev/null | while read -r; do
+          NOW=$(date +%s)
+          if (( NOW - LAST_RUN < 2 )); then
+            continue
+          fi
+          LAST_RUN=$NOW
+
           sleep 0.3
-
-          # Toggle GTK theme
-          CURRENT=$(${pkgs.glib}/bin/gsettings get org.gnome.desktop.interface gtk-theme)
           ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme ""
-          ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "$CURRENT"
-
-          # Reiniciar apps GTK que estén corriendo
-          for app in $GTK_APPS; do
-            ${pkgs.procps}/bin/pkill -HUP "$app" 2>/dev/null || true
-          done
+          sleep 0.2
+          ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
         done
       '';
       Restart = "on-failure";
@@ -317,6 +298,7 @@
     Install.WantedBy = [ "graphical-session.target" ];
   };
 
+  # ── Pywalfox (colores dinámicos en Firefox) ───────────────────────────
   systemd.user.services.pywalfox-daemon = {
     Unit = {
       Description = "Pywalfox Daemon";
@@ -332,7 +314,6 @@
     Install.WantedBy = [ "graphical-session.target" ];
   };
 
-  # Path unit que detecta cuando el socket existe
   systemd.user.paths.pywalfox-socket = {
     Unit.Description = "Monitor pywalfox socket";
     Path = {
@@ -342,7 +323,6 @@
     Install.WantedBy = [ "default.target" ];
   };
 
-  # Servicio que ejecuta update cuando el socket aparece
   systemd.user.services.pywalfox-update = {
     Unit = {
       Description = "Update Pywalfox theme";
@@ -351,7 +331,6 @@
     Service = {
       Type = "oneshot";
       ExecStart = pkgs.writeShellScript "pywalfox-update" ''
-        # Esperar a que Firefox esté listo
         sleep 3
         ${pkgs.pywalfox-native}/bin/pywalfox update
       '';
