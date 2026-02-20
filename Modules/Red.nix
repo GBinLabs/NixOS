@@ -12,11 +12,9 @@
   config = lib.mkMerge [
     (lib.mkIf config.Red-PC.enable {
       networking.hostName = "Bin-PC";
-      networking.networkmanager.enable = true;
     })
     (lib.mkIf config.Red-Netbook.enable {
       networking.hostName = "Bin-Netbook";
-      networking.networkmanager.enable = true;
     })
   ];
 }

@@ -5,7 +5,7 @@
     enableCompletion = true;
     syntaxHighlighting.enable = true;
     autosuggestions.enable = true;
-    enableGlobalCompInit = false; # Faster startup
+    enableGlobalCompInit = false;
 
     ohMyZsh = {
       enable = true;
@@ -38,8 +38,6 @@
   users.defaultUserShell = pkgs.zsh;
 
   environment.systemPackages = with pkgs; [
-    zsh
     zsh-powerlevel10k
-    oh-my-zsh
   ];
 }

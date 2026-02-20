@@ -21,11 +21,4 @@
       };
     };
   };
-
-  networking.networkmanager = {
-    dns = "systemd-resolved";
-    wifi = {
-      powersave = false;
-    };
-  };
 }

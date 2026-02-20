@@ -1,5 +1,5 @@
-{pkgs, ...}: {
-  home.packages = with pkgs; [
-    kitty
-  ];
+_: {
+  programs.kitty = {
+    enable = true;
+  };
 }
