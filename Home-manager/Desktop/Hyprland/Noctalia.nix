@@ -222,14 +222,12 @@
   home.packages = with pkgs; [
     matugen
     pywalfox-native
-    inotify-tools
   ];
 
   home.activation.pywalfoxInstall = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.pywalfox-native}/bin/pywalfox install 2>/dev/null || true
   '';
 
-  # ── Inicialización de colores en arranque (impermanence) ──────────────
   systemd.user.timers.noctalia-colors-init = {
     Unit.Description = "Timer para inicializar colores de Noctalia";
     Timer = {
@@ -262,43 +260,7 @@
     };
   };
 
-  # ── Recarga en vivo de GTK3 ───────────────────────────────────────────
-  # Nota: las apps GTK4/libadwaita (Nautilus, Text Editor, eog, etc.)
-  # NO soportan recarga dinámica de CSS de usuario. Esto es una
-  # limitación de diseño de libadwaita — los colores se aplican al
-  # abrir la app. Este watcher solo recarga apps GTK3 via adw-gtk3.
-  systemd.user.services.gtk3-colors-watch = {
-    Unit = {
-      Description = "Recargar tema GTK3 cuando Noctalia cambie los colores";
-      After = [ "graphical-session.target" ];
-      PartOf = [ "graphical-session.target" ];
-    };
-    Service = {
-      Type = "simple";
-      ExecStart = pkgs.writeShellScript "gtk3-watch" ''
-        WATCH_DIR="''${HOME}/.config/gtk-3.0"
-        LAST_RUN=0
-
-        ${pkgs.inotify-tools}/bin/inotifywait -m -e close_write,create "$WATCH_DIR" 2>/dev/null | while read -r; do
-          NOW=$(date +%s)
-          if (( NOW - LAST_RUN < 2 )); then
-            continue
-          fi
-          LAST_RUN=$NOW
-
-          sleep 0.3
-          ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme ""
-          sleep 0.2
-          ${pkgs.glib}/bin/gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"
-        done
-      '';
-      Restart = "on-failure";
-      RestartSec = 5;
-    };
-    Install.WantedBy = [ "graphical-session.target" ];
-  };
-
-  # ── Pywalfox (colores dinámicos en Firefox) ───────────────────────────
+  # ── Pywalfox daemon (colores dinámicos en Firefox) ────────────────────
   systemd.user.services.pywalfox-daemon = {
     Unit = {
       Description = "Pywalfox Daemon";
@@ -312,28 +274,5 @@
       RestartSec = 5;
     };
     Install.WantedBy = [ "graphical-session.target" ];
-  };
-
-  systemd.user.paths.pywalfox-socket = {
-    Unit.Description = "Monitor pywalfox socket";
-    Path = {
-      PathExists = "/tmp/pywalfox_socket";
-      Unit = "pywalfox-update.service";
-    };
-    Install.WantedBy = [ "default.target" ];
-  };
-
-  systemd.user.services.pywalfox-update = {
-    Unit = {
-      Description = "Update Pywalfox theme";
-      After = [ "pywalfox-daemon.service" ];
-    };
-    Service = {
-      Type = "oneshot";
-      ExecStart = pkgs.writeShellScript "pywalfox-update" ''
-        sleep 3
-        ${pkgs.pywalfox-native}/bin/pywalfox update
-      '';
-    };
   };
 }

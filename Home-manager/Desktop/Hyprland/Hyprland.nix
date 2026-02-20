@@ -122,10 +122,6 @@
 
   gtk = {
     enable = true;
-    theme = {
-      name = "adw-gtk3-dark";
-      package = pkgs.adw-gtk3;
-    };
     iconTheme = {
       name = "Tela-black-dark";
       package = pkgs.tela-icon-theme;
@@ -138,7 +134,6 @@
 
   dconf.settings = {
     "org/gnome/desktop/interface" = {
-      gtk-theme = "adw-gtk3-dark";
       icon-theme = "Tela-black-dark";
       color-scheme = "prefer-dark";
     };
@@ -159,7 +154,6 @@
   home.packages = with pkgs; [
     wl-clipboard
     cliphist
-    adw-gtk3
     tela-icon-theme
     bibata-cursors
   ];
@@ -171,6 +165,8 @@
     "Imágenes/Wallpapers/NixOS.png".source = ./Wallpapers/NixOS.png;
     "Imágenes/Wallpapers/NixOS-1.png".source = ./Wallpapers/NixOS-1.png;
   };
+
+  xdg.configFile."gtk-4.0/settings.ini".enable = false;
 
   xdg.userDirs = {
     enable = true;
