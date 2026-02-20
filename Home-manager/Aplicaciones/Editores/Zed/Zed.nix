@@ -37,7 +37,7 @@
       };
 
       "experimental.theme_overrides" = {
-        "background.appearance" = "transparent";
+        "background.appearance" = "blurred"; # transparent
       };
 
       buffer_font_family = "JetBrains Mono";
