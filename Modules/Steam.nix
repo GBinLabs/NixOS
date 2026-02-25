@@ -12,12 +12,6 @@
       enable = true;
       platformOptimizations.enable = true;
       extraCompatPackages = with pkgs; [ proton-ge-bin ];
-      gamescopeSession.enable = true;
-    };
-
-    programs.gamescope = {
-      enable = true;
-      capSysNice = false;
     };
 
     programs.gamemode = {
