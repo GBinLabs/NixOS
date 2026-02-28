@@ -3,7 +3,7 @@
 {
 
   imports = [
-	./Hyprland/default.nix
+	./Gnome/Gnome.nix
   ];
 
 }

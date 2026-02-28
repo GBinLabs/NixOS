@@ -23,31 +23,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland.url = "github:hyprwm/Hyprland";
-
-    silentSDDM = {
-      url = "github:uiriansan/SilentSDDM";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-
     hytale-launcher.url = "github:JPyke3/hytale-launcher-nix";
 
-    nixcord = {
-      url = "github:FlameFlag/nixcord";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    nixcord.url = "github:FlameFlag/nixcord";
   };
 
   outputs =
@@ -56,9 +39,7 @@
       nixpkgs,
       home-manager,
       nixos-facter-modules,
-      hyprland,
       nix-gaming,
-      nix-cachyos-kernel,
       hytale-launcher,
       ...
     }@inputs:
@@ -70,8 +51,6 @@
         inputs.nixos-facter-modules.nixosModules.facter
         inputs.impermanence.nixosModules.impermanence
         inputs.sops-nix.nixosModules.sops
-        inputs.hyprland.nixosModules.default
-        inputs.silentSDDM.nixosModules.default
         inputs.nix-gaming.nixosModules.platformOptimizations
         inputs.nix-gaming.nixosModules.pipewireLowLatency
         home-manager.nixosModules.home-manager
@@ -84,15 +63,12 @@
               inherit inputs;
             };
             sharedModules = [
-              inputs.hyprland.homeManagerModules.default
-              inputs.noctalia.homeModules.default
               inputs.nixcord.homeModules.nixcord
             ];
           };
         }
       ];
 
-      # Función helper para crear hosts
       mkHost =
         hostname: hostModule: homeModule: facterPath:
         nixpkgs.lib.nixosSystem {
@@ -103,7 +79,16 @@
               { inputs, ... }:
               {
                 nixpkgs.overlays = [
-                  inputs.nix-cachyos-kernel.overlays.pinned
+                  (final: prev: {
+                    hytale-launcher = inputs.hytale-launcher.packages.${system}.default;
+                    pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
+                      (python-final: python-prev: {
+                        picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {
+                          doCheck = false;
+                        });
+                      })
+                    ];
+                  })
                 ];
               }
             )
@@ -129,14 +114,12 @@
     extra-substituters = [
       "https://cache.nixos.org"
       "https://nix-community.cachix.org"
-      "https://hyprland.cachix.org"
       "https://nix-gaming.cachix.org"
       "https://attic.xuyh0120.win/lantian"
     ];
     extra-trusted-public-keys = [
       "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
-      "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
       "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
       "lantian:EeAUQ+W+6r7EtwnmYjeVwx5kOGEBpjlBfPlzGlTNvHc="
     ];

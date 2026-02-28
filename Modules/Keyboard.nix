@@ -14,11 +14,9 @@
       LC_TIME = "es_AR.UTF-8";
     };
   };
-
   console = {
     keyMap = "la-latin1";
   };
-
   time = {
     timeZone = "America/Argentina/Tucuman";
   };

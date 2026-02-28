@@ -2,8 +2,7 @@
 {
   services = {
     fwupd.enable = true;
-    gvfs.enable = true;
-    udisks2.enable = true;
+    power-profiles-daemon.enable = true;
     scx = {
       enable = true;
       package = pkgs.scx.rustscheds;
@@ -18,14 +17,5 @@
       enable = true;
       package = pkgs.libratbag;
     };
-    tuned = {
-      enable = true;
-    };
-    upower = {
-      enable = true;
-    };
   };
-
-  environment.systemPackages = with pkgs; [ usbutils ];
-
 }

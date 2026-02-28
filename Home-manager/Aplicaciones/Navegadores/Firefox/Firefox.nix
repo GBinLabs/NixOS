@@ -37,11 +37,6 @@
           installation_mode = "force_installed";
           private_browsing = true;
         };
-        "pywalfox@frewacom.org" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/pywalfox/latest.xpi";
-          installation_mode = "force_installed";
-          private_browsing = true;
-        };
       };
 
       DisableTelemetry = true;
