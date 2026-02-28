@@ -24,6 +24,8 @@
         };
         
         kernelPackages = pkgs.linuxPackages_lqx;
+        kernel.sysctl."vm.nr_hugepages" = 0;
+	kernelParams = [ "transparent_hugepage=madvise" ];
 
         initrd = {
           compressor = "zstd";
@@ -60,6 +62,7 @@
       boot = {
         kernelParams = [
           "video=HDMI-A-1:1920x1080@75"
+          "amd_pstate=active"
         ];
         kernelModules = [ "amdgpu" ];
       };
