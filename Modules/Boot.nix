@@ -6,8 +6,8 @@
 }:
 {
   options = {
-    hardware.pc.enable = lib.mkEnableOption "Configuración de hardware para PC (AMD)";
-    hardware.netbook.enable = lib.mkEnableOption "Configuración de hardware para Netbook (Intel N4020)";
+    Boot-PC.enable = lib.mkEnableOption "Configuración de Boot para PC";
+    Boot-Netbook.enable = lib.mkEnableOption "Configuración de Boot para Netbook";
   };
 
   config = lib.mkMerge [
@@ -58,17 +58,18 @@
       
       documentation.nixos.enable = false;
     }
-    (lib.mkIf config.hardware.pc.enable {
+    (lib.mkIf config.Boot-PC.enable {
       boot = {
         kernelParams = [
           "video=HDMI-A-1:1920x1080@75"
           "amd_pstate=active"
+          "split_lock_detect=off"
         ];
-        kernelModules = [ "amdgpu" ];
+        kernelModules = [ "amdgpu" "ntsync" ];
       };
     })
 
-    (lib.mkIf config.hardware.netbook.enable {
+    (lib.mkIf config.Boot-Netbook.enable {
     boot = {
         kernelModules = [ "i915" ];
       };

@@ -5,7 +5,8 @@
     ./disko.nix
   ];
 
-  hardware.netbook.enable = true;
+  hardware.facter.reportPath = ./facter.json;
+  Boot-Netbook.enable = true;
   Persistencia.enable = true;
   Reset-Netbook.enable = true;
   Red-Netbook.enable = true;

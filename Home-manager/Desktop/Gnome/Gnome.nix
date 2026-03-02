@@ -204,7 +204,7 @@
   home.language = {
     base = "es_AR.UTF-8";
   };
-
+  
   fonts.fontconfig.enable = true;
 
   home.file."Imágenes/Wallpapers/NixOS.png".source = ./Wallpapers/NixOS.png;

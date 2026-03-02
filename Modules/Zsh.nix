@@ -21,17 +21,6 @@
       source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
     '';
-
-    histSize = 10000;
-    histFile = "$HOME/.zsh_history";
-
-    setOptions = [
-      "HIST_IGNORE_ALL_DUPS"
-      "HIST_SAVE_NO_DUPS"
-      "HIST_REDUCE_BLANKS"
-      "SHARE_HISTORY"
-      "INC_APPEND_HISTORY"
-    ];
   };
 
   environment.shells = with pkgs; [ zsh ];

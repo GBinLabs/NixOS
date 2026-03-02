@@ -8,7 +8,8 @@
     ./disko.nix
   ];
 
-  hardware.pc.enable = true;
+  hardware.facter.reportPath = ./facter.json;
+  Boot-PC.enable = true;
   Steam.enable = true;
   Persistencia = {
     enable = true;

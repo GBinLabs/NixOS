@@ -21,6 +21,11 @@
       enable = true;
       package = pkgs.ananicy-cpp;
     };
+    earlyoom = {
+  enable = true;
+  freeMemThreshold = 5;
+  freeSwapThreshold = 10;
+};
     udev.extraRules = ''
       # Scheduler óptimo según tipo de dispositivo
       ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="none"

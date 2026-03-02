@@ -3,52 +3,34 @@
 
   inputs = {
     nixpkgs.url = "https://channels.nixos.org/nixos-unstable/nixexprs.tar.xz";
-
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    nixos-facter-modules.url = "github:nix-community/nixos-facter-modules";
-
     impermanence.url = "github:nix-community/impermanence";
-
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
     hytale-launcher.url = "github:JPyke3/hytale-launcher-nix";
-
     nixcord.url = "github:FlameFlag/nixcord";
   };
 
   outputs =
-    {
-      self,
-      nixpkgs,
-      home-manager,
-      nixos-facter-modules,
-      nix-gaming,
-      hytale-launcher,
-      ...
-    }@inputs:
+    { nixpkgs, home-manager, ... }@inputs:
     let
       system = "x86_64-linux";
 
       baseModules = [
         inputs.disko.nixosModules.disko
-        inputs.nixos-facter-modules.nixosModules.facter
         inputs.impermanence.nixosModules.impermanence
         inputs.sops-nix.nixosModules.sops
         inputs.nix-gaming.nixosModules.platformOptimizations
@@ -59,40 +41,25 @@
             useGlobalPkgs = true;
             useUserPackages = true;
             backupFileExtension = "backup";
-            extraSpecialArgs = {
-              inherit inputs;
-            };
-            sharedModules = [
-              inputs.nixcord.homeModules.nixcord
-            ];
+            extraSpecialArgs = { inherit inputs; };
+            sharedModules = [ inputs.nixcord.homeModules.nixcord ];
           };
+        }
+        {
+          nixpkgs.overlays = [
+            (_: prev: {
+              hytale-launcher = inputs.hytale-launcher.packages.${system}.default;
+            })
+          ];
         }
       ];
 
       mkHost =
-        hostname: hostModule: homeModule: facterPath:
+        hostModule: homeModule:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = { inherit inputs; };
           modules = baseModules ++ [
-            (
-              { inputs, ... }:
-              {
-                nixpkgs.overlays = [
-                  (final: prev: {
-                    hytale-launcher = inputs.hytale-launcher.packages.${system}.default;
-                    pythonPackagesExtensions = prev.pythonPackagesExtensions ++ [
-                      (python-final: python-prev: {
-                        picosvg = python-prev.picosvg.overridePythonAttrs (oldAttrs: {
-                          doCheck = false;
-                        });
-                      })
-                    ];
-                  })
-                ];
-              }
-            )
-            { facter.reportPath = facterPath; }
             hostModule
             { home-manager.users.german = homeModule; }
           ];
@@ -100,13 +67,9 @@
     in
     {
       nixosConfigurations = {
-        PC = mkHost "PC" ./Hosts/PC/configuration.nix ./Hosts/PC/home.nix ./Hosts/PC/facter.json;
-        Notebook =
-          mkHost "Notebook" ./Hosts/Notebook/configuration.nix ./Hosts/Notebook/home.nix
-            ./Hosts/Notebook/facter.json;
-        Netbook =
-          mkHost "Netbook" ./Hosts/Netbook/configuration.nix ./Hosts/Netbook/home.nix
-            ./Hosts/Netbook/facter.json;
+        PC = mkHost ./Hosts/PC/configuration.nix ./Hosts/PC/home.nix;
+        Netbook = mkHost ./Hosts/Netbook/configuration.nix ./Hosts/Netbook/home.nix;
+        #VM = mkHost ./Hosts/VM/configuration.nix ./Hosts/VM/home.nix;
       };
     };
 

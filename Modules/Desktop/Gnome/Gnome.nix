@@ -60,7 +60,7 @@
       __GL_VRR_ALLOWED = "1";
     };
   };
-
+  
   fonts = {
     packages = with pkgs; [
       inter
