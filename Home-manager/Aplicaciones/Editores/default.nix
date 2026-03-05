@@ -1,5 +1,5 @@
 _: {
   imports = [
-    ./Zed/Zed.nix
+    ./VSCode/VSCode.nix
   ];
 }

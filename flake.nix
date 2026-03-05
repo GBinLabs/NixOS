@@ -16,6 +16,7 @@
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,7 +26,13 @@
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }@inputs:
+    { self,
+      nixpkgs,
+      home-manager,
+      nix-vscode-extensions,
+      nix-gaming,
+      hytale-launcher,
+      ...}@inputs:
     let
       system = "x86_64-linux";
 
@@ -47,6 +54,7 @@
         }
         {
           nixpkgs.overlays = [
+            inputs.nix-vscode-extensions.overlays.default
             (_: prev: {
               hytale-launcher = inputs.hytale-launcher.packages.${system}.default;
             })

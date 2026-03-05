@@ -18,7 +18,7 @@
     # Conversor de archivos.
     morphosis
     # LibreOffice
-    #libreoffice
+    libreoffice
     # Visualizador de videos.
     vlc
     # Editor de Video.
